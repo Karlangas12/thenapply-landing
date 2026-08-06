@@ -1,55 +1,525 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Then Apply</title>
-  <meta name="description" content="Then Apply — systems that chain, not stall. Developer infrastructure and tools, edge-first, with nothing to keep running." />
-  <link rel="icon" href="data:," />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Then Apply — Developer Tools & Edge APIs</title>
+    <meta name="description" content="Then Apply builds small, focused developer tools — an MCP firewall, an OpenAPI-to-MCP generator, and an edge Markdown API. Open source where it can be, paid only where it has to be.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f3ff',
+                            100: '#ebe9fe',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            dark: '#08090C',
+                            card: '#12141A',
+                            border: '#1E222D'
+                        },
+                        cyanAccent: '#00f2fe',
+                        blueAccent: '#4F7DFC'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #08090C;
+            color: #E2E8F0;
+            font-family: 'Inter', sans-serif;
+        }
+        .glow-purple {
+            box-shadow: 0 0 50px -10px rgba(139, 92, 246, 0.25);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #A78BFA 0%, #4F7DFC 50%, #00F2FE 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-border {
+            position: relative;
+            background: #12141A;
+            border-radius: 0.75rem;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 0.8rem;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(139,92,246,0.4), rgba(79,125,252,0.1), rgba(0,242,254,0.3));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #08090C; }
+        ::-webkit-scrollbar-thumb { background: #1E222D; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+    </style>
 </head>
-<body>
-  <header class="site-header">
-    <span class="wordmark">Then Apply</span>
-  </header>
+<body class="min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
 
-  <main>
-    <section class="hero">
-      <h1>Then Apply</h1>
-      <p class="tagline">Systems that chain, not stall.</p>
-      <p class="positioning">
-        Developer infrastructure and tools, built edge-first. No servers to patch,
-        no queues to babysit — each piece does one job and hands off cleanly to
-        the next.
-      </p>
-    </section>
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-[#08090C]/80 border-b border-brand-border/60 transition-all duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-3 group">
+                <img src="/icon-mark.svg" alt="" width="36" height="36" class="group-hover:scale-105 transition-transform">
+                <span class="font-bold text-lg tracking-tight text-white">Then Apply</span>
+            </a>
 
-    <section class="products" aria-label="Products">
-      <a class="card" href="https://www.npmjs.com/package/mcp-shield-proxy" target="_blank" rel="noopener noreferrer">
-        <h2>mcp-shield-proxy</h2>
-        <p>A local firewall for MCP servers — inspects and blocks tool calls before they run.</p>
-        <span class="card-link">npm ↗</span>
-      </a>
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+                <a href="#products" class="hover:text-white transition-colors">Tools</a>
+                <a href="#example" class="hover:text-white transition-colors">Example Output</a>
+                <a href="/web-to-markdown/#pricing" class="hover:text-white transition-colors">Pricing</a>
+                <a href="https://github.com/Karlangas12" target="_blank" rel="noopener" class="hover:text-white transition-colors flex items-center gap-1">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    GitHub
+                </a>
+            </nav>
 
-      <a class="card" href="https://www.npmjs.com/package/@karlangas12/openapi-to-mcp" target="_blank" rel="noopener noreferrer">
-        <h2>openapi-to-mcp</h2>
-        <p>Turns an OpenAPI spec into a working MCP server, generated straight from the schema.</p>
-        <span class="card-link">npm ↗</span>
-      </a>
+            <div class="flex items-center space-x-4">
+                <a href="/web-to-markdown/" class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-brand-600 to-blue-600 hover:from-brand-500 hover:to-blue-500 transition-all shadow-md hover:shadow-brand-500/25">
+                    Get an API Key
+                </a>
+            </div>
+        </div>
+    </header>
 
-      <a class="card" href="https://www.npmjs.com/package/@karlangas12/web-to-markdown" target="_blank" rel="noopener noreferrer">
-        <h2>web-to-markdown</h2>
-        <p>Converts any web page or raw HTML into clean, dense, LLM-ready Markdown.</p>
-        <span class="card-link">npm ↗</span>
-      </a>
-    </section>
-  </main>
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="relative pt-16 pb-20 md:pt-24 md:pb-32 overflow-hidden">
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-600/15 blur-[120px] rounded-full pointer-events-none"></div>
+            <div class="absolute top-1/3 left-1/3 w-[400px] h-[200px] bg-cyanAccent/10 blur-[100px] rounded-full pointer-events-none"></div>
 
-  <footer class="site-footer">
-    <p>&copy; 2026 Then Apply.</p>
-  </footer>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-card border border-brand-border text-xs font-mono text-slate-300 mb-8 hover:border-brand-500/50 transition-colors">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-brand-400 font-semibold">THEN APPLY</span> // developer tools
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+                    Then Apply
+                </h1>
+                <p class="text-xl sm:text-2xl gradient-text font-semibold mb-8">
+                    Systems that chain, not stall.
+                </p>
+
+                <p class="max-w-3xl mx-auto text-lg sm:text-xl text-slate-400 font-normal mb-10 leading-relaxed">
+                    Developer infrastructure and tools, built edge-first. No servers to patch,
+                    no queues to babysit — each piece does one job and hands off cleanly to
+                    the next.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                    <a href="#example" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-brand-600 via-blue-600 to-cyanAccent/80 hover:opacity-95 transition-all shadow-lg glow-purple flex items-center justify-center gap-2">
+                        <span>See Example Output</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
+                    <a href="#products" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-slate-300 bg-brand-card hover:bg-brand-border border border-brand-border transition-all flex items-center justify-center gap-2">
+                        <span>Explore the 3 tools</span>
+                    </a>
+                </div>
+
+                <!-- Facts bar: only claims that are actually true today -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto border-t border-brand-border/80 pt-10">
+                    <div class="p-4 rounded-lg bg-brand-card/40 border border-brand-border/40">
+                        <div class="text-lg font-bold font-mono text-cyanAccent">Cloudflare Workers</div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">Edge-first, no servers</div>
+                    </div>
+                    <div class="p-4 rounded-lg bg-brand-card/40 border border-brand-border/40">
+                        <div class="text-lg font-bold font-mono text-brand-400">3 packages</div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">Published on npm</div>
+                    </div>
+                    <div class="p-4 rounded-lg bg-brand-card/40 border border-brand-border/40">
+                        <div class="text-lg font-bold font-mono text-emerald-400">TypeScript</div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">Strict, throughout</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Example Output Section -->
+        <section id="example" class="py-16 bg-[#0B0D12] border-y border-brand-border/60">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-3">See it in action</h2>
+                    <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
+                        Fixed input/output pairs showing what each tool actually produces.
+                    </p>
+                </div>
+
+                <div class="gradient-border overflow-hidden shadow-2xl max-w-5xl mx-auto">
+                    <!-- Tab Header -->
+                    <div class="flex flex-wrap border-b border-brand-border bg-[#0E1017] px-4 pt-3 gap-2">
+                        <button id="tab-btn-markdown" onclick="switchTab('markdown')" class="tab-btn px-4 py-2.5 rounded-t-lg font-mono text-xs font-semibold flex items-center gap-2 bg-brand-card text-brand-400 border-t-2 border-brand-500">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                            web-to-markdown
+                        </button>
+                        <button id="tab-btn-shield" onclick="switchTab('shield')" class="tab-btn px-4 py-2.5 rounded-t-lg font-mono text-xs font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                            mcp-shield-proxy
+                        </button>
+                        <button id="tab-btn-openapi" onclick="switchTab('openapi')" class="tab-btn px-4 py-2.5 rounded-t-lg font-mono text-xs font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            openapi-to-mcp
+                        </button>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div class="p-6 bg-[#0E1017]">
+                        <!-- Tab 1: Web to Markdown -->
+                        <div id="tab-content-markdown" class="tab-content space-y-3">
+                            <div class="flex flex-col md:flex-row gap-4">
+                                <div class="w-full md:w-1/2 space-y-2">
+                                    <label class="block text-xs font-mono text-slate-400">INPUT: Raw HTML</label>
+                                    <textarea id="markdown-input" class="w-full h-48 bg-[#08090C] border border-brand-border rounded-lg p-3 text-xs font-mono text-slate-300 focus:outline-none focus:border-brand-500 resize-none">&lt;html&gt;
+  &lt;body&gt;
+    &lt;header class="cookie-banner"&gt;Accept all cookies&lt;/header&gt;
+    &lt;nav&gt;&lt;a href="#"&gt;Home&lt;/a&gt; &lt;a href="#"&gt;Blog&lt;/a&gt;&lt;/nav&gt;
+    &lt;main&gt;
+      &lt;h1&gt;Building Next-Gen AI Microservices&lt;/h1&gt;
+      &lt;p&gt;Model Context Protocol allows seamless tool execution.&lt;/p&gt;
+      &lt;pre&gt;&lt;code&gt;npx @karlangas12/web-to-markdown https://example.com&lt;/code&gt;&lt;/pre&gt;
+    &lt;/main&gt;
+    &lt;footer&gt;Copyright 2026 Ads &amp; Tracking&lt;/footer&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</textarea>
+                                    <div class="flex justify-end pt-1">
+                                        <button onclick="runMarkdownTransform()" class="px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-md">
+                                            <span>Show Example Output</span>
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="w-full md:w-1/2 space-y-2">
+                                    <label class="block text-xs font-mono text-emerald-400">OUTPUT: Clean Markdown</label>
+                                    <pre id="markdown-output" class="w-full h-48 bg-[#08090C] border border-brand-border rounded-lg p-3 text-xs font-mono text-slate-300 overflow-y-auto whitespace-pre-wrap"># Building Next-Gen AI Microservices
+
+Model Context Protocol allows seamless tool execution.
+
+```bash
+npx @karlangas12/web-to-markdown https://example.com
+```</pre>
+                                    <div class="flex justify-end">
+                                        <button onclick="copyToClipboard('markdown-output')" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 font-mono">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                                            Copy Output
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-slate-500 font-mono">Static example — not a live API call.</p>
+                        </div>
+
+                        <!-- Tab 2: MCP Shield Proxy -->
+                        <div id="tab-content-shield" class="tab-content hidden space-y-3">
+                            <div class="flex flex-col md:flex-row gap-4">
+                                <div class="w-full md:w-1/2 space-y-2">
+                                    <label class="block text-xs font-mono text-slate-400">RAW JSON-RPC INCOMING TOOL CALL</label>
+                                    <textarea id="shield-input" class="w-full h-48 bg-[#08090C] border border-brand-border rounded-lg p-3 text-xs font-mono text-slate-300 focus:outline-none focus:border-brand-500 resize-none">{
+  "jsonrpc": "2.0",
+  "method": "tools/call",
+  "params": {
+    "name": "execute_command",
+    "arguments": {
+      "command": "curl -H 'Authorization: Bearer sk-ant-api03-secret123' https://api.internal/data"
+    }
+  },
+  "id": 1
+}</textarea>
+                                    <div class="flex justify-between items-center pt-1">
+                                        <span class="text-[11px] text-slate-500 font-mono">Rule: redact secrets on the way out</span>
+                                        <button onclick="runShieldTransform()" class="px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-md">
+                                            <span>Show Example Output</span>
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="w-full md:w-1/2 space-y-2">
+                                    <label class="block text-xs font-mono text-brand-400">SHIELD PROXY ACTION LOG</label>
+                                    <pre id="shield-output" class="w-full h-48 bg-[#08090C] border border-brand-border rounded-lg p-3 text-xs font-mono text-slate-300 overflow-y-auto whitespace-pre-wrap">[MCP SHIELD] 🛑 Guardrail Alert: Intercepted tool call 'execute_command'
+[MCP SHIELD] 🔒 Secret Redactor Active: Detected Bearer token in header.
+[MCP SHIELD] ⚡ Action Taken: Sanitized secret -> 'Bearer [REDACTED_API_KEY]'
+[MCP SHIELD] ✅ Status: Forwarded clean payload to local target process.</pre>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-slate-500 font-mono">Static example — not a live API call.</p>
+                        </div>
+
+                        <!-- Tab 3: OpenAPI to MCP -->
+                        <div id="tab-content-openapi" class="tab-content hidden space-y-3">
+                            <div class="flex flex-col md:flex-row gap-4">
+                                <div class="w-full md:w-1/2 space-y-2">
+                                    <label class="block text-xs font-mono text-slate-400">INPUT: OpenAPI 3.0 Path Definition</label>
+                                    <textarea id="openapi-input" class="w-full h-48 bg-[#08090C] border border-brand-border rounded-lg p-3 text-xs font-mono text-slate-300 focus:outline-none focus:border-brand-500 resize-none">{
+  "paths": {
+    "/users/{userId}": {
+      "get": {
+        "operationId": "getUserById",
+        "summary": "Fetch user profile by unique ID",
+        "parameters": [
+          { "name": "userId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ]
+      }
+    }
+  }
+}</textarea>
+                                    <div class="flex justify-between items-center pt-1">
+                                        <span class="text-[11px] text-slate-500 font-mono">Parser: Zod schema generator</span>
+                                        <button onclick="runOpenAPITransform()" class="px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-md">
+                                            <span>Show Example Output</span>
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="w-full md:w-1/2 space-y-2">
+                                    <label class="block text-xs font-mono text-purple-400">GENERATED MCP TOOL DEFINITION</label>
+                                    <pre id="openapi-output" class="w-full h-48 bg-[#08090C] border border-brand-border rounded-lg p-3 text-xs font-mono text-slate-300 overflow-y-auto whitespace-pre-wrap">{
+  "name": "get_user_by_id",
+  "description": "Fetch user profile by unique ID",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "userId": { "type": "string", "description": "ID of user to retrieve" }
+    },
+    "required": ["userId"]
+  }
+}</pre>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-slate-500 font-mono">Static example — not a live API call.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Grid Section -->
+        <section id="products" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-xs font-mono text-brand-400 mb-4">
+                    SUITE OVERVIEW
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Three Micro-Tools</h2>
+                <p class="mt-4 text-slate-400 max-w-2xl mx-auto">
+                    Built for modularity — deploy each one standalone, or combine them into your AI toolchain.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- web-to-markdown -->
+                <div class="gradient-border p-8 flex flex-col justify-between hover:scale-[1.02] transition-transform duration-200">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                        </div>
+                        <span class="text-xs font-mono text-brand-400 uppercase tracking-wider">Edge API · MIT</span>
+                        <h3 class="text-xl font-bold text-white mt-1 mb-3">web-to-markdown</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                            Converts any web page or raw HTML into clean, dense, LLM-ready Markdown — strips nav, ads and scripts. Runs as a CLI, a library, or a Cloudflare Workers API.
+                        </p>
+                    </div>
+                    <div>
+                        <div class="bg-[#08090C] rounded-lg p-3 border border-brand-border font-mono text-xs text-slate-300 mb-4">
+                            npx @karlangas12/web-to-markdown
+                        </div>
+                        <p class="text-xs font-mono text-slate-400 mb-3">From €5/mo · 50 free requests</p>
+                        <a href="/web-to-markdown/" class="inline-flex items-center text-sm font-semibold text-brand-400 hover:text-brand-300 gap-1">
+                            View details &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- mcp-shield-proxy -->
+                <div class="gradient-border p-8 flex flex-col justify-between hover:scale-[1.02] transition-transform duration-200">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-blueAccent/10 border border-blueAccent/30 flex items-center justify-center text-blueAccent mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        </div>
+                        <span class="text-xs font-mono text-blueAccent uppercase tracking-wider">Local firewall · Free · MIT</span>
+                        <h3 class="text-xl font-bold text-white mt-1 mb-3">mcp-shield-proxy</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                            A local firewall for MCP servers. Blocks destructive tool calls and masks secrets like AWS keys and JWTs before they leave your machine. Works with Claude Desktop, Cursor and Claude Code.
+                        </p>
+                    </div>
+                    <div>
+                        <div class="bg-[#08090C] rounded-lg p-3 border border-brand-border font-mono text-xs text-slate-300 mb-6">
+                            npx mcp-shield-proxy
+                        </div>
+                        <a href="https://github.com/Karlangas12/mcp-shield-proxy" target="_blank" rel="noopener" class="inline-flex items-center text-sm font-semibold text-blueAccent hover:text-blue-300 gap-1">
+                            View on GitHub &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- openapi-to-mcp -->
+                <div class="gradient-border p-8 flex flex-col justify-between hover:scale-[1.02] transition-transform duration-200">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-cyanAccent/10 border border-cyanAccent/30 flex items-center justify-center text-cyanAccent mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        </div>
+                        <span class="text-xs font-mono text-cyanAccent uppercase tracking-wider">CLI generator · Free</span>
+                        <h3 class="text-xl font-bold text-white mt-1 mb-3">openapi-to-mcp</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                            Turns an OpenAPI/Swagger 3.x spec into a working MCP server, with request schemas generated straight from the spec via Zod.
+                        </p>
+                    </div>
+                    <div>
+                        <div class="bg-[#08090C] rounded-lg p-3 border border-brand-border font-mono text-xs text-slate-300 mb-6">
+                            npx @karlangas12/openapi-to-mcp
+                        </div>
+                        <a href="https://github.com/Karlangas12/openapi-to-mcp" target="_blank" rel="noopener" class="inline-flex items-center text-sm font-semibold text-cyanAccent hover:text-cyan-300 gap-1">
+                            View on GitHub &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Integration Section -->
+        <section class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white mb-3">One-Line Integration</h2>
+                <p class="text-slate-400 max-w-xl mx-auto">
+                    Call via standard HTTP `cURL`, integrate into your Node/Python codebase, or add to `claude_desktop_config.json`.
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-[#0E1017] border border-brand-border rounded-xl overflow-hidden shadow-2xl">
+                <div class="flex items-center justify-between px-4 py-3 bg-[#08090C] border-b border-brand-border">
+                    <div class="flex space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">cURL / API Example</span>
+                    <button onclick="copyToClipboard('code-block')" class="text-xs text-brand-400 hover:text-brand-300 font-mono flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                        Copy Code
+                    </button>
+                </div>
+                <pre id="code-block" class="p-6 text-xs sm:text-sm font-mono text-slate-200 overflow-x-auto">
+<span class="text-slate-500"># Fetch clean Markdown via API</span>
+curl -X POST https://web-to-markdown.karlangas12.workers.dev/v1/convert \
+  -H <span class="text-emerald-400">"Authorization: Bearer YOUR_API_KEY"</span> \
+  -H <span class="text-emerald-400">"Content-Type: application/json"</span> \
+  -d <span class="text-cyanAccent">'{"url": "https://example.com", "options": {"extract_metadata": true}}'</span>
+                </pre>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#050608] border-t border-brand-border/80 py-12 text-slate-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center space-x-3">
+                <img src="/icon-mark.svg" alt="" width="28" height="28">
+                <span class="font-bold text-white tracking-tight">Then Apply</span>
+                <span class="text-xs text-slate-500 font-mono">© 2026 Then Apply.</span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-6 text-xs text-slate-400 font-mono">
+                <span>Polar.sh is our Merchant of Record for billing</span>
+                <a href="mailto:keys@thenapply.dev" class="hover:text-white transition-colors">Support: keys@thenapply.dev</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-brand-card border border-brand-500/50 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 font-mono text-xs pointer-events-none">
+        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        <span id="toast-message">Copied to clipboard!</span>
+    </div>
+
+    <script>
+        // Tab Switcher Logic
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-card', 'text-brand-400', 'border-t-2', 'border-brand-500');
+                btn.classList.add('text-slate-400');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+            const activeContent = document.getElementById(`tab-content-${tabName}`);
+            if (activeBtn && activeContent) {
+                activeBtn.classList.add('bg-brand-card', 'text-brand-400', 'border-t-2', 'border-brand-500');
+                activeBtn.classList.remove('text-slate-400');
+                activeContent.classList.remove('hidden');
+            }
+        }
+
+        // Example output fillers — these are static strings, not a live API call
+        function runMarkdownTransform() {
+            const output = document.getElementById('markdown-output');
+            output.textContent = "# Building Next-Gen AI Microservices\n\nModel Context Protocol allows seamless tool execution.\n\n```bash\nnpx @karlangas12/web-to-markdown https://example.com\n```";
+            showToast("Example output updated");
+        }
+
+        function runShieldTransform() {
+            const output = document.getElementById('shield-output');
+            output.textContent = "[MCP SHIELD] 🛑 Guardrail Alert: Intercepted call 'execute_command'\n[MCP SHIELD] 🔒 Secret Redactor: Found Bearer API token\n[MCP SHIELD] ⚡ Masked payload -> 'Bearer [REDACTED_API_KEY]'\n[MCP SHIELD] ✅ Forwarded clean payload to local target process.";
+            showToast("Example output updated");
+        }
+
+        function runOpenAPITransform() {
+            const output = document.getElementById('openapi-output');
+            output.textContent = '{\n  "name": "get_user_by_id",\n  "description": "Fetch user profile by unique ID",\n  "inputSchema": {\n    "type": "object",\n    "properties": {\n      "userId": { "type": "string" }\n    },\n    "required": ["userId"]\n  }\n}';
+            showToast("Example output updated");
+        }
+
+        // Copy Helper
+        function copyToClipboard(elementId) {
+            const el = document.getElementById(elementId);
+            const text = el.innerText || el.value;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast('Copied to clipboard!');
+        }
+
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
 </body>
 </html>

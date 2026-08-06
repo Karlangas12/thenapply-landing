@@ -1,7 +1,9 @@
 # Then Apply — Landing Page
 
-The public landing page for Then Apply. Plain static HTML/CSS, no framework,
-no build step.
+The public landing page for Then Apply. Static HTML pages styled with
+Tailwind CSS via CDN — no framework, no build step, no bundler. Product pages
+with their own pricing live under a subpath (e.g. `/web-to-markdown/`);
+Cloudflare Pages resolves `<path>/index.html` for clean URLs automatically.
 
 ## Local preview
 
@@ -17,8 +19,9 @@ Then open the printed local URL in your browser.
 
 ```
 thenapply-landing/
-├── index.html      # All page content
-├── styles.css      # All styling
+├── index.html                  # Home: hero, example output, product grid
+├── web-to-markdown/
+│   └── index.html               # Product detail page: full pricing, API docs
 └── README.md
 ```
 
