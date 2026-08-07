@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web-to-markdown — Then Apply</title>
+    <meta name="description" content="web-to-markdown converts any web page or raw HTML into clean, dense, LLM-ready Markdown. CLI, SDK, and an edge API on Cloudflare Workers.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f3ff',
+                            100: '#ebe9fe',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            dark: '#08090C',
+                            card: '#12141A',
+                            border: '#1E222D'
+                        },
+                        cyanAccent: '#00f2fe',
+                        blueAccent: '#4F7DFC'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #08090C;
+            color: #E2E8F0;
+            font-family: 'Inter', sans-serif;
+        }
+        .glow-purple {
+            box-shadow: 0 0 50px -10px rgba(139, 92, 246, 0.25);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #A78BFA 0%, #4F7DFC 50%, #00F2FE 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-border {
+            position: relative;
+            background: #12141A;
+            border-radius: 0.75rem;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 0.8rem;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(139,92,246,0.4), rgba(79,125,252,0.1), rgba(0,242,254,0.3));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #08090C; }
+        ::-webkit-scrollbar-thumb { background: #1E222D; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-[#08090C]/80 border-b border-brand-border/60 transition-all duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-3 group">
+                <img src="/icon-mark.svg" alt="" width="36" height="36" class="group-hover:scale-105 transition-transform">
+                <span class="font-bold text-lg tracking-tight text-white">Then Apply</span>
+            </a>
+
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+                <a href="#example" class="hover:text-white transition-colors">Example</a>
+                <a href="#api" class="hover:text-white transition-colors">API</a>
+                <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
+                <a href="https://github.com/Karlangas12/web-to-markdown" target="_blank" rel="noopener" class="hover:text-white transition-colors flex items-center gap-1">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    GitHub
+                </a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <a href="#pricing" class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-brand-600 to-blue-600 hover:from-brand-500 hover:to-blue-500 transition-all shadow-md hover:shadow-brand-500/25">
+                    Get an API Key
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Hero -->
+        <section class="relative pt-16 pb-16 md:pt-20 md:pb-20 overflow-hidden">
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-600/15 blur-[120px] rounded-full pointer-events-none"></div>
+
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <a href="/" class="inline-flex items-center gap-1.5 text-xs font-mono text-slate-400 hover:text-white transition-colors mb-8">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                    Back to Then Apply
+                </a>
+
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-card border border-brand-border text-xs font-mono text-slate-300 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-brand-400 font-semibold">EDGE API</span> // Cloudflare Workers · MIT
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white mb-4 leading-tight">
+                    web-to-markdown
+                </h1>
+                <p class="text-lg sm:text-xl gradient-text font-semibold mb-6">
+                    Clean, dense, LLM-ready Markdown — from any page or raw HTML.
+                </p>
+
+                <p class="max-w-2xl text-lg text-slate-400 leading-relaxed mb-8">
+                    web-to-markdown strips navigation, ads, cookie banners and scripts, and
+                    turns what's left into Markdown sized for an LLM's context window. It
+                    runs as a CLI, a TypeScript/JS library, or an authenticated API on
+                    Cloudflare Workers — same conversion core behind all three.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#pricing" class="px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-brand-600 via-blue-600 to-cyanAccent/80 hover:opacity-95 transition-all shadow-lg glow-purple text-center">
+                        Get an API Key
+                    </a>
+                    <a href="#example" class="px-6 py-3 rounded-xl font-semibold text-slate-300 bg-brand-card hover:bg-brand-border border border-brand-border transition-all text-center">
+                        See Example Output
+                    </a>
+                </div>
+
+                <div class="mt-8 bg-[#08090C] rounded-lg p-3 border border-brand-border font-mono text-xs text-slate-300 inline-block">
+                    npx @karlangas12/web-to-markdown
+                </div>
+            </div>
+        </section>
+
+        <!-- Example Output -->
+        <section id="example" class="py-16 bg-[#0B0D12] border-y border-brand-border/60">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3">See it in action</h2>
+                    <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
+                        A fixed input/output pair showing what the conversion actually produces.
+                    </p>
+                </div>
+
+                <div class="gradient-border overflow-hidden shadow-2xl p-6">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="w-full md:w-1/2 space-y-2">
+                            <label class="block text-xs font-mono text-slate-400">INPUT: Raw HTML</label>
+                            <textarea id="markdown-input" class="w-full h-48 bg-[#08090C] border border-brand-border rounded-lg p-3 text-xs font-mono text-slate-300 focus:outline-none focus:border-brand-500 resize-none">&lt;html&gt;
+  &lt;body&gt;
+    &lt;header class="cookie-banner"&gt;Accept all cookies&lt;/header&gt;
+    &lt;nav&gt;&lt;a href="#"&gt;Home&lt;/a&gt; &lt;a href="#"&gt;Blog&lt;/a&gt;&lt;/nav&gt;
+    &lt;main&gt;
+      &lt;h1&gt;Building Next-Gen AI Microservices&lt;/h1&gt;
+      &lt;p&gt;Model Context Protocol allows seamless tool execution.&lt;/p&gt;
+      &lt;pre&gt;&lt;code&gt;npx @karlangas12/web-to-markdown https://example.com&lt;/code&gt;&lt;/pre&gt;
+    &lt;/main&gt;
+    &lt;footer&gt;Copyright 2026 Ads &amp; Tracking&lt;/footer&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</textarea>
+                            <div class="flex justify-end pt-1">
+                                <button onclick="runMarkdownTransform()" class="px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-md">
+                                    <span>Show Example Output</span>
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="w-full md:w-1/2 space-y-2">
+                            <label class="block text-xs font-mono text-emerald-400">OUTPUT: Clean Markdown</label>
+                            <pre id="markdown-output" class="w-full h-48 bg-[#08090C] border border-brand-border rounded-lg p-3 text-xs font-mono text-slate-300 overflow-y-auto whitespace-pre-wrap"># Building Next-Gen AI Microservices
+
+Model Context Protocol allows seamless tool execution.
+
+```bash
+npx @karlangas12/web-to-markdown https://example.com
+```</pre>
+                            <div class="flex justify-end">
+                                <button onclick="copyToClipboard('markdown-output')" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 font-mono">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                                    Copy Output
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-slate-500 font-mono mt-3">Static example — not a live API call.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Reference -->
+        <section id="api" class="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-xs font-mono text-brand-400 mb-4">
+                    HTTP API
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-white">Authenticated edge API</h2>
+                <p class="mt-4 text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
+                    Every <code class="font-mono text-slate-300">/v1/*</code> request needs an API key
+                    sent as <code class="font-mono text-slate-300">x-api-key</code>
+                    (an <code class="font-mono text-slate-300">Authorization: Bearer</code> header is
+                    also accepted). <code class="font-mono text-slate-300">GET /salud</code> is a
+                    public health check and needs no key.
+                </p>
+            </div>
+
+            <div class="bg-[#0E1017] border border-brand-border rounded-xl overflow-hidden shadow-2xl mb-8">
+                <div class="flex items-center justify-between px-4 py-3 bg-[#08090C] border-b border-brand-border">
+                    <div class="flex space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">cURL / POST /v1/convert</span>
+                    <button onclick="copyToClipboard('code-block')" class="text-xs text-brand-400 hover:text-brand-300 font-mono flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                        Copy Code
+                    </button>
+                </div>
+                <pre id="code-block" class="p-6 text-xs sm:text-sm font-mono text-slate-200 overflow-x-auto">
+<span class="text-slate-500"># Fetch clean Markdown via API</span>
+curl -X POST https://web-to-markdown.karlangas12.workers.dev/v1/convert \
+  -H <span class="text-emerald-400">"x-api-key: YOUR_API_KEY"</span> \
+  -H <span class="text-emerald-400">"Content-Type: application/json"</span> \
+  -d <span class="text-cyanAccent">'{"url": "https://example.com", "options": {"extract_metadata": true}}'</span>
+                </pre>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-5">
+                    <h3 class="text-sm font-mono text-brand-400 mb-3">Request</h3>
+                    <ul class="text-sm text-slate-400 space-y-2 font-mono">
+                        <li><span class="text-slate-300">Base URL:</span> web-to-markdown.karlangas12.workers.dev</li>
+                        <li><span class="text-slate-300">Body:</span> exactly one of <code>url</code> or <code>html</code></li>
+                        <li><span class="text-slate-300">Options:</span> <code>include_images</code>, <code>extract_metadata</code> (both default <code>false</code>)</li>
+                    </ul>
+                </div>
+                <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-5">
+                    <h3 class="text-sm font-mono text-brand-400 mb-3">Rate-limit headers</h3>
+                    <ul class="text-sm text-slate-400 space-y-2 font-mono">
+                        <li><code>RateLimit-Limit</code> — quota for your plan</li>
+                        <li><code>RateLimit-Remaining</code> — requests left in the window</li>
+                        <li><code>RateLimit-Reset</code> — Unix timestamp when it resets</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="py-20 bg-[#0B0D12] border-t border-brand-border/60">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-xs font-mono text-brand-400 mb-4">
+                        PRICING
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Simple, metered pricing</h2>
+                    <p class="mt-4 text-slate-400 max-w-xl mx-auto">
+                        Billing runs through <strong>Polar.sh</strong> as Merchant of Record. The API
+                        key is delivered by email right after checkout.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <!-- Free Tier -->
+                    <div class="bg-[#0E1017] border border-brand-border rounded-2xl p-8 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-mono text-slate-400 uppercase tracking-widest">Community</span>
+                            <h3 class="text-2xl font-bold text-white mt-1">Free</h3>
+                            <div class="mt-4 mb-6">
+                                <span class="text-4xl font-extrabold text-white">€0</span>
+                                <span class="text-slate-400 text-sm"> / month</span>
+                            </div>
+                            <ul class="space-y-3 text-sm text-slate-300 mb-8 font-mono">
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    50 requests / month
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    Full API + CLI + SDK access
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    No credit card to try the CLI locally
+                                </li>
+                            </ul>
+                        </div>
+                        <a href="https://buy.polar.sh/polar_cl_YF0y9Ej4ypE0afXDbAP1Dnx8HiNuafPHAsRNG4VQvAp" target="_blank" rel="noopener" class="w-full py-3 rounded-xl font-semibold text-center text-slate-300 bg-brand-card hover:bg-brand-border border border-brand-border transition-all">
+                            Get Free API Key
+                        </a>
+                    </div>
+
+                    <!-- Pro Tier -->
+                    <div class="gradient-border p-8 flex flex-col justify-between glow-purple relative overflow-hidden">
+                        <div>
+                            <span class="text-xs font-mono text-brand-400 uppercase tracking-widest">Production</span>
+                            <h3 class="text-2xl font-bold text-white mt-1">Pro</h3>
+                            <div class="mt-4 mb-6">
+                                <span class="text-4xl font-extrabold text-white">€5</span>
+                                <span class="text-slate-400 text-sm"> / month</span>
+                            </div>
+                            <ul class="space-y-3 text-sm text-slate-200 mb-8 font-mono">
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    2,000 requests / month
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    API key delivered by email at checkout
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    Same Cloudflare Workers API, higher quota
+                                </li>
+                            </ul>
+                        </div>
+                        <a href="https://buy.polar.sh/polar_cl_YF0y9Ej4ypE0afXDbAP1Dnx8HiNuafPHAsRNG4VQvAp" target="_blank" rel="noopener" class="w-full py-3 rounded-xl font-semibold text-center text-white bg-gradient-to-r from-brand-600 to-blue-600 hover:from-brand-500 hover:to-blue-500 shadow-lg transition-all">
+                            Get Pro API Key — €5/mo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#050608] border-t border-brand-border/80 py-12 text-slate-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <a href="/" class="flex items-center space-x-3">
+                <img src="/icon-mark.svg" alt="" width="28" height="28">
+                <span class="font-bold text-white tracking-tight">Then Apply</span>
+                <span class="text-xs text-slate-500 font-mono">© 2026 Then Apply.</span>
+            </a>
+
+            <div class="flex flex-wrap items-center gap-6 text-xs text-slate-400 font-mono">
+                <span>Polar.sh is our Merchant of Record for billing</span>
+                <a href="mailto:keys@thenapply.dev" class="hover:text-white transition-colors">Support: keys@thenapply.dev</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-brand-card border border-brand-500/50 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 font-mono text-xs pointer-events-none">
+        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        <span id="toast-message">Copied to clipboard!</span>
+    </div>
+
+    <script>
+        // Example output filler — this is a static string, not a live API call
+        function runMarkdownTransform() {
+            const output = document.getElementById('markdown-output');
+            output.textContent = "# Building Next-Gen AI Microservices\n\nModel Context Protocol allows seamless tool execution.\n\n```bash\nnpx @karlangas12/web-to-markdown https://example.com\n```";
+            showToast("Example output updated");
+        }
+
+        // Copy Helper
+        function copyToClipboard(elementId) {
+            const el = document.getElementById(elementId);
+            const text = el.innerText || el.value;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast('Copied to clipboard!');
+        }
+
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
