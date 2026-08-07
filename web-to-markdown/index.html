@@ -139,6 +139,15 @@
                     Cloudflare Workers — same conversion core behind all three.
                 </p>
 
+                <p class="max-w-2xl text-slate-400 leading-relaxed mb-8 text-sm border-l-2 border-brand-border pl-4">
+                    Handles static HTML and framework-hydrated pages (Next.js, Nuxt,
+                    JSON-LD) without a headless browser — when a client-rendered page
+                    arrives empty, it reads the data the framework already serialized
+                    into the response. It never executes JavaScript, so for pages whose
+                    content only exists after their own code runs, with nothing embedded
+                    to fall back on, this isn't the right tool.
+                </p>
+
                 <div class="flex flex-col sm:flex-row gap-4">
                     <a href="#pricing" class="px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-brand-600 via-blue-600 to-cyanAccent/80 hover:opacity-95 transition-all shadow-lg glow-purple text-center">
                         Get an API Key
@@ -295,7 +304,7 @@ curl -X POST https://web-to-markdown.karlangas12.workers.dev/v1/convert \
                             <ul class="space-y-3 text-sm text-slate-300 mb-8 font-mono">
                                 <li class="flex items-center gap-2">
                                     <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                    50 requests / month
+                                    500 requests / month
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
