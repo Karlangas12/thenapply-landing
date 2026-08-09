@@ -1,0 +1,11 @@
+{
+  "name": "thenapply-landing",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Public landing page for Then Apply — static HTML, no bundler. The ToS pages (/terms, /terminos) are the one exception: generated from Markdown, see build-tos.mjs.",
+  "scripts": {
+    "build:tos": "node build-tos.mjs",
+    "test": "node --test"
+  }
+}
