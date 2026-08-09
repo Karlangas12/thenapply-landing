@@ -68,6 +68,11 @@ const CLASE_CODIGO = 'font-mono text-cyanAccent';
 const ENLACES_PUBLICADOS = new Map([
   ['./TERMS_OF_SERVICE.md', '/terms'],
   ['./TERMS_OF_SERVICE.es.md', '/terminos'],
+  // Anexos de producto (ver PAGINAS_PRODUCTOS en tos-paginas.mjs). Un
+  // Producto nuevo añade sus dos rutas aquí, junto con su entrada en esa
+  // lista — el resto del generador no necesita saber que existe.
+  ['./web-to-markdown.md', '/terms/web-to-markdown'],
+  ['./web-to-markdown.es.md', '/terminos/web-to-markdown'],
 ]);
 
 /** Traduce un destino del Markdown a su ruta en el sitio publicado. */
@@ -396,6 +401,17 @@ export function renderizarTos({ markdown, pagina }) {
     if (bloque.tipo === 'h1' || bloque.tipo === 'separador') continue;
     if (bloque.tipo === 'cita') {
       cabecera.push(renderizarCita(bloque));
+      continue;
+    }
+    // Lista en el preámbulo: por ejemplo, el listado de Productos vigentes
+    // que el maestro enumera antes de la primera sección numerada. No lleva
+    // el margen `mt-3` de las listas del cuerpo porque aquí siempre sigue a
+    // un párrafo introductorio, nunca abre la página.
+    if (bloque.tipo === 'lista') {
+      const items = bloque.items
+        .map((item) => `          <li>${renderizarInline(item, 'elemento de lista del preámbulo')}</li>`)
+        .join('\n');
+      introduccion.push(`        <ul class="ml-5 mt-3 list-disc space-y-2 text-slate-400">\n${items}\n        </ul>`);
       continue;
     }
     if (bloque.tipo !== 'parrafo') {

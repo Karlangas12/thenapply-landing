@@ -1,8 +1,9 @@
 /**
- * Genera terms/index.html y terminos/index.html desde el Markdown fuente.
+ * Genera el ToS maestro (/terms, /terminos) y el anexo de cada Producto
+ * (/terms/<producto>, /terminos/<producto>) desde su Markdown fuente.
  *
- * Ejecútalo a mano y comitea el resultado tras editar TERMS_OF_SERVICE.md o
- * TERMS_OF_SERVICE.es.md:
+ * Ejecútalo a mano y comitea el resultado tras editar cualquiera de los
+ * Markdown de origen (el maestro, o el Anexo de un Producto):
  *
  *   npm run build:tos
  *
@@ -27,12 +28,12 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { PAGINAS_TOS } from './tos-paginas.mjs';
+import { PAGINAS_PRODUCTOS, PAGINAS_TOS } from './tos-paginas.mjs';
 import { renderizarTos, verificarCobertura } from './tos-render.mjs';
 
 const raiz = dirname(fileURLToPath(import.meta.url));
 
-for (const pagina of PAGINAS_TOS) {
+for (const pagina of [...PAGINAS_TOS, ...PAGINAS_PRODUCTOS]) {
   const markdown = readFileSync(join(raiz, pagina.fuente), 'utf8');
   const html = renderizarTos({ markdown, pagina });
 

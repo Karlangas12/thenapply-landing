@@ -1,5 +1,5 @@
 /**
- * Configuración por idioma de las dos páginas del ToS.
+ * Configuración por idioma de las páginas del ToS.
  *
  * Vive aparte de `build-tos.mjs` para que el test del generador use
  * exactamente la misma configuración que el build: si el test comprobara una
@@ -7,6 +7,14 @@
  *
  * Sólo describe el *armazón* de la página (metadatos, navegación, enlaces
  * entre idiomas). El texto legal viene íntegramente del Markdown fuente.
+ *
+ * Dos listas, no una: `PAGINAS_TOS` es el documento maestro (aplica a
+ * cualquier Producto que ofrezca el Proveedor); `PAGINAS_PRODUCTOS` son los
+ * anexos específicos de cada Producto, incorporados al maestro por
+ * referencia (ver la sección 1, "Schedule", de `TERMS_OF_SERVICE.md`).
+ * `build-tos.mjs` genera ambas listas con el mismo generador — añadir un
+ * Producto nuevo es añadir una entrada aquí y su Markdown en `products/`, sin
+ * tocar el maestro ni el generador.
  */
 export const PAGINAS_TOS = [
   {
@@ -15,9 +23,10 @@ export const PAGINAS_TOS = [
     lang: 'en',
     titulo: 'Terms of Service — Then Apply',
     descripcion:
-      'Terms of Service for Then Apply and the Web to Markdown API: licence of use, ' +
-      'prohibited uses, API key responsibility, billing through Polar.sh, liability, ' +
-      'and governing law.',
+      'Terms of Service for Then Apply: licence of use, prohibited uses, API key ' +
+      'responsibility, billing through Polar.sh, liability, and governing law. Applies ' +
+      "to every Product offered by the Provider — see each Product's Schedule for its " +
+      'specific features, pricing, and quotas.',
     volver: 'Back to home',
     enlaceAlternativo: {
       href: '/terminos',
@@ -35,12 +44,47 @@ export const PAGINAS_TOS = [
     lang: 'es',
     titulo: 'Términos de Servicio — Then Apply',
     descripcion:
-      'Términos de Servicio de Then Apply y la API Web to Markdown: licencia de uso, ' +
-      'usos prohibidos, responsabilidad sobre la API key, facturación vía Polar.sh, ' +
-      'responsabilidad y ley aplicable.',
+      'Términos de Servicio de Then Apply: licencia de uso, usos prohibidos, ' +
+      'responsabilidad sobre la API key, facturación vía Polar.sh, responsabilidad y ley ' +
+      'aplicable. Se aplican a todos los Productos del Proveedor — el Anexo de cada ' +
+      'Producto establece sus funcionalidades, precios y cuotas específicos.',
     volver: 'Volver al inicio',
     // La versión española no necesita esta línea: el aviso de idioma va en la
     // cita destacada de la cabecera, que viene del propio Markdown.
+    enlaceAlternativo: null,
+    patronFecha: /^Última actualización:/,
+  },
+];
+
+export const PAGINAS_PRODUCTOS = [
+  {
+    fuente: 'products/web-to-markdown.md',
+    ruta: 'terms/web-to-markdown',
+    lang: 'en',
+    titulo: 'Web to Markdown API — Product Schedule — Then Apply',
+    descripcion:
+      'Product Schedule for the Web to Markdown API: description, Content format, ' +
+      'intellectual property, output quality, and where to find current plans, pricing, ' +
+      'and quotas. Incorporated by reference into the Then Apply Terms of Service.',
+    volver: 'Back to home',
+    enlaceAlternativo: {
+      href: '/terminos/web-to-markdown',
+      texto: 'Versión en español',
+      nota: 'for convenience — the English version is the reference text',
+    },
+    patronFecha: /^Last updated:/,
+  },
+  {
+    fuente: 'products/web-to-markdown.es.md',
+    ruta: 'terminos/web-to-markdown',
+    lang: 'es',
+    titulo: 'Web to Markdown API — Anexo de producto — Then Apply',
+    descripcion:
+      'Anexo de producto de la API Web to Markdown: descripción, forma del Contenido, ' +
+      'propiedad intelectual, calidad de la salida y dónde encontrar los planes, precios ' +
+      'y cuotas vigentes. Incorporado por referencia a los Términos de Servicio de Then ' +
+      'Apply.',
+    volver: 'Volver al inicio',
     enlaceAlternativo: null,
     patronFecha: /^Última actualización:/,
   },

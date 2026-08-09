@@ -1,6 +1,6 @@
 # Términos de Servicio
 
-**Then Apply — Web to Markdown API**
+**Then Apply**
 
 > **This Spanish version is provided for convenience; the English version is
 > the reference text.**
@@ -23,34 +23,53 @@ una API Key, suscribirse a un plan o realizar cualquier petición al Servicio,
 usted acepta estos Términos en su totalidad. Si no los acepta, no use el
 Servicio.
 
+Estos Términos se aplican a todos los Productos que el Proveedor ofrece bajo
+la marca Then Apply. El Proveedor ofrece actualmente:
+
+- **Web to Markdown API** — véase su
+  [anexo de producto](/terminos/web-to-markdown).
+
 ---
 
 ## 1. Definiciones
 
 - **Servicio** (*Service*) — la plataforma SaaS Then Apply operada en
-  `thenapply.dev`, incluida la API **Web to Markdown**, sus endpoints,
-  documentación, paneles y cualquier producto sucesor o adicional que el
-  Proveedor ponga a disposición bajo la marca Then Apply.
+  `thenapply.dev`, integrada por uno o varios Productos, junto con sus
+  respectivos endpoints, documentación y paneles.
+- **Producto** (*Product*) — una oferta de software como servicio concreta
+  que el Proveedor pone a disposición a través del Servicio (por ejemplo, una
+  API, herramienta o extensión). Las funcionalidades, precios y cuotas
+  específicos de cada Producto que ofrece el Proveedor se establecen en el
+  Anexo de ese Producto, incorporado a estos Términos por referencia.
+- **Anexo** (*Schedule*) — el documento específico de un Producto, publicado
+  junto a estos Términos, que establece la descripción de ese Producto, la
+  forma del Contenido que acepta y devuelve, sus planes, precios y cuotas, y
+  cualquier otra condición específica de él. Un Anexo prevalece sobre estos
+  Términos para su Producto en lo que contradiga las materias que regula; en
+  cualquier otra materia, prevalecen estos Términos.
 - **Cliente** (*Customer*) — la persona física o jurídica que se suscribe a un
   plan, recibe una API Key o utiliza de cualquier forma el Servicio. Cuando el
   Cliente sea una organización, la persona que acepta estos Términos declara
   estar autorizada para obligarla.
 - **API Key** — la credencial secreta emitida al Cliente que autentica las
-  peticiones al Servicio e identifica el plan y la cuota asociados a ellas.
-- **Contenido** (*Content*) — cualquier entrada que el Cliente envíe al
-  Servicio (URLs, HTML en crudo, parámetros) y cualquier salida que el Servicio
-  devuelva en respuesta (Markdown, metadatos, cuerpos de error).
-- **Plan** — el nivel de Servicio contratado por el Cliente, que determina la
-  cuota de peticiones y las funcionalidades aplicables.
+  peticiones a un Producto e identifica el Plan y la cuota asociados a él.
+- **Contenido** (*Content*) — cualquier entrada que el Cliente envíe a un
+  Producto y cualquier salida que ese Producto devuelva en respuesta. La forma
+  específica del Contenido que acepta y devuelve cada Producto se establece en
+  el Anexo de ese Producto.
+- **Plan** — el nivel de un Producto al que se suscribe el Cliente, que
+  determina la cuota de peticiones y las funcionalidades aplicables a ese
+  Producto.
 
 ## 2. Licencia otorgada al Cliente
 
 Sujeto al cumplimiento continuado de estos Términos y al pago de las tarifas
 aplicables, el Proveedor otorga al Cliente un derecho **no exclusivo, no
-transferible, no sublicenciable, revocable y limitado** de acceso y uso del
-Servicio, exclusivamente mediante la API Key propia del Cliente y
-exclusivamente dentro de la cuota de su Plan, para sus fines internos de
-negocio o para su incorporación en los productos finales del propio Cliente.
+transferible, no sublicenciable, revocable y limitado** de acceso y uso de
+cada Producto al que el Cliente esté suscrito, exclusivamente mediante la API
+Key propia del Cliente para ese Producto y exclusivamente dentro de la cuota
+de su Plan, para sus fines internos de negocio o para su incorporación en los
+productos finales del propio Cliente.
 
 Es una licencia de *uso* del Servicio, no una venta del mismo. No se otorga
 ningún derecho distinto de los aquí expresamente indicados.
@@ -106,7 +125,7 @@ Servicio. Polar procesa el pago, emite facturas y recibos y es la contraparte
 de la transacción de venta. El Proveedor no recibe ni almacena datos de
 tarjeta. Las consultas de facturación, reembolsos, correcciones de factura y
 cambios de suscripción se gestionan mediante el checkout y el portal de cliente
-de Polar, o a través de los contactos de la sección 11.
+de Polar, o a través de los contactos de la sección 12.
 
 Cuando Polar confirma una suscripción o compra, el Servicio emite
 automáticamente una API Key (para clientes nuevos) o actualiza el Plan asociado
@@ -118,16 +137,16 @@ tardar un breve periodo tras el checkout y no siempre es instantánea.
 ### 5.1. Titularidad del Servicio
 
 El Servicio, su código fuente, su software subyacente, su documentación, su
-diseño visual y los nombres y marcas **Then Apply** y **Web to Markdown** son y
-seguirán siendo propiedad exclusiva del Proveedor, Carlos Fuentes Navarro. Se
-reservan todos los derechos no otorgados expresamente en la sección 2. **Nada
-en estos Términos transfiere, cede ni otorga al Cliente titularidad alguna**
-sobre el Servicio ni sobre ningún derecho de propiedad intelectual o industrial
-del Proveedor.
+diseño visual y el nombre y la marca **Then Apply**, así como el nombre y la
+marca de cada Producto, son y seguirán siendo propiedad exclusiva del
+Proveedor, Carlos Fuentes Navarro. Se reservan todos los derechos no otorgados
+expresamente en la sección 2. **Nada en estos Términos transfiere, cede ni
+otorga al Cliente titularidad alguna** sobre el Servicio ni sobre ningún
+derecho de propiedad intelectual o industrial del Proveedor.
 
-Cuando ciertos componentes del Servicio se distribuyan por separado bajo una
-licencia de código abierto (por ejemplo, el paquete npm `web-to-markdown`),
-dicha licencia rige esos componentes en su forma distribuida. No otorga derecho
+Cuando ciertos componentes de un Producto se distribuyan por separado bajo una
+licencia de código abierto, identificada en el Anexo de ese Producto, dicha
+licencia rige esos componentes en su forma distribuida. No otorga derecho
 alguno sobre el Servicio alojado, su infraestructura o las marcas.
 
 ### 5.2. Titularidad del Contenido
@@ -176,10 +195,10 @@ que depende. Cuando la interrupción sea planificada y el preaviso resulte
 razonablemente practicable, el Proveedor lo dará.
 
 El Proveedor no garantiza que el Servicio sea ininterrumpido ni esté libre de
-errores, ni que la salida Markdown sea exacta o completa para toda página
-convertida: la calidad de la conversión depende de la estructura de la página
-de origen, que el Proveedor no controla. Esto describe lo que el Servicio hace;
-no es una renuncia a la obligación del Proveedor de prestarlo.
+errores. Esto describe lo que el Servicio hace; no es una renuncia a la
+obligación del Proveedor de prestarlo. Las limitaciones específicas de cada
+Producto sobre la exactitud o integridad de su salida, si las hay, se
+establecen en el Anexo de ese Producto.
 
 Cuando el Cliente sea consumidor en el sentido de la legislación española o de
 la Unión Europea, la falta de disponibilidad que suponga falta de conformidad
@@ -339,5 +358,6 @@ cabecera de este documento.
 
 - Cuenta y facturación: <carlosfu.invers@gmail.com> (dirección temporal
   mientras se configura un buzón de soporte dedicado)
-- Errores y problemas técnicos:
-  <https://github.com/Karlangas12/web-to-markdown/issues>
+
+Los canales de soporte específicos de cada Producto, si los hay, se establecen
+en el Anexo de ese Producto.

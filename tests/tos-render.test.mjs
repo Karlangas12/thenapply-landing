@@ -12,6 +12,10 @@
  * mismo test en motor3-boilerplate/packages/landing/tests/tos-render.test.mjs
  * (el repositorio donde se hizo la revisión legal), adaptado a esta plantilla
  * visual y sin Vitest.
+ *
+ * Desde la separación maestro/anexo (9 de agosto de 2026), cubre las cuatro
+ * páginas: el ToS maestro (aplica a cualquier Producto) y el Anexo de
+ * Web to Markdown (específico de ese Producto), en los dos idiomas.
  */
 
 import assert from 'node:assert/strict';
@@ -20,17 +24,18 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, it } from 'node:test';
 
-import { PAGINAS_TOS } from '../tos-paginas.mjs';
+import { PAGINAS_PRODUCTOS, PAGINAS_TOS } from '../tos-paginas.mjs';
 import { parsearBloques, renderizarTos, verificarCobertura } from '../tos-render.mjs';
 
 const raiz = dirname(dirname(fileURLToPath(import.meta.url)));
+const TODAS_LAS_PAGINAS = [...PAGINAS_TOS, ...PAGINAS_PRODUCTOS];
 
 function leerFuente(pagina) {
   return readFileSync(join(raiz, pagina.fuente), 'utf8');
 }
 
-describe('generación de las páginas del ToS', () => {
-  for (const pagina of PAGINAS_TOS) {
+describe('generación de las páginas del ToS y sus anexos de producto', () => {
+  for (const pagina of TODAS_LAS_PAGINAS) {
     const markdown = leerFuente(pagina);
     const html = renderizarTos({ markdown, pagina });
 
@@ -54,14 +59,29 @@ describe('generación de las páginas del ToS', () => {
     it(`/${pagina.ruta} (${pagina.lang}): rinde cada sección del Markdown como una <section> con ancla`, () => {
       const seccionesMarkdown = parsearBloques(markdown).filter((bloque) => bloque.tipo === 'h2');
       const seccionesHtml = html.match(/<section id="/g) ?? [];
-      assert.equal(seccionesMarkdown.length, 12);
       assert.equal(seccionesHtml.length, seccionesMarkdown.length);
+      assert.ok(seccionesMarkdown.length > 0);
     });
 
     it(`/${pagina.ruta} (${pagina.lang}): no deja enlaces a ficheros .md, que en la web estarían rotos`, () => {
       assert.doesNotMatch(html, /href="[^"]*\.md"/);
     });
   }
+
+  it('el ToS maestro tiene exactamente sus 12 secciones numeradas', () => {
+    // Caso de regresión de recuento fijo: si al genericizar se pierde o se
+    // duplica una sección, esto lo detecta aunque verificarCobertura no lo
+    // haría (verificarCobertura sólo mira texto, no estructura).
+    const pagina = PAGINAS_TOS[0];
+    const secciones = parsearBloques(leerFuente(pagina)).filter((bloque) => bloque.tipo === 'h2');
+    assert.equal(secciones.length, 12);
+  });
+
+  it('el Anexo de Web to Markdown tiene exactamente sus 6 secciones', () => {
+    const pagina = PAGINAS_PRODUCTOS[0];
+    const secciones = parsearBloques(leerFuente(pagina)).filter((bloque) => bloque.tipo === 'h2');
+    assert.equal(secciones.length, 6);
+  });
 
   it('publica las cláusulas de la revisión conservadora de agosto de 2026', () => {
     // Caso de regresión sobre el contenido concreto que motivó la revisión: si
@@ -83,6 +103,69 @@ describe('generación de las páginas del ToS', () => {
   });
 });
 
+describe('separación maestro / anexo de producto (9 de agosto de 2026)', () => {
+  it('el maestro enlaza al Anexo de Web to Markdown desde el listado de Productos', () => {
+    const pagina = PAGINAS_TOS[0];
+    const html = renderizarTos({ markdown: leerFuente(pagina), pagina });
+    assert.ok(html.includes('<a href="/terms/web-to-markdown"'));
+  });
+
+  it('el maestro define "Product" y "Schedule" con la cláusula literal pedida', () => {
+    const pagina = PAGINAS_TOS[0];
+    const html = renderizarTos({ markdown: leerFuente(pagina), pagina });
+    assert.ok(
+      html.includes(
+        "The specific features, pricing, and quotas of each Product offered by the Provider are set out in that Product's Schedule, incorporated into these Terms by reference.",
+      ),
+    );
+  });
+
+  it('el maestro ya no nombra "Web to Markdown" fuera del listado de Productos y su enlace', () => {
+    // Regresión de la genericización: si alguien reintroduce el nombre del
+    // producto dentro de una sección numerada (definiciones, IP, contacto...),
+    // esto lo detecta. Se excluye la única mención legítima: el listado de
+    // Productos vigentes del preámbulo.
+    const pagina = PAGINAS_TOS[0];
+    const html = renderizarTos({ markdown: leerFuente(pagina), pagina });
+    const cuerpo = html.slice(html.indexOf('<section id="1-definitions"'));
+    assert.doesNotMatch(cuerpo, /Web to Markdown/);
+    assert.doesNotMatch(cuerpo, /web-to-markdown/);
+  });
+
+  it('el maestro ya no incluye el enlace de soporte técnico específico de un producto', () => {
+    const pagina = PAGINAS_TOS[0];
+    const html = renderizarTos({ markdown: leerFuente(pagina), pagina });
+    assert.doesNotMatch(html, /github\.com\/Karlangas12\/web-to-markdown\/issues/);
+  });
+
+  it('el Anexo trae la cláusula de calidad de salida del Markdown, movida tal cual desde el maestro', () => {
+    const pagina = PAGINAS_PRODUCTOS[0];
+    const html = renderizarTos({ markdown: leerFuente(pagina), pagina });
+    assert.ok(
+      html.includes(
+        'The Provider does not warrant that Markdown output will be accurate or complete for every page converted: conversion quality depends on the structure of the source page being fetched, which the Provider does not control.',
+      ),
+    );
+  });
+
+  it('el Anexo no fija cifras de precio o cuota, sólo remite al checkout', () => {
+    // Decisión explícita: el ToS original nunca tuvo cifras de precios/cuotas
+    // (viven sólo en la landing y en Polar), así que el Anexo no las inventa.
+    // Si alguien añade un "€" o un número de cuota aquí, esto lo detecta.
+    const pagina = PAGINAS_PRODUCTOS[0];
+    const html = renderizarTos({ markdown: leerFuente(pagina), pagina });
+    assert.doesNotMatch(html, /€|EUR/);
+    assert.doesNotMatch(html, /\b\d+\s*(conversions|conversiones)\b/i);
+    assert.ok(html.includes('thenapply.dev/#pricing'));
+  });
+
+  it('el Anexo enlaza de vuelta al maestro', () => {
+    const pagina = PAGINAS_PRODUCTOS[0];
+    const html = renderizarTos({ markdown: leerFuente(pagina), pagina });
+    assert.ok(html.includes('<a href="/terms"'));
+  });
+});
+
 describe('el generador falla en cerrado', () => {
   const paginaBase = PAGINAS_TOS[0];
 
@@ -90,7 +173,7 @@ describe('el generador falla en cerrado', () => {
     const markdown = [
       '# Terms of Service',
       '',
-      '**Then Apply — Web to Markdown API**',
+      '**Then Apply**',
       '',
       'Last updated: August 9, 2026',
       '',
@@ -107,7 +190,7 @@ describe('el generador falla en cerrado', () => {
     const markdown = [
       '# Terms of Service',
       '',
-      '**Then Apply — Web to Markdown API**',
+      '**Then Apply**',
       '',
       'Last updated: August 9, 2026',
       '',
@@ -147,7 +230,7 @@ describe('el generador falla en cerrado', () => {
     const markdown = [
       '# Terms of Service',
       '',
-      '**Then Apply — Web to Markdown API**',
+      '**Then Apply**',
       '',
       'Last updated: August 9, 2026',
       '',
@@ -160,5 +243,30 @@ describe('el generador falla en cerrado', () => {
     assert.ok(html.includes('<a href="/terminos"'));
     assert.ok(html.includes('<code class="font-mono text-cyanAccent">TERMS_OF_SERVICE.es.md</code>'));
     assert.doesNotMatch(html, /\[<code/);
+  });
+
+  it('acepta una lista en el preámbulo, antes de la primera sección numerada', () => {
+    // Caso de regresión: el listado de Productos vigentes del maestro va
+    // antes de "## 1. Definitions". La primera versión de este cambio no
+    // contemplaba una lista ahí y lanzaba "Bloque inesperado en el
+    // preámbulo: lista".
+    const markdown = [
+      '# Terms of Service',
+      '',
+      '**Then Apply**',
+      '',
+      'Last updated: August 9, 2026',
+      '',
+      'Intro.',
+      '',
+      '- **Web to Markdown API** — see its Schedule.',
+      '',
+      '## 1. Definitions',
+      '',
+      'Texto.',
+    ].join('\n');
+
+    const html = renderizarTos({ markdown, pagina: paginaBase });
+    assert.ok(html.includes('<li><strong class="text-white font-semibold">Web to Markdown API</strong>'));
   });
 });

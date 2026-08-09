@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web to Markdown API — Anexo de producto — Then Apply</title>
+    <meta name="description" content="Anexo de producto de la API Web to Markdown: descripción, forma del Contenido, propiedad intelectual, calidad de la salida y dónde encontrar los planes, precios y cuotas vigentes. Incorporado por referencia a los Términos de Servicio de Then Apply.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate" hreflang="en" href="https://thenapply.dev/terms">
+    <link rel="alternate" hreflang="es" href="https://thenapply.dev/terminos">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f3ff', 100: '#ebe9fe', 400: '#a78bfa', 500: '#8b5cf6',
+                            600: '#7c3aed', 700: '#6d28d9', dark: '#08090C', card: '#12141A',
+                            border: '#1E222D'
+                        },
+                        cyanAccent: '#00f2fe',
+                        blueAccent: '#4F7DFC'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body { background-color: #08090C; color: #E2E8F0; font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-[#08090C]/80 border-b border-brand-border/60 transition-all duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-3 group">
+                <img src="/icon-mark.svg" alt="" width="36" height="36" class="group-hover:scale-105 transition-transform">
+                <span class="font-bold text-lg tracking-tight text-white">Then Apply</span>
+            </a>
+            <a href="/" class="text-sm text-slate-400 hover:text-white transition-colors">&larr; Volver al inicio</a>
+        </div>
+    </header>
+
+    <main class="flex-grow px-4 sm:px-6 lg:px-8 py-16">
+      <div class="max-w-3xl mx-auto">
+        <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Web to Markdown API — Anexo de producto</h1>
+        <p class="mt-2 text-sm font-semibold text-white">Then Apply</p>
+        <p class="mt-3 text-sm text-slate-400">Última actualización: 9 de agosto de 2026</p>
+        <div class="mt-6 rounded-xl border border-brand-border bg-brand-card p-5 text-sm leading-relaxed">
+          <p class="font-semibold text-white"><em>Esta versión en español se ofrece por cortesía; el texto de referencia es el <a href="/terms/web-to-markdown" class="text-brand-400 hover:text-white transition-colors underline decoration-brand-700">anexo en inglés</a>. Se aplica la misma cláusula de idioma que la de los Términos de Servicio.</em></p>
+        </div>
+        <p class="text-slate-400 leading-relaxed">Este Anexo es específico del Producto <strong class="text-white font-semibold">Web to Markdown API</strong> (el «Producto») y se incorpora por referencia a los <a href="/terminos" class="text-brand-400 hover:text-white transition-colors underline decoration-brand-700">Términos de Servicio</a> (los «Términos»). Los términos en mayúscula no definidos aquí tienen el significado que les dan los Términos, que prevalecen en cualquier materia que este Anexo no regule.</p>
+
+        <section id="1-descripcion" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">1. Descripción</h2>
+          <p class="text-slate-400 leading-relaxed">La API Web to Markdown convierte páginas web y HTML en crudo a Markdown. Se opera en <code class="font-mono text-cyanAccent">thenapply.dev</code>, y sus endpoints, documentación y paneles forman parte del Servicio tal como lo describen los Términos.</p>
+        </section>
+        <section id="2-contenido" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">2. Contenido</h2>
+          <p class="text-slate-400 leading-relaxed">Para este Producto, el Contenido tiene la siguiente forma:</p>
+          <ul class="ml-5 mt-3 list-disc space-y-2 text-slate-400">
+            <li><strong class="text-white font-semibold">Entrada</strong> — una URL, o HTML en crudo, junto con los parámetros de conversión que indique el Cliente.</li>
+            <li><strong class="text-white font-semibold">Salida</strong> — Markdown, metadatos extraídos y cuerpos de error.</li>
+          </ul>
+        </section>
+        <section id="3-propiedad-intelectual" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">3. Propiedad intelectual</h2>
+          <p class="text-slate-400 leading-relaxed">El nombre y la marca <strong class="text-white font-semibold">Web to Markdown</strong> forman parte de la propiedad del Proveedor, tal como describe la sección 5.1 de los Términos.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">Cuando ciertos componentes de este Producto se distribuyan por separado bajo una licencia de código abierto, esa licencia es la que rige el paquete npm <code class="font-mono text-cyanAccent">web-to-markdown</code>. Rige esos componentes únicamente en su forma distribuida, y no otorga derecho alguno sobre el Producto alojado, su infraestructura o las marcas.</p>
+        </section>
+        <section id="4-calidad-de-la-salida" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">4. Calidad de la salida</h2>
+          <p class="text-slate-400 leading-relaxed">El Proveedor no garantiza que la salida Markdown sea exacta o completa para toda página convertida: la calidad de la conversión depende de la estructura de la página de origen, que el Proveedor no controla.</p>
+        </section>
+        <section id="5-planes-precios-y-cuotas" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">5. Planes, precios y cuotas</h2>
+          <p class="text-slate-400 leading-relaxed">Los planes, precios y cuotas de peticiones vigentes para este Producto se publican en <a href="https://thenapply.dev/#pricing" class="text-brand-400 hover:text-white transition-colors underline decoration-brand-700">thenapply.dev</a> y en el checkout correspondiente de Polar.sh. No se reproducen en este Anexo, para que este documento no pueda desincronizarse de lo que realmente se factura: rigen el plan, el precio y la cuota mostrados en el checkout en el momento de la suscripción del Cliente.</p>
+        </section>
+        <section id="6-soporte" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">6. Soporte</h2>
+          <ul class="ml-5 list-disc space-y-2 text-slate-400">
+            <li>Errores y problemas técnicos: <a href="https://github.com/Karlangas12/web-to-markdown/issues" class="text-brand-400 hover:text-white transition-colors underline decoration-brand-700">https://github.com/Karlangas12/web-to-markdown/issues</a></li>
+          </ul>
+        </section>
+
+      </div>
+    </main>
+
+    <footer class="bg-[#050608] border-t border-brand-border/80 py-12 text-slate-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center space-x-3">
+                <img src="/icon-mark.svg" alt="" width="28" height="28">
+                <span class="font-bold text-white tracking-tight">Then Apply</span>
+                <span class="text-xs text-slate-500 font-mono">© 2026 Then Apply.</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-6 text-xs text-slate-400 font-mono">
+                <a href="/terms" class="hover:text-white transition-colors">Terms</a>
+                <a href="/terminos" class="hover:text-white transition-colors">Términos (ES)</a>
+                <span>Polar.sh is our Merchant of Record for billing</span>
+                <a href="mailto:keys@thenapply.dev" class="hover:text-white transition-colors">Support: keys@thenapply.dev</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # Terms of Service
 
-**Then Apply — Web to Markdown API**
+**Then Apply**
 
 Last updated: August 9, 2026
 
@@ -10,34 +10,52 @@ Apply** (the "Provider", "we", "us"). By requesting an API Key, subscribing to
 a plan, or issuing any request to the Service, you accept these Terms in full.
 If you do not accept them, do not use the Service.
 
+These Terms apply to every Product the Provider offers under the Then Apply
+brand. The Provider currently offers:
+
+- **Web to Markdown API** — see its
+  [Product Schedule](/terms/web-to-markdown).
+
 ---
 
 ## 1. Definitions
 
 - **Service** — the Then Apply software-as-a-service platform operated at
-  `thenapply.dev`, including the **Web to Markdown** API, its endpoints,
-  documentation, dashboards, and any successor or additional product the
-  Provider makes available under the Then Apply brand.
+  `thenapply.dev`, comprising one or more Products, together with their
+  respective endpoints, documentation, and dashboards.
+- **Product** — a specific software-as-a-service offering that the Provider
+  makes available through the Service (for example, an API, tool, or
+  extension). The specific features, pricing, and quotas of each Product
+  offered by the Provider are set out in that Product's Schedule,
+  incorporated into these Terms by reference.
+- **Schedule** — the document specific to a Product, published alongside
+  these Terms, that sets out that Product's description, the form of Content
+  it accepts and returns, its plans, pricing, and quotas, and any other terms
+  specific to it. A Schedule prevails over these Terms for its Product to the
+  extent of any conflict on the matters it addresses; on any other matter,
+  these Terms prevail.
 - **Customer** — the natural or legal person that subscribes to a plan, is
   issued an API Key, or otherwise uses the Service. Where the Customer is an
   organization, the individual accepting these Terms warrants that they are
   authorized to bind that organization.
 - **API Key** — the secret credential issued to a Customer that authenticates
-  requests to the Service and identifies the plan and quota attached to them.
-- **Content** — any input the Customer submits to the Service (URLs, raw HTML,
-  parameters) and any output the Service returns in response (Markdown,
-  metadata, error payloads).
-- **Plan** — the tier of the Service the Customer has subscribed to, which
-  determines the applicable request quota and features.
+  requests to a Product and identifies the Plan and quota attached to it.
+- **Content** — any input the Customer submits to a Product and any output
+  that Product returns in response. The specific form of Content accepted and
+  returned by each Product is set out in that Product's Schedule.
+- **Plan** — the tier of a Product to which the Customer has subscribed,
+  which determines the applicable request quota and features for that
+  Product.
 
 ## 2. Licence granted to the Customer
 
 Subject to the Customer's continued compliance with these Terms and payment of
 the applicable fees, the Provider grants the Customer a **non-exclusive,
 non-transferable, non-sublicensable, revocable and limited right** to access
-and use the Service, solely through the Customer's own API Key and solely
-within the quota of the Customer's Plan, for the Customer's internal business
-purposes or for incorporation into the Customer's own end products.
+and use each Product to which the Customer subscribes, solely through the
+Customer's own API Key for that Product and solely within the quota of the
+Customer's Plan, for the Customer's internal business purposes or for
+incorporation into the Customer's own end products.
 
 This is a licence to *use* the Service, not a sale of it. No rights are granted
 other than those expressly stated here.
@@ -91,7 +109,7 @@ processes payment, issues invoices and receipts, and is the counterparty to the
 sale transaction itself. The Provider never receives or stores card details.
 Billing enquiries, refunds, invoice corrections, and subscription changes are
 handled through Polar's checkout and customer portal, or via the support
-contacts in section 11.
+contacts in section 12.
 
 When Polar confirms a subscription or purchase, the Service automatically
 issues an API Key (for new Customers) or updates the Plan attached to an
@@ -103,16 +121,17 @@ checkout and is not always instantaneous.
 ### 5.1. Ownership of the Service
 
 The Service, its source code, its underlying software, its documentation, its
-visual design, and the **Then Apply** and **Web to Markdown** names and marks
-are and remain the exclusive property of the Provider, Carlos Fuentes Navarro.
-All rights not expressly granted in section 2 are reserved. **Nothing in these
-Terms transfers, assigns, or grants any ownership interest** in the Service or
-in any intellectual property right of the Provider to the Customer.
+visual design, and the **Then Apply** name and mark, and the name and mark of
+each Product, are and remain the exclusive property of the Provider, Carlos
+Fuentes Navarro. All rights not expressly granted in section 2 are reserved.
+**Nothing in these Terms transfers, assigns, or grants any ownership
+interest** in the Service or in any intellectual property right of the
+Provider to the Customer.
 
-Where components of the Service are distributed separately under an open source
-licence (for example, the `web-to-markdown` npm package), that licence governs
-those components in their distributed form. It does not grant any right over
-the hosted Service, its infrastructure, or the marks.
+Where components of a Product are distributed separately under an open source
+licence, as identified in that Product's Schedule, that licence governs those
+components in their distributed form. It does not grant any right over the
+hosted Service, its infrastructure, or the marks.
 
 ### 5.2. Ownership of Content
 
@@ -158,10 +177,10 @@ depends. Where an interruption is planned and advance notice is reasonably
 practicable, the Provider will give it.
 
 The Provider does not warrant that the Service will be uninterrupted or
-error-free, nor that Markdown output will be accurate or complete for every
-page converted: conversion quality depends on the structure of the source page
-being fetched, which the Provider does not control. This describes what the
-Service does; it is not a waiver of the Provider's obligation to supply it.
+error-free. This describes what the Service does; it is not a waiver of the
+Provider's obligation to supply it. Product-specific limitations on the
+accuracy or completeness of a Product's output, if any, are set out in that
+Product's Schedule.
 
 Where the Customer is a consumer within the meaning of Spanish or European
 Union law, unavailability that amounts to non-conformity of the Service gives
@@ -314,7 +333,9 @@ accordingly.
 
 - Account and billing: <carlosfu.invers@gmail.com> (temporary address while a
   dedicated support inbox is set up)
-- Bugs and technical issues: <https://github.com/Karlangas12/web-to-markdown/issues>
+
+Product-specific support channels, if any, are set out in that Product's
+Schedule.
 
 ---
 

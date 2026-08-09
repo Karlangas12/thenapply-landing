@@ -17,16 +17,39 @@ up on `thenapply.dev`, including the Terms of Service, it's here, not there.
 
 ## One exception to "no build step": the Terms of Service
 
-`/terms` and `/terminos` are the one pair of pages that **do** have a build
-step, because a legal document that drifts between its source and what's
-published is a real risk, not a cosmetic one. `TERMS_OF_SERVICE.md` and
-`TERMS_OF_SERVICE.es.md` are the source of truth; `terms/index.html` and
-`terminos/index.html` are generated from them and then committed like any
-other static file — Cloudflare Pages never runs the generator, it just serves
-whatever's checked in.
+`/terms`, `/terminos`, and each Product's Schedule are the pages that **do**
+have a build step, because a legal document that drifts between its source
+and what's published is a real risk, not a cosmetic one.
 
-**If you edit the ToS**, edit the Markdown, then regenerate and commit the
-HTML together with it:
+Since 9 August 2026 the ToS is split in two layers:
+
+- **Master Terms** (`TERMS_OF_SERVICE.md` / `.es.md`) — generic terms that
+  apply to every Product the Provider offers (definitions, licence,
+  warranties, liability, governing law, …). Talks about "the Service" and
+  "each Product", never names a specific product.
+- **Product Schedule** (`products/<product>.md` / `.es.md`) — one per
+  Product, incorporated into the Master Terms by reference (see the
+  "Product" and "Schedule" definitions in section 1). Holds what's actually
+  specific to that Product: its description, the form of Content it accepts
+  and returns, its IP marks, and where to find its current plans, pricing,
+  and quotas. Today there is one: `products/web-to-markdown.md`.
+
+Why split it: a second Product would otherwise have forced a choice between
+duplicating the entire Master Terms (drift risk on every future edit) or
+writing one document that quietly stopped being generic (a "Terms of
+Service" that only made sense for the first product). Adding a Product now
+means adding one Schedule file pair and one entry in `tos-paginas.mjs` — the
+Master Terms don't change.
+
+`TERMS_OF_SERVICE.md`, `TERMS_OF_SERVICE.es.md`, and every file under
+`products/` are the source of truth; `terms/index.html`, `terminos/index.html`,
+and `terms/<product>/index.html` / `terminos/<product>/index.html` are
+generated from them and then committed like any other static file —
+Cloudflare Pages never runs the generator, it just serves whatever's checked
+in.
+
+**If you edit the ToS or a Product Schedule**, edit the Markdown, then
+regenerate and commit the HTML together with it:
 
 ```bash
 npm run build:tos
@@ -66,19 +89,41 @@ Then open the printed local URL in your browser.
 
 ```
 thenapply-landing/
-├── index.html                  # Home: hero, example output, product grid
+├── index.html                          # Home: hero, example output, product grid
 ├── web-to-markdown/
-│   └── index.html               # Product detail page: full pricing, API docs
-├── TERMS_OF_SERVICE.md          # ToS source of truth (English, reference text)
-├── TERMS_OF_SERVICE.es.md       # ToS source of truth (Spanish translation)
-├── tos-render.mjs               # Markdown → HTML generator, with the anti-drift check
-├── tos-paginas.mjs              # Per-language page metadata for the generator
-├── build-tos.mjs                # Run this after editing either ToS Markdown file
-├── terms/index.html             # Generated — do not hand-edit, see above
-├── terminos/index.html          # Generated — do not hand-edit, see above
-├── tests/tos-render.test.mjs    # node --test, no dependencies
+│   └── index.html                       # Product detail page: full pricing, API docs
+├── TERMS_OF_SERVICE.md                  # Master Terms source of truth (English, reference text)
+├── TERMS_OF_SERVICE.es.md               # Master Terms source of truth (Spanish translation)
+├── products/
+│   ├── web-to-markdown.md               # Web to Markdown Product Schedule (English)
+│   └── web-to-markdown.es.md            # Web to Markdown Product Schedule (Spanish)
+├── tos-render.mjs                       # Markdown → HTML generator, with the anti-drift check
+├── tos-paginas.mjs                      # Page metadata: PAGINAS_TOS (master) + PAGINAS_PRODUCTOS (schedules)
+├── build-tos.mjs                        # Run this after editing any ToS or Schedule Markdown file
+├── terms/index.html                     # Generated — do not hand-edit, see above
+├── terminos/index.html                  # Generated — do not hand-edit, see above
+├── terms/web-to-markdown/index.html     # Generated Schedule page — do not hand-edit
+├── terminos/web-to-markdown/index.html  # Generated Schedule page — do not hand-edit
+├── tests/tos-render.test.mjs            # node --test, no dependencies
 └── README.md
 ```
+
+### Adding a new Product
+
+1. Write `products/<product>.md` and `products/<product>.es.md` — see
+   `products/web-to-markdown.md` as a template. Only what's specific to that
+   Product goes here: description, Content format, IP marks, and a pointer to
+   where its plans/pricing/quotas are published (not the figures themselves —
+   see the note in that file about why).
+2. Add one entry per language to `PAGINAS_PRODUCTOS` in `tos-paginas.mjs`.
+3. Add the Product's name and a link to its Schedule in the short list near
+   the top of `TERMS_OF_SERVICE.md` / `.es.md` (the one paragraph that
+   mentions products by name in the Master Terms — everything else there
+   stays generic on purpose).
+4. Run `npm run build:tos` and `npm test`, then commit the generated HTML
+   together with the Markdown.
+
+Nothing else in the Master Terms should need to change.
 
 ## Deploying to Cloudflare Pages
 
