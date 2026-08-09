@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service — Then Apply</title>
+    <meta name="description" content="Terms of Service for Then Apply and the Web to Markdown API: licence of use, prohibited uses, API key responsibility, billing through Polar.sh, liability, and governing law.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate" hreflang="en" href="https://thenapply.dev/terms">
+    <link rel="alternate" hreflang="es" href="https://thenapply.dev/terminos">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f3ff', 100: '#ebe9fe', 400: '#a78bfa', 500: '#8b5cf6',
+                            600: '#7c3aed', 700: '#6d28d9', dark: '#08090C', card: '#12141A',
+                            border: '#1E222D'
+                        },
+                        cyanAccent: '#00f2fe',
+                        blueAccent: '#4F7DFC'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body { background-color: #08090C; color: #E2E8F0; font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-[#08090C]/80 border-b border-brand-border/60 transition-all duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-3 group">
+                <img src="/icon-mark.svg" alt="" width="36" height="36" class="group-hover:scale-105 transition-transform">
+                <span class="font-bold text-lg tracking-tight text-white">Then Apply</span>
+            </a>
+            <a href="/" class="text-sm text-slate-400 hover:text-white transition-colors">&larr; Back to home</a>
+        </div>
+    </header>
+
+    <main class="flex-grow px-4 sm:px-6 lg:px-8 py-16">
+      <div class="max-w-3xl mx-auto">
+        <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Terms of Service</h1>
+        <p class="mt-2 text-sm font-semibold text-white">Then Apply — Web to Markdown API</p>
+        <p class="mt-3 text-sm text-slate-400">Last updated: August 9, 2026 &middot; <a href="/terminos" class="text-brand-400 hover:text-white transition-colors">Versión en español</a> (for convenience — the English version is the reference text)</p>
+        <p class="text-slate-400 leading-relaxed">These Terms of Service (the &quot;Terms&quot;) form a binding agreement between you and Carlos Fuentes Navarro, an individual residing in Spain, trading as <strong class="text-white font-semibold">Then Apply</strong> (the &quot;Provider&quot;, &quot;we&quot;, &quot;us&quot;). By requesting an API Key, subscribing to a plan, or issuing any request to the Service, you accept these Terms in full. If you do not accept them, do not use the Service.</p>
+        <section id="1-definitions" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">1. Definitions</h2>
+          <ul class="ml-5 list-disc space-y-2 text-slate-400">
+            <li><strong class="text-white font-semibold">Service</strong> — the Then Apply software-as-a-service platform operated at <code class="font-mono text-cyanAccent">thenapply.dev</code>, including the <strong class="text-white font-semibold">Web to Markdown</strong> API, its endpoints, documentation, dashboards, and any successor or additional product the Provider makes available under the Then Apply brand.</li>
+            <li><strong class="text-white font-semibold">Customer</strong> — the natural or legal person that subscribes to a plan, is issued an API Key, or otherwise uses the Service. Where the Customer is an organization, the individual accepting these Terms warrants that they are authorized to bind that organization.</li>
+            <li><strong class="text-white font-semibold">API Key</strong> — the secret credential issued to a Customer that authenticates requests to the Service and identifies the plan and quota attached to them.</li>
+            <li><strong class="text-white font-semibold">Content</strong> — any input the Customer submits to the Service (URLs, raw HTML, parameters) and any output the Service returns in response (Markdown, metadata, error payloads).</li>
+            <li><strong class="text-white font-semibold">Plan</strong> — the tier of the Service the Customer has subscribed to, which determines the applicable request quota and features.</li>
+          </ul>
+        </section>
+        <section id="2-licence-granted-to-the-customer" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">2. Licence granted to the Customer</h2>
+          <p class="text-slate-400 leading-relaxed">Subject to the Customer's continued compliance with these Terms and payment of the applicable fees, the Provider grants the Customer a <strong class="text-white font-semibold">non-exclusive, non-transferable, non-sublicensable, revocable and limited right</strong> to access and use the Service, solely through the Customer's own API Key and solely within the quota of the Customer's Plan, for the Customer's internal business purposes or for incorporation into the Customer's own end products.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">This is a licence to <em>use</em> the Service, not a sale of it. No rights are granted other than those expressly stated here.</p>
+          <h3 id="2-1-prohibited-uses" class="mb-2 mt-6 text-base font-semibold text-white">2.1. Prohibited uses</h3>
+          <p class="text-slate-400 leading-relaxed">The Customer shall not, and shall not permit any third party to:</p>
+          <p class="text-slate-400 leading-relaxed mt-3"><strong class="text-white font-semibold">(a) Resell or wrap the Service.</strong> Resell, sublicense, rent, lease, or otherwise make the Service available to third parties as a standalone offering, nor wrap the Service — with or without a thin layer of the Customer's own code — in a product that competes with the Service or that substantially reproduces its functionality. Incorporating the Service as a component of a broader product that provides substantial independent value is permitted; re-exposing the API, in whole or in substance, is not.</p>
+          <p class="text-slate-400 leading-relaxed mt-3"><strong class="text-white font-semibold">(b) Reverse engineer the Service.</strong> Reverse engineer, decompile, disassemble, or otherwise attempt to derive the source code, underlying algorithms, model prompts, or internal architecture of the Service, except to the extent such restriction is expressly prohibited by applicable mandatory law.</p>
+          <p class="text-slate-400 leading-relaxed mt-3"><strong class="text-white font-semibold">(c) Share the API Key.</strong> Disclose, publish, transfer, or share an API Key with any third party, or use a single API Key across unrelated organizations. The Customer is solely responsible for keeping the API Key confidential and for <strong class="text-white font-semibold">all</strong> activity carried out with it, whether authorized by the Customer or not.</p>
+          <p class="text-slate-400 leading-relaxed mt-3"><strong class="text-white font-semibold">(d) Exceed the contracted quota.</strong> Attempt to circumvent, evade, or defeat rate limiting, quota enforcement, authentication, or any other technical control of the Service — including by rotating keys, distributing traffic across multiple accounts, or any equivalent technique — in order to obtain service beyond the Plan the Customer has paid for.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">The Customer shall further not use the Service to fetch, process, or redistribute content the Customer is not authorized to access, nor in any manner that abuses, degrades, or endangers the Service or the third-party sites it fetches from.</p>
+        </section>
+        <section id="3-api-keys" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">3. API Keys</h2>
+          <p class="text-slate-400 leading-relaxed">API Keys are displayed in plain text <strong class="text-white font-semibold">once only</strong>, at the moment of issuance. The Provider stores only a cryptographic hash of the Key and is therefore technically unable to recover a lost Key; a lost Key must be revoked and replaced. The Customer must notify the Provider without undue delay if an API Key is or may be compromised.</p>
+        </section>
+        <section id="4-plans-billing-and-merchant-of-record" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">4. Plans, billing, and Merchant of Record</h2>
+          <p class="text-slate-400 leading-relaxed">Subscriptions and payments are processed entirely by <strong class="text-white font-semibold">Polar.sh</strong>, which acts as <strong class="text-white font-semibold">Merchant of Record</strong> for all purchases made through the Service. Polar processes payment, issues invoices and receipts, and is the counterparty to the sale transaction itself. The Provider never receives or stores card details. Billing enquiries, refunds, invoice corrections, and subscription changes are handled through Polar's checkout and customer portal, or via the support contacts in section 11.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">When Polar confirms a subscription or purchase, the Service automatically issues an API Key (for new Customers) or updates the Plan attached to an existing Key. Delivery of the Key by email may take a short time after checkout and is not always instantaneous.</p>
+        </section>
+        <section id="5-content-and-intellectual-property" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">5. Content and intellectual property</h2>
+          <h3 id="5-1-ownership-of-the-service" class="mb-2 mt-6 text-base font-semibold text-white">5.1. Ownership of the Service</h3>
+          <p class="text-slate-400 leading-relaxed">The Service, its source code, its underlying software, its documentation, its visual design, and the <strong class="text-white font-semibold">Then Apply</strong> and <strong class="text-white font-semibold">Web to Markdown</strong> names and marks are and remain the exclusive property of the Provider, Carlos Fuentes Navarro. All rights not expressly granted in section 2 are reserved. <strong class="text-white font-semibold">Nothing in these Terms transfers, assigns, or grants any ownership interest</strong> in the Service or in any intellectual property right of the Provider to the Customer.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">Where components of the Service are distributed separately under an open source licence (for example, the <code class="font-mono text-cyanAccent">web-to-markdown</code> npm package), that licence governs those components in their distributed form. It does not grant any right over the hosted Service, its infrastructure, or the marks.</p>
+          <h3 id="5-2-ownership-of-content" class="mb-2 mt-6 text-base font-semibold text-white">5.2. Ownership of Content</h3>
+          <p class="text-slate-400 leading-relaxed">As between the parties, the Customer retains all rights in the input it submits and in the output the Service returns to it. The Provider claims no ownership over Customer Content and uses it only to the extent necessary to operate the Service and to comply with the law. The Customer warrants that it holds the rights necessary to submit its input and that doing so does not infringe the rights of any third party.</p>
+        </section>
+        <section id="6-suspension-and-termination" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">6. Suspension and termination</h2>
+          <p class="text-slate-400 leading-relaxed">The Provider may <strong class="text-white font-semibold">suspend or revoke any API Key with immediate effect</strong> where the Customer breaches these Terms — in particular section 2.1 — or where the Customer's use abuses, degrades, or endangers the Service, its infrastructure, or third-party sites. Where circumstances reasonably permit, the Provider will give prior notice and an opportunity to cure; where the breach is serious or ongoing, it may act first and notify afterwards.</p>
+          <p class="text-slate-400 leading-relaxed mt-3"><strong class="text-white font-semibold">Termination for breach does not entitle the Customer to a refund of any period already invoiced.</strong> The Customer may cancel a subscription at any time through Polar; cancellation takes effect at the end of the current billing period, and access continues until then. Sections 5, 7, 8, 9 and 10 survive termination.</p>
+        </section>
+        <section id="7-availability" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">7. Availability</h2>
+          <p class="text-slate-400 leading-relaxed"><strong class="text-white font-semibold">Nothing in this section excludes or limits any right or remedy that applicable mandatory law grants to consumers</strong>, including any statutory right to have the Service supplied and kept in conformity with the contract.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">The Provider will use reasonable efforts to keep the Service available and functioning as described in its public documentation. The Provider does <strong class="text-white font-semibold">not</strong> currently publish a Service Level Agreement: availability is offered on a <strong class="text-white font-semibold">best-effort</strong> basis, with no committed uptime, no committed response time, and no service credits. Should the Provider publish an SLA, that document will govern availability from its stated effective date and will prevail over this section to the extent of any conflict.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">The Service may be temporarily unavailable for maintenance, for the correction of faults, or because of failures in the third-party infrastructure on which it depends. Where an interruption is planned and advance notice is reasonably practicable, the Provider will give it.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">The Provider does not warrant that the Service will be uninterrupted or error-free, nor that Markdown output will be accurate or complete for every page converted: conversion quality depends on the structure of the source page being fetched, which the Provider does not control. This describes what the Service does; it is not a waiver of the Provider's obligation to supply it.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">Where the Customer is a consumer within the meaning of Spanish or European Union law, unavailability that amounts to non-conformity of the Service gives rise to the statutory remedies preserved in section 9.1, whatever this section says.</p>
+        </section>
+        <section id="8-warranties-and-disclaimers" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">8. Warranties and disclaimers</h2>
+          <p class="text-slate-400 leading-relaxed"><strong class="text-white font-semibold">Nothing in these Terms excludes or limits any warranty, right, or remedy that cannot lawfully be excluded or limited</strong>, including the statutory rights of consumers under Spanish and European Union law and, in particular, the right to receive a digital service that conforms to the contract.</p>
+          <h3 id="8-1-what-the-provider-warrants" class="mb-2 mt-6 text-base font-semibold text-white">8.1. What the Provider warrants</h3>
+          <p class="text-slate-400 leading-relaxed">The Provider warrants that it will supply the Service with reasonable skill and care, and that the Service will perform substantially as described in its then-current public documentation.</p>
+          <h3 id="8-2-what-the-provider-does-not-warrant" class="mb-2 mt-6 text-base font-semibold text-white">8.2. What the Provider does not warrant</h3>
+          <p class="text-slate-400 leading-relaxed">Subject to section 8.1 and section 8.3, and to the fullest extent permitted by applicable law, the Service is provided without further warranties, whether express or implied, including warranties of merchantability, fitness for a particular purpose, accuracy, and non-infringement.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">Where the Customer does not act as a consumer within the meaning of Spanish or European Union law, this exclusion extends to warranties implied by statute, to the fullest extent applicable law allows.</p>
+          <h3 id="8-3-consumers" class="mb-2 mt-6 text-base font-semibold text-white">8.3. Consumers</h3>
+          <p class="text-slate-400 leading-relaxed">Where the Customer is a consumer within the meaning of Spanish or European Union law, nothing in this section excludes or limits the conformity requirements that applicable law imposes on digital services, or any remedy available for non-conformity. The Provider does not disclaim statutory warranties towards consumers.</p>
+        </section>
+        <section id="9-limitation-of-liability" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">9. Limitation of liability</h2>
+          <p class="text-slate-400 leading-relaxed"><strong class="text-white font-semibold">Nothing in these Terms excludes or limits any liability, right, or remedy that cannot lawfully be excluded or limited under applicable law.</strong> In particular, nothing in this section affects the mandatory rights and remedies available to consumers under Spanish or European Union consumer protection law, or the Provider's obligations under data protection law. Where any part of this section is held unenforceable, the remainder continues to apply.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">Subject to that, the Provider's liability in connection with the Service is limited as set out below.</p>
+          <h3 id="9-1-losses-excluded" class="mb-2 mt-6 text-base font-semibold text-white">9.1. Losses excluded</h3>
+          <p class="text-slate-400 leading-relaxed">To the fullest extent permitted by applicable law, the Provider shall not be liable for indirect, incidental, special, consequential, or punitive damages, nor for loss of profits, revenue, data, business, goodwill, or other similar economic loss, arising out of or in connection with the Service, even if the Provider has been advised of the possibility of such loss.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">Where the Customer is a consumer within the meaning of Spanish or European Union law, this exclusion applies only to the extent permitted by applicable mandatory law, and in any event does not exclude or limit:</p>
+          <ul class="ml-5 mt-3 list-disc space-y-2 text-slate-400">
+            <li>liability for direct loss caused by the Provider's failure to perform, or defective performance of, its obligations under these Terms; or</li>
+            <li>any statutory right or remedy the consumer has in respect of non-conformity of the Service, including any right to have the Service brought into conformity, to a reduction in price, to terminate the contract, or to a refund.</li>
+          </ul>
+          <h3 id="9-2-third-party-services-and-content" class="mb-2 mt-6 text-base font-semibold text-white">9.2. Third-party services and content</h3>
+          <p class="text-slate-400 leading-relaxed">The Service converts content that the <strong class="text-white font-semibold">Customer</strong> directs it to fetch or that the Customer submits directly. The Provider does not select, control, verify, or endorse that content, and shall not be liable for it, nor for the Customer's lack of authorization to access or process it.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">As stated in section 4, Polar.sh acts as Merchant of Record and is the counterparty to the sale transaction itself; billing, invoicing, and refund processing are therefore governed by Polar's own terms.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">The Provider shall not be liable for the acts or omissions of independent third-party providers on which the Service depends. This does <strong class="text-white font-semibold">not</strong> limit the Provider's liability where the loss results from the Provider's own breach of these Terms, from its own negligence in selecting or operating those providers, or from any obligation the Provider owes under data protection law in respect of processors acting on its behalf.</p>
+          <h3 id="9-3-aggregate-cap-customers-acting-as-a-business" class="mb-2 mt-6 text-base font-semibold text-white">9.3. Aggregate cap — Customers acting as a business</h3>
+          <p class="text-slate-400 leading-relaxed">Where the Customer does not act as a consumer within the meaning of Spanish or European Union law, the Provider's aggregate liability arising out of or in connection with these Terms or the Service shall not exceed the total amount actually paid by the Customer for the Service during the <strong class="text-white font-semibold">twelve (12) months</strong> immediately preceding the event giving rise to the claim.</p>
+          <h3 id="9-4-customers-who-are-consumers" class="mb-2 mt-6 text-base font-semibold text-white">9.4. Customers who are consumers</h3>
+          <p class="text-slate-400 leading-relaxed">Where the Customer is a consumer within the meaning of Spanish or European Union law, the cap in section 9.3 does <strong class="text-white font-semibold">not</strong> apply. The Provider's liability towards a consumer is instead determined by applicable law, limited — to the extent that law permits — to loss that was foreseeable at the time the contract was entered into and that is a direct consequence of the Provider's breach.</p>
+          <p class="text-slate-400 leading-relaxed mt-3"><strong class="text-white font-semibold">No provision of these Terms shall be interpreted as reducing the Provider's liability towards a consumer below the level required by applicable mandatory law, and this applies equally whether or not the consumer pays for the Service.</strong></p>
+          <h3 id="9-5-liability-that-is-never-excluded-or-limited" class="mb-2 mt-6 text-base font-semibold text-white">9.5. Liability that is never excluded or limited</h3>
+          <p class="text-slate-400 leading-relaxed">Nothing in these Terms excludes or limits the Provider's liability for:</p>
+          <ul class="ml-5 mt-3 list-disc space-y-2 text-slate-400">
+            <li>wilful misconduct or gross negligence;</li>
+            <li>death or personal injury;</li>
+            <li>fraud or fraudulent misrepresentation;</li>
+            <li>damage caused by infringement of data protection law, including any right to compensation under the General Data Protection Regulation;</li>
+            <li>any statutory remedy for non-conformity owed to a consumer, including any refund due by law; or</li>
+            <li>any other liability that applicable mandatory law does not permit the Provider to exclude or limit.</li>
+          </ul>
+        </section>
+        <section id="10-governing-law-and-jurisdiction" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">10. Governing law and jurisdiction</h2>
+          <p class="text-slate-400 leading-relaxed">These Terms are governed by the laws of <strong class="text-white font-semibold">Spain</strong>, excluding its conflict of law rules and the United Nations Convention on Contracts for the International Sale of Goods.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">Where the Customer acts as a business, the parties submit to the exclusive jurisdiction of the <strong class="text-white font-semibold">courts of Spain</strong>. Where the Customer is a consumer within the meaning of Spanish or European Union law, this clause does not deprive the Customer of the protection of the mandatory provisions of the law of their country of residence, nor of the right to bring proceedings before the courts competent under those provisions.</p>
+        </section>
+        <section id="11-changes-to-these-terms" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">11. Changes to these Terms</h2>
+          <p class="text-slate-400 leading-relaxed">The Provider may update these Terms. For <strong class="text-white font-semibold">material</strong> changes — those that meaningfully reduce the Customer's rights or increase its obligations — the Provider will notify active Customers <strong class="text-white font-semibold">by email at least thirty (30) days before</strong> the change takes effect. A Customer who does not accept a material change may cancel their subscription before the effective date; continued use of the Service after that date constitutes acceptance.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">Non-material changes (clarifications, corrections, updated contact details) take effect on publication, with the date at the top of this document updated accordingly.</p>
+        </section>
+        <section id="12-contact" class="mt-10">
+          <h2 class="mb-2 text-lg font-semibold text-white">12. Contact</h2>
+          <ul class="ml-5 list-disc space-y-2 text-slate-400">
+            <li>Account and billing: <a href="mailto:carlosfu.invers@gmail.com" class="text-brand-400 hover:text-white transition-colors underline decoration-brand-700">carlosfu.invers@gmail.com</a> (temporary address while a dedicated support inbox is set up)</li>
+            <li>Bugs and technical issues: <a href="https://github.com/Karlangas12/web-to-markdown/issues" class="text-brand-400 hover:text-white transition-colors underline decoration-brand-700">https://github.com/Karlangas12/web-to-markdown/issues</a></li>
+          </ul>
+        </section>
+        <div class="mt-8 rounded-xl border border-brand-border bg-brand-card p-5">
+          <p class="text-slate-400 leading-relaxed">A Spanish translation of this document is available at <a href="/terminos" class="text-brand-400 hover:text-white transition-colors underline decoration-brand-700"><code class="font-mono text-cyanAccent">TERMS_OF_SERVICE.es.md</code></a> and at <code class="font-mono text-cyanAccent">/terminos</code>. It is provided for convenience, and <strong class="text-white font-semibold">this English version is the reference text</strong>: in the event of a discrepancy between the two, the English version prevails for the purposes of interpreting these Terms.</p>
+          <p class="mt-2 text-slate-400 leading-relaxed"><strong class="text-white font-semibold">This language clause is not absolute.</strong> Where the Customer is a consumer whose mandatory rights derive from the law of a country of residence other than that of the reference text, those rights prevail over this clause to the extent of any conflict. Nothing in this clause may be relied on to deprive such a consumer of a protection that cannot be waived by contract, nor to make the English text binding where applicable mandatory law requires otherwise.</p>
+        </div>
+
+      </div>
+    </main>
+
+    <footer class="bg-[#050608] border-t border-brand-border/80 py-12 text-slate-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center space-x-3">
+                <img src="/icon-mark.svg" alt="" width="28" height="28">
+                <span class="font-bold text-white tracking-tight">Then Apply</span>
+                <span class="text-xs text-slate-500 font-mono">© 2026 Then Apply.</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-6 text-xs text-slate-400 font-mono">
+                <a href="/terms" class="hover:text-white transition-colors">Terms</a>
+                <a href="/terminos" class="hover:text-white transition-colors">Términos (ES)</a>
+                <span>Polar.sh is our Merchant of Record for billing</span>
+                <a href="mailto:keys@thenapply.dev" class="hover:text-white transition-colors">Support: keys@thenapply.dev</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
