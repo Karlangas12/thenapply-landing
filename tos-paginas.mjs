@@ -15,6 +15,19 @@
  * `build-tos.mjs` genera ambas listas con el mismo generador — añadir un
  * Producto nuevo es añadir una entrada aquí y su Markdown en `products/`, sin
  * tocar el maestro ni el generador.
+ *
+ * ## `version`: la fecha en formato comprobable por máquina
+ *
+ * Cada página declara su `version` en ISO (`YYYY-MM-DD`), el **mismo formato**
+ * que `TOS_VERSION` y `SCHEDULE_VERSION` en el `wrangler.toml` del Worker que
+ * sella la aceptación. El generador **no la deduce del texto**: la exige aquí
+ * y comprueba que la línea de última actualización del Markdown dice esa misma
+ * fecha, fallando en cerrado si divergen. Así hay un único valor que un humano
+ * (o un script) puede contrastar entre tres sitios: este fichero, el documento
+ * publicado (`<meta name="tos-version">`) y la configuración del Worker.
+ *
+ * `slug` sólo lo llevan los anexos: es la clave con la que el Worker registra
+ * en `metadata.tos.scheduleVersions` qué versión del Anexo aceptó el Cliente.
  */
 export const PAGINAS_TOS = [
   {
@@ -37,6 +50,7 @@ export const PAGINAS_TOS = [
       nota: 'for convenience — the English version is the reference text',
     },
     patronFecha: /^Last updated:/,
+    version: '2026-08-09',
   },
   {
     fuente: 'TERMS_OF_SERVICE.es.md',
@@ -53,6 +67,7 @@ export const PAGINAS_TOS = [
     // cita destacada de la cabecera, que viene del propio Markdown.
     enlaceAlternativo: null,
     patronFecha: /^Última actualización:/,
+    version: '2026-08-09',
   },
 ];
 
@@ -73,6 +88,8 @@ export const PAGINAS_PRODUCTOS = [
       nota: 'for convenience — the English version is the reference text',
     },
     patronFecha: /^Last updated:/,
+    version: '2026-08-09',
+    slug: 'web-to-markdown',
   },
   {
     fuente: 'products/web-to-markdown.es.md',
@@ -87,5 +104,7 @@ export const PAGINAS_PRODUCTOS = [
     volver: 'Volver al inicio',
     enlaceAlternativo: null,
     patronFecha: /^Última actualización:/,
+    version: '2026-08-09',
+    slug: 'web-to-markdown',
   },
 ];

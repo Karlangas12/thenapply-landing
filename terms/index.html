@@ -9,6 +9,14 @@
     <link rel="alternate" hreflang="en" href="https://thenapply.dev/terms">
     <link rel="alternate" hreflang="es" href="https://thenapply.dev/terminos">
 
+    <!--
+      Versión del documento, en el mismo formato ISO que sella el Worker.
+      Publicada aquí para que la versión servida al cliente sea comprobable
+      desde fuera, sin leer el repositorio: debe coincidir con TOS_VERSION
+      (maestro) o SCHEDULE_VERSION (anexo) del wrangler.toml del Worker.
+    -->
+    <meta name="tos-version" content="2026-08-09">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -59,7 +67,7 @@
         <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Terms of Service</h1>
         <p class="mt-2 text-sm font-semibold text-white">Then Apply</p>
         <p class="mt-3 text-sm text-slate-400">Last updated: August 9, 2026 &middot; <a href="/terminos" class="text-brand-400 hover:text-white transition-colors underline decoration-brand-700">Versión en español</a> (for convenience — the English version is the reference text)</p>
-        <p class="text-slate-400 leading-relaxed">These Terms of Service (the &quot;Terms&quot;) form a binding agreement between you and Carlos Fuentes Navarro, an individual residing in Spain, trading as <strong class="text-white font-semibold">Then Apply</strong> (the &quot;Provider&quot;, &quot;we&quot;, &quot;us&quot;). By requesting an API Key, subscribing to a plan, or issuing any request to the Service, you accept these Terms in full. If you do not accept them, do not use the Service.</p>
+        <p class="text-slate-400 leading-relaxed">These Terms of Service (the &quot;Terms&quot;) form a binding agreement between you and Carlos Fuentes Navarro, an individual residing in Spain, trading as <strong class="text-white font-semibold">Then Apply</strong> (the &quot;Provider&quot;, &quot;we&quot;, &quot;us&quot;). By requesting an API Key, subscribing to a plan, or issuing any request to the Service, you accept these Terms in full, <strong class="text-white font-semibold">together with the Schedule of each Product you subscribe to or use</strong>, which forms part of this agreement. If you do not accept them, do not use the Service.</p>
         <p class="text-slate-400 leading-relaxed">These Terms apply to every Product the Provider offers under the Then Apply brand. The Provider currently offers:</p>
         <ul class="ml-5 mt-3 list-disc space-y-2 text-slate-400">
           <li><strong class="text-white font-semibold">Web to Markdown API</strong> — see its <a href="/terms/web-to-markdown" class="text-brand-400 hover:text-white transition-colors underline decoration-brand-700">Product Schedule</a>.</li>
@@ -69,13 +77,20 @@
           <h2 class="mb-2 text-lg font-semibold text-white">1. Definitions</h2>
           <ul class="ml-5 list-disc space-y-2 text-slate-400">
             <li><strong class="text-white font-semibold">Service</strong> — the Then Apply software-as-a-service platform operated at <code class="font-mono text-cyanAccent">thenapply.dev</code>, comprising one or more Products, together with their respective endpoints, documentation, and dashboards.</li>
-            <li><strong class="text-white font-semibold">Product</strong> — a specific software-as-a-service offering that the Provider makes available through the Service (for example, an API, tool, or extension). The specific features, pricing, and quotas of each Product offered by the Provider are set out in that Product's Schedule, incorporated into these Terms by reference.</li>
+            <li><strong class="text-white font-semibold">Product</strong> — a specific software-as-a-service offering that the Provider makes available through the Service (for example, an API, tool, or extension). The specific features, pricing, and quotas of each Product offered by the Provider are set out in that Product's Schedule, incorporated into these Terms by reference. A Product for which no Schedule has yet been published is nonetheless governed by these Terms on their own until that Schedule is published: the absence of a Schedule never places a Product outside these Terms.</li>
             <li><strong class="text-white font-semibold">Schedule</strong> — the document specific to a Product, published alongside these Terms, that sets out that Product's description, the form of Content it accepts and returns, its plans, pricing, and quotas, and any other terms specific to it. A Schedule prevails over these Terms for its Product to the extent of any conflict on the matters it addresses; on any other matter, these Terms prevail.</li>
             <li><strong class="text-white font-semibold">Customer</strong> — the natural or legal person that subscribes to a plan, is issued an API Key, or otherwise uses the Service. Where the Customer is an organization, the individual accepting these Terms warrants that they are authorized to bind that organization.</li>
             <li><strong class="text-white font-semibold">API Key</strong> — the secret credential issued to a Customer that authenticates requests to a Product and identifies the Plan and quota attached to it.</li>
             <li><strong class="text-white font-semibold">Content</strong> — any input the Customer submits to a Product and any output that Product returns in response. The specific form of Content accepted and returned by each Product is set out in that Product's Schedule.</li>
             <li><strong class="text-white font-semibold">Plan</strong> — the tier of a Product to which the Customer has subscribed, which determines the applicable request quota and features for that Product.</li>
           </ul>
+          <h3 id="1-1-a-schedule-may-never-reduce-these-protections" class="mb-2 mt-6 text-base font-semibold text-white">1.1. A Schedule may never reduce these protections</h3>
+          <p class="text-slate-400 leading-relaxed"><strong class="text-white font-semibold">No Schedule may reduce, exclude, qualify, or otherwise weaken any safeguard, right, or remedy that these Terms grant to the Customer — and in particular to a Customer who is a consumer within the meaning of Spanish or European Union law.</strong> Where a Schedule and these Terms differ as to any such safeguard, right, or remedy, <strong class="text-white font-semibold">the provision more favourable to the Customer prevails</strong>.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">This overrides, for that purpose only, the conflict rule in the definition of &quot;Schedule&quot; above. That rule — under which a Schedule prevails for its Product on the matters it addresses — applies only to matters that do not concern the protection of the Customer: a Product's description, the form of its Content, its plans, quotas, support channels, and equivalent operational terms.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">Accordingly, every limitation or exclusion stated in a Schedule is read subject to sections 7, 8 and 9 of these Terms, including the consumer safeguards those sections preserve.</p>
+          <h3 id="1-2-what-these-terms-do-not-cover" class="mb-2 mt-6 text-base font-semibold text-white">1.2. What these Terms do not cover</h3>
+          <p class="text-slate-400 leading-relaxed">Tools, libraries, and packages that the Provider distributes under an open source licence, and that are not offered as a Product through the Service — that is, that do not require an API Key — are governed by the terms of that licence, not by these Terms.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">This states which document applies to what. It does not affect any right or remedy the Customer has in respect of a Product they have subscribed to or used, even where that Product shares code with such a package.</p>
         </section>
         <section id="2-licence-granted-to-the-customer" class="mt-10">
           <h2 class="mb-2 text-lg font-semibold text-white">2. Licence granted to the Customer</h2>
@@ -109,7 +124,7 @@
         <section id="6-suspension-and-termination" class="mt-10">
           <h2 class="mb-2 text-lg font-semibold text-white">6. Suspension and termination</h2>
           <p class="text-slate-400 leading-relaxed">The Provider may <strong class="text-white font-semibold">suspend or revoke any API Key with immediate effect</strong> where the Customer breaches these Terms — in particular section 2.1 — or where the Customer's use abuses, degrades, or endangers the Service, its infrastructure, or third-party sites. Where circumstances reasonably permit, the Provider will give prior notice and an opportunity to cure; where the breach is serious or ongoing, it may act first and notify afterwards.</p>
-          <p class="text-slate-400 leading-relaxed mt-3"><strong class="text-white font-semibold">Termination for breach does not entitle the Customer to a refund of any period already invoiced.</strong> The Customer may cancel a subscription at any time through Polar; cancellation takes effect at the end of the current billing period, and access continues until then. Sections 5, 7, 8, 9 and 10 survive termination.</p>
+          <p class="text-slate-400 leading-relaxed mt-3"><strong class="text-white font-semibold">Termination for breach does not entitle the Customer to a refund of any period already invoiced.</strong> The Customer may cancel a subscription at any time through Polar; cancellation takes effect at the end of the current billing period, and access continues until then. Sections 5, 7, 8, 9 and 10 survive termination, together with the intellectual property and warranty provisions of each Schedule, which survive on the same terms — and subject to the same consumer safeguards — as sections 7 to 9 of these Terms.</p>
         </section>
         <section id="7-availability" class="mt-10">
           <h2 class="mb-2 text-lg font-semibold text-white">7. Availability</h2>
@@ -142,7 +157,8 @@
             <li>any statutory right or remedy the consumer has in respect of non-conformity of the Service, including any right to have the Service brought into conformity, to a reduction in price, to terminate the contract, or to a refund.</li>
           </ul>
           <h3 id="9-2-third-party-services-and-content" class="mb-2 mt-6 text-base font-semibold text-white">9.2. Third-party services and content</h3>
-          <p class="text-slate-400 leading-relaxed">The Service converts content that the <strong class="text-white font-semibold">Customer</strong> directs it to fetch or that the Customer submits directly. The Provider does not select, control, verify, or endorse that content, and shall not be liable for it, nor for the Customer's lack of authorization to access or process it.</p>
+          <p class="text-slate-400 leading-relaxed">The nature of the Content processed by each Product, and the extent to which the <strong class="text-white font-semibold">Customer</strong> controls or directs that Content, are set out in that Product's Schedule.</p>
+          <p class="text-slate-400 leading-relaxed mt-3">Where a Product processes Content that the Customer directs it to fetch, or that the Customer submits, the Provider does not select, control, verify, or endorse that Content, and shall not be liable for it, nor for the Customer's lack of authorization to access or process it.</p>
           <p class="text-slate-400 leading-relaxed mt-3">As stated in section 4, Polar.sh acts as Merchant of Record and is the counterparty to the sale transaction itself; billing, invoicing, and refund processing are therefore governed by Polar's own terms.</p>
           <p class="text-slate-400 leading-relaxed mt-3">The Provider shall not be liable for the acts or omissions of independent third-party providers on which the Service depends. This does <strong class="text-white font-semibold">not</strong> limit the Provider's liability where the loss results from the Provider's own breach of these Terms, from its own negligence in selecting or operating those providers, or from any obligation the Provider owes under data protection law in respect of processors acting on its behalf.</p>
           <h3 id="9-3-aggregate-cap-customers-acting-as-a-business" class="mb-2 mt-6 text-base font-semibold text-white">9.3. Aggregate cap — Customers acting as a business</h3>
@@ -170,6 +186,7 @@
           <h2 class="mb-2 text-lg font-semibold text-white">11. Changes to these Terms</h2>
           <p class="text-slate-400 leading-relaxed">The Provider may update these Terms. For <strong class="text-white font-semibold">material</strong> changes — those that meaningfully reduce the Customer's rights or increase its obligations — the Provider will notify active Customers <strong class="text-white font-semibold">by email at least thirty (30) days before</strong> the change takes effect. A Customer who does not accept a material change may cancel their subscription before the effective date; continued use of the Service after that date constitutes acceptance.</p>
           <p class="text-slate-400 leading-relaxed mt-3">Non-material changes (clarifications, corrections, updated contact details) take effect on publication, with the date at the top of this document updated accordingly.</p>
+          <p class="text-slate-400 leading-relaxed mt-3"><strong class="text-white font-semibold">This section applies to Schedules in the same way as it applies to these Terms.</strong> A change to a Schedule that meaningfully reduces the Customer's rights or increases its obligations is a material change and follows the same thirty (30) day notice period; a change that only widens the Customer's rights, or that is a clarification, correction, or matter of form, takes effect on publication with that Schedule's own date updated accordingly. Each Schedule carries its own last-updated date, and the Provider records which version of these Terms and of the applicable Schedule a Customer accepted at the time their API Key was issued or updated.</p>
         </section>
         <section id="12-contact" class="mt-10">
           <h2 class="mb-2 text-lg font-semibold text-white">12. Contact</h2>

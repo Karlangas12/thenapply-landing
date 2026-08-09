@@ -7,8 +7,10 @@ Last updated: August 9, 2026
 These Terms of Service (the "Terms") form a binding agreement between you and
 Carlos Fuentes Navarro, an individual residing in Spain, trading as **Then
 Apply** (the "Provider", "we", "us"). By requesting an API Key, subscribing to
-a plan, or issuing any request to the Service, you accept these Terms in full.
-If you do not accept them, do not use the Service.
+a plan, or issuing any request to the Service, you accept these Terms in full,
+**together with the Schedule of each Product you subscribe to or use**, which
+forms part of this agreement. If you do not accept them, do not use the
+Service.
 
 These Terms apply to every Product the Provider offers under the Then Apply
 brand. The Provider currently offers:
@@ -27,7 +29,10 @@ brand. The Provider currently offers:
   makes available through the Service (for example, an API, tool, or
   extension). The specific features, pricing, and quotas of each Product
   offered by the Provider are set out in that Product's Schedule,
-  incorporated into these Terms by reference.
+  incorporated into these Terms by reference. A Product for which no Schedule
+  has yet been published is nonetheless governed by these Terms on their own
+  until that Schedule is published: the absence of a Schedule never places a
+  Product outside these Terms.
 - **Schedule** — the document specific to a Product, published alongside
   these Terms, that sets out that Product's description, the form of Content
   it accepts and returns, its plans, pricing, and quotas, and any other terms
@@ -46,6 +51,35 @@ brand. The Provider currently offers:
 - **Plan** — the tier of a Product to which the Customer has subscribed,
   which determines the applicable request quota and features for that
   Product.
+
+### 1.1. A Schedule may never reduce these protections
+
+**No Schedule may reduce, exclude, qualify, or otherwise weaken any safeguard,
+right, or remedy that these Terms grant to the Customer — and in particular to
+a Customer who is a consumer within the meaning of Spanish or European Union
+law.** Where a Schedule and these Terms differ as to any such safeguard, right,
+or remedy, **the provision more favourable to the Customer prevails**.
+
+This overrides, for that purpose only, the conflict rule in the definition of
+"Schedule" above. That rule — under which a Schedule prevails for its Product
+on the matters it addresses — applies only to matters that do not concern the
+protection of the Customer: a Product's description, the form of its Content,
+its plans, quotas, support channels, and equivalent operational terms.
+
+Accordingly, every limitation or exclusion stated in a Schedule is read subject
+to sections 7, 8 and 9 of these Terms, including the consumer safeguards those
+sections preserve.
+
+### 1.2. What these Terms do not cover
+
+Tools, libraries, and packages that the Provider distributes under an open
+source licence, and that are not offered as a Product through the Service —
+that is, that do not require an API Key — are governed by the terms of that
+licence, not by these Terms.
+
+This states which document applies to what. It does not affect any right or
+remedy the Customer has in respect of a Product they have subscribed to or
+used, even where that Product shares code with such a package.
 
 ## 2. Licence granted to the Customer
 
@@ -155,7 +189,9 @@ ongoing, it may act first and notify afterwards.
 period already invoiced.** The Customer may cancel a subscription at any time
 through Polar; cancellation takes effect at the end of the current billing
 period, and access continues until then. Sections 5, 7, 8, 9 and 10 survive
-termination.
+termination, together with the intellectual property and warranty provisions of
+each Schedule, which survive on the same terms — and subject to the same
+consumer safeguards — as sections 7 to 9 of these Terms.
 
 ## 7. Availability
 
@@ -252,9 +288,13 @@ mandatory law, and in any event does not exclude or limit:
 
 ### 9.2. Third-party services and content
 
-The Service converts content that the **Customer** directs it to fetch or that
-the Customer submits directly. The Provider does not select, control, verify,
-or endorse that content, and shall not be liable for it, nor for the Customer's
+The nature of the Content processed by each Product, and the extent to which
+the **Customer** controls or directs that Content, are set out in that
+Product's Schedule.
+
+Where a Product processes Content that the Customer directs it to fetch, or
+that the Customer submits, the Provider does not select, control, verify, or
+endorse that Content, and shall not be liable for it, nor for the Customer's
 lack of authorization to access or process it.
 
 As stated in section 4, Polar.sh acts as Merchant of Record and is the
@@ -328,6 +368,16 @@ of the Service after that date constitutes acceptance.
 Non-material changes (clarifications, corrections, updated contact details)
 take effect on publication, with the date at the top of this document updated
 accordingly.
+
+**This section applies to Schedules in the same way as it applies to these
+Terms.** A change to a Schedule that meaningfully reduces the Customer's rights
+or increases its obligations is a material change and follows the same thirty
+(30) day notice period; a change that only widens the Customer's rights, or
+that is a clarification, correction, or matter of form, takes effect on
+publication with that Schedule's own date updated accordingly. Each Schedule
+carries its own last-updated date, and the Provider records which version of
+these Terms and of the applicable Schedule a Customer accepted at the time
+their API Key was issued or updated.
 
 ## 12. Contact
 

@@ -26,6 +26,10 @@ For this Product, Content takes the following form:
   Customer supplies.
 - **Output** — Markdown, extracted metadata, and error payloads.
 
+This Product converts Content that the Customer directs it to fetch, or that
+the Customer submits directly. The consequences of that for liability are set
+out in section 9.2 of the Terms, which applies unchanged to this Product.
+
 ## 3. Intellectual property
 
 The **Web to Markdown** name and mark are part of the Provider's property, as
@@ -41,7 +45,15 @@ not grant any right over the hosted Product, its infrastructure, or the marks.
 The Provider does not warrant that Markdown output will be accurate or
 complete for every page converted: conversion quality depends on the
 structure of the source page being fetched, which the Provider does not
-control.
+control. This describes what the Product does; it is not a waiver of the
+Provider's obligation to supply it.
+
+**Nothing in this section excludes or limits any right or remedy that
+applicable mandatory law grants to consumers**, nor the statutory remedies
+preserved in section 9.1 of the Terms, nor the conformity requirements
+preserved in section 8.3 of the Terms. As section 1.1 of the Terms provides,
+nothing in this Schedule may reduce a safeguard the Terms grant to the
+Customer.
 
 ## 5. Plans, pricing, and quotas
 

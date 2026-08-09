@@ -25,7 +25,12 @@ import { fileURLToPath } from 'node:url';
 import { describe, it } from 'node:test';
 
 import { PAGINAS_PRODUCTOS, PAGINAS_TOS } from '../tos-paginas.mjs';
-import { parsearBloques, renderizarTos, verificarCobertura } from '../tos-render.mjs';
+import {
+  PATRON_VERSION,
+  parsearBloques,
+  renderizarTos,
+  verificarCobertura,
+} from '../tos-render.mjs';
 
 const raiz = dirname(dirname(fileURLToPath(import.meta.url)));
 const TODAS_LAS_PAGINAS = [...PAGINAS_TOS, ...PAGINAS_PRODUCTOS];
@@ -163,6 +168,134 @@ describe('separación maestro / anexo de producto (9 de agosto de 2026)', () => 
     const pagina = PAGINAS_PRODUCTOS[0];
     const html = renderizarTos({ markdown: leerFuente(pagina), pagina });
     assert.ok(html.includes('<a href="/terms"'));
+  });
+});
+
+describe('versión del documento, comprobable por máquina (H2)', () => {
+  for (const pagina of TODAS_LAS_PAGINAS) {
+    it(`/${pagina.ruta} (${pagina.lang}): declara una versión con forma de fecha ISO`, () => {
+      assert.match(pagina.version, PATRON_VERSION);
+    });
+
+    it(`/${pagina.ruta} (${pagina.lang}): publica esa versión en <meta name="tos-version">`, () => {
+      const html = renderizarTos({ markdown: leerFuente(pagina), pagina });
+      assert.ok(html.includes(`<meta name="tos-version" content="${pagina.version}">`));
+    });
+  }
+
+  for (const pagina of PAGINAS_PRODUCTOS) {
+    it(`/${pagina.ruta} (${pagina.lang}): publica el slug con el que el Worker sella el Anexo`, () => {
+      const html = renderizarTos({ markdown: leerFuente(pagina), pagina });
+      assert.equal(pagina.slug, 'web-to-markdown');
+      assert.ok(html.includes(`<meta name="tos-schedule-slug" content="${pagina.slug}">`));
+    });
+  }
+
+  it('el maestro no lleva slug de Anexo: no es un Schedule', () => {
+    for (const pagina of PAGINAS_TOS) assert.equal(pagina.slug, undefined);
+  });
+
+  it('rompe el build si la fecha del documento y la versión declarada divergen', () => {
+    // Es el equivalente de verificarCobertura para la versión: si alguien
+    // actualiza la fecha del texto legal y olvida la config (o al revés), el
+    // Worker acabaría sellando una versión que no es la que el cliente leyó.
+    const pagina = PAGINAS_TOS[0];
+    const derivado = leerFuente(pagina).replace(
+      'Last updated: August 9, 2026',
+      'Last updated: August 15, 2026',
+    );
+
+    assert.throws(() => renderizarTos({ markdown: derivado, pagina }), /Deriva de versión/);
+  });
+
+  it('rechaza una versión que no tiene forma de fecha ISO', () => {
+    const pagina = { ...PAGINAS_TOS[0], version: 'v2' };
+    assert.throws(
+      () => renderizarTos({ markdown: leerFuente(PAGINAS_TOS[0]), pagina }),
+      /forma de fecha ISO/,
+    );
+  });
+
+  it('la versión española se comprueba contra el formato de fecha en español', () => {
+    const pagina = PAGINAS_TOS[1];
+    const derivado = leerFuente(pagina).replace(
+      'Última actualización: 9 de agosto de 2026',
+      'Última actualización: 15 de agosto de 2026',
+    );
+
+    assert.throws(() => renderizarTos({ markdown: derivado, pagina }), /Deriva de versión/);
+  });
+});
+
+describe('correcciones de la revisión adversarial H1-H6, H8', () => {
+  const maestro = () => renderizarTos({ markdown: leerFuente(PAGINAS_TOS[0]), pagina: PAGINAS_TOS[0] });
+  const anexo = () =>
+    renderizarTos({ markdown: leerFuente(PAGINAS_PRODUCTOS[0]), pagina: PAGINAS_PRODUCTOS[0] });
+
+  it('H1: el maestro fija que un Schedule nunca puede reducir protecciones', () => {
+    const html = maestro();
+    assert.ok(html.includes('A Schedule may never reduce these protections'));
+    assert.ok(html.includes('the provision more favourable to the Customer prevails'));
+    // La regla de suelo debe decir expresamente que se impone sobre la regla
+    // de conflicto de la definición de "Schedule", que es la que abría H1.
+    assert.ok(html.includes('This overrides, for that purpose only, the conflict rule'));
+  });
+
+  it('H1: el Anexo repone el matiz de "no es una renuncia" y remite a 9.1 y 8.3', () => {
+    const html = anexo();
+    assert.ok(html.includes('it is not a waiver of the'));
+    assert.ok(html.includes('statutory remedies preserved in section 9.1'));
+    assert.ok(html.includes('conformity requirements preserved in section 8.3'));
+    // Y ya no puede estar huérfano de salvaguarda de consumidor.
+    assert.ok(html.includes('Nothing in this section excludes or limits any right or remedy'));
+  });
+
+  it('H3: §9.2 conserva el escudo con antecedente propio, sin nombrar el producto', () => {
+    const html = maestro();
+    // El escudo sigue completo...
+    assert.ok(
+      html.includes(
+        'the Provider does not select, control, verify, or endorse that Content, and shall not be liable for it',
+      ),
+    );
+    // ...con su propio antecedente, no colgando de una frase que se movió.
+    assert.ok(html.includes('Where a Product processes Content that the Customer directs it to fetch'));
+    // Y el maestro ya no describe un convertidor.
+    assert.doesNotMatch(html, /The Service converts content/);
+  });
+
+  it('H4: la aceptación cubre expresamente los Schedules', () => {
+    assert.ok(maestro().includes('together with the Schedule of each Product you subscribe to or use'));
+  });
+
+  it('H4: §11 somete los Schedules al mismo régimen de preaviso', () => {
+    const html = maestro();
+    assert.ok(html.includes('This section applies to Schedules in the same way'));
+    assert.ok(html.includes('thirty'));
+  });
+
+  it('H5: los Schedules sobreviven a la terminación', () => {
+    assert.ok(
+      maestro().includes(
+        'together with the intellectual property and warranty provisions of each Schedule',
+      ),
+    );
+  });
+
+  it('H6: un Producto sin Schedule publicado no queda fuera de los Términos', () => {
+    assert.ok(maestro().includes('the absence of a Schedule never places a Product outside these Terms'));
+  });
+
+  it('H8: los paquetes de código abierto se rigen por su licencia, sin perder derechos del Producto', () => {
+    const html = maestro();
+    assert.ok(html.includes('are governed by the terms of that licence, not by these Terms'));
+    // La frase de alcance no puede leerse como exclusión de responsabilidad
+    // sobre un Producto contratado: ése era el riesgo de introducir H8.
+    assert.ok(
+      html.includes(
+        'It does not affect any right or remedy the Customer has in respect of a Product',
+      ),
+    );
   });
 });
 

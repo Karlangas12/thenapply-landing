@@ -9,6 +9,15 @@
     <link rel="alternate" hreflang="en" href="https://thenapply.dev/terms">
     <link rel="alternate" hreflang="es" href="https://thenapply.dev/terminos">
 
+    <!--
+      Versión del documento, en el mismo formato ISO que sella el Worker.
+      Publicada aquí para que la versión servida al cliente sea comprobable
+      desde fuera, sin leer el repositorio: debe coincidir con TOS_VERSION
+      (maestro) o SCHEDULE_VERSION (anexo) del wrangler.toml del Worker.
+    -->
+    <meta name="tos-version" content="2026-08-09">
+    <meta name="tos-schedule-slug" content="web-to-markdown">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -75,6 +84,7 @@
             <li><strong class="text-white font-semibold">Entrada</strong> — una URL, o HTML en crudo, junto con los parámetros de conversión que indique el Cliente.</li>
             <li><strong class="text-white font-semibold">Salida</strong> — Markdown, metadatos extraídos y cuerpos de error.</li>
           </ul>
+          <p class="text-slate-400 leading-relaxed mt-3">Este Producto convierte el Contenido que el Cliente le indica que descargue, o que el propio Cliente le envía. Las consecuencias de ello en materia de responsabilidad se establecen en la sección 9.2 de los Términos, que se aplica sin cambios a este Producto.</p>
         </section>
         <section id="3-propiedad-intelectual" class="mt-10">
           <h2 class="mb-2 text-lg font-semibold text-white">3. Propiedad intelectual</h2>
@@ -83,7 +93,8 @@
         </section>
         <section id="4-calidad-de-la-salida" class="mt-10">
           <h2 class="mb-2 text-lg font-semibold text-white">4. Calidad de la salida</h2>
-          <p class="text-slate-400 leading-relaxed">El Proveedor no garantiza que la salida Markdown sea exacta o completa para toda página convertida: la calidad de la conversión depende de la estructura de la página de origen, que el Proveedor no controla.</p>
+          <p class="text-slate-400 leading-relaxed">El Proveedor no garantiza que la salida Markdown sea exacta o completa para toda página convertida: la calidad de la conversión depende de la estructura de la página de origen, que el Proveedor no controla. Esto describe lo que el Producto hace; no es una renuncia a la obligación del Proveedor de prestarlo.</p>
+          <p class="text-slate-400 leading-relaxed mt-3"><strong class="text-white font-semibold">Nada en esta sección excluye ni limita derecho o remedio alguno que la ley imperativa aplicable reconozca a los consumidores</strong>, ni los remedios legales preservados en la sección 9.1 de los Términos, ni los requisitos de conformidad preservados en la sección 8.3 de los Términos. Como establece la sección 1.1 de los Términos, nada en este Anexo puede reducir una salvaguarda que los Términos reconozcan al Cliente.</p>
         </section>
         <section id="5-planes-precios-y-cuotas" class="mt-10">
           <h2 class="mb-2 text-lg font-semibold text-white">5. Planes, precios y cuotas</h2>

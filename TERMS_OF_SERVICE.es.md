@@ -20,8 +20,9 @@ Estos Términos de Servicio (los «Términos») constituyen un acuerdo vinculant
 entre usted y Carlos Fuentes Navarro, persona física residente en España, que
 opera bajo la marca **Then Apply** (el «Proveedor», «nosotros»). Al solicitar
 una API Key, suscribirse a un plan o realizar cualquier petición al Servicio,
-usted acepta estos Términos en su totalidad. Si no los acepta, no use el
-Servicio.
+usted acepta estos Términos en su totalidad, **junto con el Anexo de cada
+Producto al que se suscriba o que utilice**, que forma parte de este acuerdo.
+Si no los acepta, no use el Servicio.
 
 Estos Términos se aplican a todos los Productos que el Proveedor ofrece bajo
 la marca Then Apply. El Proveedor ofrece actualmente:
@@ -40,7 +41,10 @@ la marca Then Apply. El Proveedor ofrece actualmente:
   que el Proveedor pone a disposición a través del Servicio (por ejemplo, una
   API, herramienta o extensión). Las funcionalidades, precios y cuotas
   específicos de cada Producto que ofrece el Proveedor se establecen en el
-  Anexo de ese Producto, incorporado a estos Términos por referencia.
+  Anexo de ese Producto, incorporado a estos Términos por referencia. Un
+  Producto para el que todavía no se haya publicado Anexo se rige igualmente
+  por estos Términos en solitario hasta que ese Anexo se publique: la
+  ausencia de Anexo nunca deja a un Producto fuera de estos Términos.
 - **Anexo** (*Schedule*) — el documento específico de un Producto, publicado
   junto a estos Términos, que establece la descripción de ese Producto, la
   forma del Contenido que acepta y devuelve, sus planes, precios y cuotas, y
@@ -60,6 +64,38 @@ la marca Then Apply. El Proveedor ofrece actualmente:
 - **Plan** — el nivel de un Producto al que se suscribe el Cliente, que
   determina la cuota de peticiones y las funcionalidades aplicables a ese
   Producto.
+
+### 1.1. Un Anexo nunca puede reducir estas protecciones
+
+**Ningún Anexo puede reducir, excluir, matizar ni debilitar de otro modo
+salvaguarda, derecho o remedio alguno que estos Términos reconozcan al Cliente
+—y en particular a un Cliente que sea consumidor en el sentido de la
+legislación española o de la Unión Europea—.** Cuando un Anexo y estos Términos
+difieran respecto de tal salvaguarda, derecho o remedio, **prevalece la
+disposición más favorable al Cliente**.
+
+Esto se impone, sólo a ese efecto, sobre la regla de conflicto de la definición
+de «Anexo» anterior. Esa regla —según la cual un Anexo prevalece para su
+Producto en las materias que regula— se aplica únicamente a materias que no
+afectan a la protección del Cliente: la descripción de un Producto, la forma de
+su Contenido, sus planes, cuotas, canales de soporte y condiciones operativas
+equivalentes.
+
+En consecuencia, toda limitación o exclusión establecida en un Anexo se
+interpreta sujeta a las secciones 7, 8 y 9 de estos Términos, incluidas las
+salvaguardas de consumidor que esas secciones preservan.
+
+### 1.2. Qué no cubren estos Términos
+
+Las herramientas, bibliotecas y paquetes que el Proveedor distribuya bajo una
+licencia de código abierto, y que no se ofrezcan como Producto a través del
+Servicio —es decir, que no requieran API Key—, se rigen por los términos de esa
+licencia, no por estos Términos.
+
+Esto indica qué documento se aplica a qué. No afecta a ningún derecho ni
+remedio que asista al Cliente respecto de un Producto al que se haya suscrito o
+que haya utilizado, aun cuando ese Producto comparta código con uno de esos
+paquetes.
 
 ## 2. Licencia otorgada al Cliente
 
@@ -172,7 +208,10 @@ notificar después.
 del periodo ya facturado.** El Cliente puede cancelar su suscripción en
 cualquier momento a través de Polar; la cancelación surte efecto al final del
 periodo de facturación en curso, y el acceso continúa hasta entonces. Las
-secciones 5, 7, 8, 9 y 10 sobreviven a la terminación.
+secciones 5, 7, 8, 9 y 10 sobreviven a la terminación, junto con las
+disposiciones de propiedad intelectual y de exclusión de garantías de cada
+Anexo, que sobreviven en los mismos términos —y sujetas a las mismas
+salvaguardas de consumidor— que las secciones 7 a 9 de estos Términos.
 
 ## 7. Disponibilidad
 
@@ -272,10 +311,14 @@ permita la ley imperativa aplicable y, en todo caso, no excluye ni limita:
 
 ### 9.2. Servicios y contenidos de terceros
 
-El Servicio convierte el contenido que el **Cliente** le indica que descargue o
-que el propio Cliente le envía. El Proveedor no selecciona, controla, verifica
-ni respalda ese contenido, y no responderá de él ni de la falta de
-autorización del Cliente para acceder a él o tratarlo.
+La naturaleza del Contenido que trata cada Producto, y la medida en que el
+**Cliente** controla o dirige ese Contenido, se establecen en el Anexo de ese
+Producto.
+
+Cuando un Producto trate Contenido que el Cliente le indique descargar, o que
+el propio Cliente le envíe, el Proveedor no selecciona, controla, verifica ni
+respalda ese Contenido, y no responderá de él ni de la falta de autorización
+del Cliente para acceder a él o tratarlo.
 
 Como se indica en la sección 4, Polar.sh actúa como Merchant of Record y es la
 contraparte de la propia transacción de venta; la facturación, la emisión de
@@ -353,6 +396,16 @@ partir de esa fecha constituye aceptación.
 Los cambios no materiales (aclaraciones, correcciones, actualización de datos
 de contacto) surten efecto con su publicación, actualizando la fecha de la
 cabecera de este documento.
+
+**Esta sección se aplica a los Anexos igual que a estos Términos.** Un cambio
+en un Anexo que reduzca significativamente los derechos del Cliente o aumente
+sus obligaciones es un cambio material y sigue el mismo plazo de preaviso de
+treinta (30) días; un cambio que sólo amplíe los derechos del Cliente, o que
+sea una aclaración, corrección o cuestión de forma, surte efecto con su
+publicación, actualizando la fecha propia de ese Anexo. Cada Anexo lleva su
+propia fecha de última actualización, y el Proveedor deja constancia de qué
+versión de estos Términos y del Anexo aplicable aceptó el Cliente en el momento
+en que se emitió o actualizó su API Key.
 
 ## 12. Contacto
 

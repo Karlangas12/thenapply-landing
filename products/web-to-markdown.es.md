@@ -30,6 +30,11 @@ Para este Producto, el Contenido tiene la siguiente forma:
   conversión que indique el Cliente.
 - **Salida** — Markdown, metadatos extraídos y cuerpos de error.
 
+Este Producto convierte el Contenido que el Cliente le indica que descargue, o
+que el propio Cliente le envía. Las consecuencias de ello en materia de
+responsabilidad se establecen en la sección 9.2 de los Términos, que se aplica
+sin cambios a este Producto.
+
 ## 3. Propiedad intelectual
 
 El nombre y la marca **Web to Markdown** forman parte de la propiedad del
@@ -45,7 +50,15 @@ marcas.
 
 El Proveedor no garantiza que la salida Markdown sea exacta o completa para
 toda página convertida: la calidad de la conversión depende de la estructura
-de la página de origen, que el Proveedor no controla.
+de la página de origen, que el Proveedor no controla. Esto describe lo que el
+Producto hace; no es una renuncia a la obligación del Proveedor de prestarlo.
+
+**Nada en esta sección excluye ni limita derecho o remedio alguno que la ley
+imperativa aplicable reconozca a los consumidores**, ni los remedios legales
+preservados en la sección 9.1 de los Términos, ni los requisitos de conformidad
+preservados en la sección 8.3 de los Términos. Como establece la sección 1.1 de
+los Términos, nada en este Anexo puede reducir una salvaguarda que los Términos
+reconozcan al Cliente.
 
 ## 5. Planes, precios y cuotas
 

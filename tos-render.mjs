@@ -38,6 +38,69 @@ function escaparHtml(texto) {
     .replace(/"/g, '&quot;');
 }
 
+// --- Versión del documento ---------------------------------------------------
+
+/** Forma admitida para la versión de un documento: fecha ISO acotada. */
+export const PATRON_VERSION = /^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])$/;
+
+const MESES = {
+  en: [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December',
+  ],
+  es: [
+    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre',
+  ],
+};
+
+/**
+ * Reconstruye la fecha legible que debe aparecer en el documento a partir de
+ * la versión ISO declarada en la configuración.
+ *
+ * Se reconstruye en vez de parsear el texto libre del documento: parsear
+ * admite variantes ("Aug 9", "09/08/2026") y falla en silencio ante una que no
+ * contemple; reconstruir sólo admite exactamente la forma que este generador
+ * escribe, que es lo que interesa para detectar deriva.
+ */
+function fechaLegible(versionIso, lang) {
+  const [anio, mes, dia] = versionIso.split('-').map((n) => Number(n));
+  const nombreMes = MESES[lang][mes - 1];
+  return lang === 'es' ? `${dia} de ${nombreMes} de ${anio}` : `${nombreMes} ${dia}, ${anio}`;
+}
+
+/**
+ * Exige que la versión declarada en la configuración y la fecha impresa en el
+ * documento digan lo mismo.
+ *
+ * Es el mismo principio que `verificarCobertura`, aplicado a la versión: el
+ * Worker sella `TOS_VERSION`/`SCHEDULE_VERSION` desde su propio
+ * `wrangler.toml`, un fichero que vive en **otro repositorio** y que nadie
+ * puede comprobar desde aquí. Lo único que sí se puede garantizar en este lado
+ * es que la fecha que el cliente lee en la página y la versión que este
+ * generador publica en `<meta name="tos-version">` no se contradigan entre sí.
+ *
+ * @throws si divergen, o si la versión no tiene forma de fecha ISO.
+ */
+function verificarVersion({ version, fecha, lang, origen }) {
+  if (typeof version !== 'string' || !PATRON_VERSION.test(version)) {
+    throw new Error(
+      `La página ${origen} no declara una \`version\` con forma de fecha ISO ` +
+        `(YYYY-MM-DD). Recibido: ${JSON.stringify(version)}.`,
+    );
+  }
+
+  const esperada = fechaLegible(version, lang);
+  if (!fecha.includes(esperada)) {
+    throw new Error(
+      `Deriva de versión en ${origen}: la configuración declara \`version: '${version}'\`, ` +
+        `que debería imprimirse como "${esperada}", pero la línea de última ` +
+        `actualización del Markdown dice: "${fecha}".\n` +
+        '  Actualiza ambas a la vez — el Worker sella esta misma fecha.',
+    );
+  }
+}
+
 /** Convierte un título en un identificador estable para enlazar a la cláusula. */
 function anclaDeTitulo(texto) {
   return texto
@@ -434,6 +497,14 @@ export function renderizarTos({ markdown, pagina }) {
     );
   }
 
+  // Falla en cerrado si la versión declarada y la fecha impresa divergen.
+  verificarVersion({
+    version: pagina.version,
+    fecha,
+    lang: pagina.lang,
+    origen: pagina.fuente,
+  });
+
   const lineaFecha =
     pagina.enlaceAlternativo === null
       ? `        <p class="mt-3 text-sm text-slate-400">${escaparHtml(fecha)}</p>`
@@ -456,6 +527,16 @@ export function renderizarTos({ markdown, pagina }) {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="alternate" hreflang="en" href="https://thenapply.dev/terms">
     <link rel="alternate" hreflang="es" href="https://thenapply.dev/terminos">
+
+    <!--
+      Versión del documento, en el mismo formato ISO que sella el Worker.
+      Publicada aquí para que la versión servida al cliente sea comprobable
+      desde fuera, sin leer el repositorio: debe coincidir con TOS_VERSION
+      (maestro) o SCHEDULE_VERSION (anexo) del wrangler.toml del Worker.
+    -->
+    <meta name="tos-version" content="${pagina.version}">${
+      pagina.slug === undefined ? '' : `\n    <meta name="tos-schedule-slug" content="${pagina.slug}">`
+    }
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
