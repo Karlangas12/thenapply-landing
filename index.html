@@ -170,13 +170,20 @@
                         <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">Edge-first, no servers</div>
                     </div>
                     <!--
-                      219 = 38 (web-to-markdown) + 32 (openapi-to-mcp) + 149
-                      (mcp-shield-proxy), según el badge y la sección "Testing" del
-                      README de cada paquete. Si cambia el número en cualquiera de
-                      los tres, esta suma deja de ser cierta: actualízala aquí.
+                      269 = 88 (web-to-markdown) + 32 (openapi-to-mcp) + 149
+                      (mcp-shield-proxy).
+
+                      Cifras obtenidas **ejecutando `npm test`** en cada repositorio
+                      sobre su `origin/main`, el 10 de agosto de 2026. No las tomes
+                      del badge ni de la sección "Testing" del README: esta cifra ya
+                      estuvo mal dos veces por hacer justo eso. El badge de
+                      web-to-markdown anunció "43 passing" durante dos días mientras
+                      la suite real corría 88, porque un commit de sincronización
+                      añadió tests sin tocar el README. El badge va por detrás del
+                      código; la ejecución, no.
                     -->
                     <div class="p-4 rounded-lg bg-brand-card/40 border border-brand-border/40">
-                        <div class="text-lg font-bold font-mono text-brand-400">219 tests passing</div>
+                        <div class="text-lg font-bold font-mono text-brand-400">269 tests passing</div>
                         <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">Across the 3 packages</div>
                     </div>
                     <div class="p-4 rounded-lg bg-brand-card/40 border border-brand-border/40">
