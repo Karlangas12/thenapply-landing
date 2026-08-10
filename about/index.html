@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Then Apply</title>
+    <meta name="description" content="Then Apply is a one-person engineering practice run by Carlos Fuentes Navarro: adversarial security audits, technical debt declared with a trigger condition, nothing closed without end-to-end verification.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate" hreflang="en" href="https://thenapply.dev/about">
+    <link rel="alternate" hreflang="es" href="https://thenapply.dev/acerca-de">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f3ff', 100: '#ebe9fe', 400: '#a78bfa', 500: '#8b5cf6',
+                            600: '#7c3aed', 700: '#6d28d9', dark: '#08090C', card: '#12141A',
+                            border: '#1E222D'
+                        },
+                        cyanAccent: '#00f2fe',
+                        blueAccent: '#4F7DFC'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body { background-color: #08090C; color: #E2E8F0; font-family: 'Inter', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #A78BFA 0%, #4F7DFC 50%, #00F2FE 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-border {
+            position: relative;
+            background: #12141A;
+            border-radius: 0.75rem;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 0.8rem;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(139,92,246,0.4), rgba(79,125,252,0.1), rgba(0,242,254,0.3));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #08090C; }
+        ::-webkit-scrollbar-thumb { background: #1E222D; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-[#08090C]/80 border-b border-brand-border/60 transition-all duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-3 group">
+                <img src="/icon-mark.svg" alt="" width="36" height="36" class="group-hover:scale-105 transition-transform">
+                <span class="font-bold text-lg tracking-tight text-white">Then Apply</span>
+            </a>
+            <a href="/" class="text-sm text-slate-400 hover:text-white transition-colors">&larr; Back to home</a>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Hero -->
+        <section class="relative pt-16 pb-16 md:pt-24 md:pb-20 overflow-hidden">
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-600/15 blur-[120px] rounded-full pointer-events-none"></div>
+
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-card border border-brand-border text-xs font-mono text-slate-300 mb-8">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-brand-400 font-semibold">ABOUT</span> // who's behind Then Apply
+                </div>
+
+                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-4 leading-tight">
+                    Carlos Fuentes Navarro
+                </h1>
+
+                <p class="max-w-2xl mx-auto text-lg sm:text-xl gradient-text font-semibold leading-relaxed">
+                    A one-person engineering practice run with the discipline of a team: adversarial audits, technical debt documented with an explicit trigger condition, nothing declared &quot;closed&quot; without end-to-end verification.
+                </p>
+            </div>
+        </section>
+
+        <!-- How I work -->
+        <section class="py-16 bg-[#0B0D12] border-y border-brand-border/60">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-3">How I work</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="gradient-border p-6">
+                        <h3 class="text-lg font-bold text-white mb-2">Adversarial audits, not self-congratulation.</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Every piece of code that touches authentication or billing goes through a security review in an independent session — so I'm never the one reviewing my own work.</p>
+                    </div>
+
+                    <div class="gradient-border p-6">
+                        <h3 class="text-lg font-bold text-white mb-2">Technical debt gets declared, not hidden.</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">When something is deferred (a legal review, a storage migration), it gets written down with the reason and the exact condition that triggers resolving it — not a vague promise to &quot;get to it later.&quot;</p>
+                    </div>
+
+                    <div class="gradient-border p-6">
+                        <h3 class="text-lg font-bold text-white mb-2">Verified in production, not on localhost.</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Nothing gets marked closed until it's confirmed with a real transaction, a real deployment, a real push — not with &quot;it works on my machine.&quot;</p>
+                    </div>
+
+                    <div class="gradient-border p-6">
+                        <h3 class="text-lg font-bold text-white mb-2">One person accountable, zero team excuses.</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">There's no committee to dilute a security decision, no &quot;someone else owns that.&quot; Whatever you see published, I decided it, built it, and verified it myself.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Published assets -->
+        <section class="py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white mb-3">Published assets</h2>
+            </div>
+
+            <div class="space-y-4">
+                <div class="gradient-border p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-white">web-to-markdown</h3>
+                        <p class="text-slate-400 text-sm mt-1">Converts web pages and raw HTML into clean, LLM-ready Markdown.</p>
+                    </div>
+                    <div class="flex items-center gap-4 text-sm font-mono flex-shrink-0">
+                        <a href="https://www.npmjs.com/package/@karlangas12/web-to-markdown" target="_blank" rel="noopener" class="text-brand-400 hover:text-white transition-colors">npm</a>
+                        <a href="https://github.com/Karlangas12/web-to-markdown" target="_blank" rel="noopener" class="text-brand-400 hover:text-white transition-colors">GitHub</a>
+                    </div>
+                </div>
+
+                <div class="gradient-border p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-white">openapi-to-mcp</h3>
+                        <p class="text-slate-400 text-sm mt-1">Turns an OpenAPI 3.x spec into a working MCP server.</p>
+                    </div>
+                    <div class="flex items-center gap-4 text-sm font-mono flex-shrink-0">
+                        <a href="https://www.npmjs.com/package/@karlangas12/openapi-to-mcp" target="_blank" rel="noopener" class="text-brand-400 hover:text-white transition-colors">npm</a>
+                        <a href="https://github.com/Karlangas12/openapi-to-mcp" target="_blank" rel="noopener" class="text-brand-400 hover:text-white transition-colors">GitHub</a>
+                    </div>
+                </div>
+
+                <div class="gradient-border p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-white">mcp-shield-proxy</h3>
+                        <p class="text-slate-400 text-sm mt-1">A local firewall for MCP servers that inspects tool calls and masks secrets.</p>
+                    </div>
+                    <div class="flex items-center gap-4 text-sm font-mono flex-shrink-0">
+                        <a href="https://github.com/Karlangas12/mcp-shield-proxy" target="_blank" rel="noopener" class="text-brand-400 hover:text-white transition-colors">GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-10">
+                <a href="https://github.com/Karlangas12" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white transition-colors">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    github.com/Karlangas12
+                </a>
+            </div>
+        </section>
+
+        <!-- Subordinate footer callout -->
+        <section class="pb-20 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="rounded-xl border border-brand-border bg-brand-card/40 p-5 text-center">
+                <p class="text-sm text-slate-400">
+                    Looking for my profile as an engineer?
+                    <a href="https://portfolio.thenapply.dev" target="_blank" rel="noopener" class="text-brand-400 hover:text-white transition-colors underline decoration-brand-700 ml-1">portfolio.thenapply.dev</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#050608] border-t border-brand-border/80 py-12 text-slate-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center space-x-3">
+                <img src="/icon-mark.svg" alt="" width="28" height="28">
+                <span class="font-bold text-white tracking-tight">Then Apply</span>
+                <span class="text-xs text-slate-500 font-mono">© 2026 Then Apply.</span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-6 text-xs text-slate-400 font-mono">
+                <a href="/about" class="hover:text-white transition-colors">About</a>
+                <a href="/acerca-de" class="hover:text-white transition-colors">Acerca de (ES)</a>
+                <a href="/terms" class="hover:text-white transition-colors">Terms</a>
+                <a href="/terminos" class="hover:text-white transition-colors">Términos (ES)</a>
+                <a href="mailto:carlosfu.invers@gmail.com" class="hover:text-white transition-colors">Contact: carlosfu.invers@gmail.com</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
