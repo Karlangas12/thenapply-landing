@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service status — web-to-markdown — Then Apply</title>
+    <meta name="description" content="Live health check for the web-to-markdown edge API: the public GET /salud liveness probe, what it reports, and how to verify it yourself.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f3ff', 100: '#ebe9fe', 400: '#a78bfa', 500: '#8b5cf6',
+                            600: '#7c3aed', 700: '#6d28d9', dark: '#08090C', card: '#12141A',
+                            border: '#1E222D'
+                        },
+                        cyanAccent: '#00f2fe',
+                        blueAccent: '#4F7DFC'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body { background-color: #08090C; color: #E2E8F0; font-family: 'Inter', sans-serif; }
+        .gradient-border {
+            position: relative;
+            background: #12141A;
+            border-radius: 0.75rem;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 0.8rem;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(139,92,246,0.4), rgba(79,125,252,0.1), rgba(0,242,254,0.3));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+        .dot-checking { animation: pulse-dot 1.2s ease-in-out infinite; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #08090C; }
+        ::-webkit-scrollbar-thumb { background: #1E222D; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-[#08090C]/80 border-b border-brand-border/60 transition-all duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-3 group">
+                <img src="/icon-mark.svg" alt="" width="36" height="36" class="group-hover:scale-105 transition-transform">
+                <span class="font-bold text-lg tracking-tight text-white">Then Apply</span>
+            </a>
+            <a href="/web-to-markdown/" class="text-sm text-slate-400 hover:text-white transition-colors">&larr; Back to web-to-markdown</a>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <section class="relative pt-16 pb-12 overflow-hidden">
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[260px] bg-brand-600/15 blur-[120px] rounded-full pointer-events-none"></div>
+
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-card border border-brand-border text-xs font-mono text-slate-300 mb-6">
+                    <span class="text-brand-400 font-semibold">STATUS</span> // web-to-markdown edge API
+                </div>
+
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-4">Service status</h1>
+                <p class="text-slate-400 leading-relaxed mb-10">
+                    The API exposes an unauthenticated liveness probe at
+                    <code class="font-mono text-cyanAccent">GET /salud</code>. It is the same
+                    endpoint external monitors use. This page checks it from your browser and
+                    shows you the raw answer.
+                </p>
+
+                <!--
+                  Comprobación en vivo con degradación honesta.
+
+                  El Worker aplica CORS a todas las rutas y sólo autoriza los orígenes
+                  de ORIGENES_PERMITIDOS, donde thenapply.dev no está (a 10 de agosto
+                  de 2026). Por tanto este fetch fallará desde el dominio real hasta
+                  que se añada allí.
+
+                  Un fetch bloqueado por CORS lanza un TypeError indistinguible del de
+                  una caída de red: el navegador no deja ver el motivo. Por eso el
+                  estado de error NO dice "el servicio está caído" —sería afirmar algo
+                  que esta página no puede saber—, sino que no ha podido comprobarlo
+                  desde aquí, y ofrece las dos vías que sí funcionan: abrir el endpoint
+                  en una pestaña (una navegación de primer nivel no pasa por CORS) o
+                  el curl de abajo.
+
+                  El día que thenapply.dev entre en ORIGENES_PERMITIDOS, esta página
+                  empieza a mostrar el estado en vivo sin tocar una línea.
+                -->
+                <div class="gradient-border p-6 mb-8">
+                    <div class="flex items-start gap-4">
+                        <span id="status-dot" class="mt-1.5 w-3 h-3 rounded-full bg-slate-500 dot-checking flex-shrink-0"></span>
+                        <div class="min-w-0 flex-grow">
+                            <h2 id="status-headline" class="text-lg font-bold text-white">Checking…</h2>
+                            <p id="status-detail" class="text-sm text-slate-400 leading-relaxed mt-1">
+                                Requesting <code class="font-mono text-slate-300">GET /salud</code> from your browser.
+                            </p>
+                            <pre id="status-body" class="hidden mt-4 bg-[#08090C] border border-brand-border rounded-lg p-3 text-xs font-mono text-slate-300 overflow-x-auto"></pre>
+                            <p id="status-time" class="hidden mt-3 text-[11px] text-slate-500 font-mono"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 mb-14">
+                    <a href="https://web-to-markdown.karlangas12.workers.dev/salud" target="_blank" rel="noopener" class="px-5 py-2.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-brand-600 to-blue-600 hover:from-brand-500 hover:to-blue-500 transition-all shadow-md text-center">
+                        Open /salud directly
+                    </a>
+                    <button onclick="checkHealth()" class="px-5 py-2.5 rounded-xl font-semibold text-sm text-slate-300 bg-brand-card hover:bg-brand-border border border-brand-border transition-all">
+                        Re-run the check
+                    </button>
+                </div>
+
+                <h2 class="text-xl font-bold text-white mb-4">Verify it yourself</h2>
+                <div class="bg-[#0E1017] border border-brand-border rounded-xl overflow-hidden shadow-2xl mb-10">
+                    <div class="flex items-center justify-between px-4 py-3 bg-[#08090C] border-b border-brand-border">
+                        <span class="text-xs font-mono text-slate-400">cURL / GET /salud</span>
+                        <button onclick="copyToClipboard('curl-block')" class="text-xs text-brand-400 hover:text-brand-300 font-mono flex items-center gap-1">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                            Copy
+                        </button>
+                    </div>
+                    <pre id="curl-block" class="p-5 text-xs sm:text-sm font-mono text-slate-200 overflow-x-auto">curl -i https://web-to-markdown.karlangas12.workers.dev/salud</pre>
+                </div>
+
+                <h2 class="text-xl font-bold text-white mb-4">What this endpoint reports</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-5">
+                        <h3 class="text-sm font-mono text-brand-400 mb-3">Request</h3>
+                        <ul class="text-sm text-slate-400 space-y-2 font-mono">
+                            <li><span class="text-slate-300">Method:</span> GET</li>
+                            <li><span class="text-slate-300">Path:</span> /salud</li>
+                            <li><span class="text-slate-300">Auth:</span> none — public probe</li>
+                            <li><span class="text-slate-300">Quota:</span> not metered</li>
+                        </ul>
+                    </div>
+                    <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-5">
+                        <h3 class="text-sm font-mono text-brand-400 mb-3">Response body</h3>
+                        <pre class="text-xs font-mono text-slate-400 overflow-x-auto">{
+  "ok": true,
+  "data": {
+    "estado": "ok",
+    "entorno": "production"
+  }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="rounded-xl border border-brand-border bg-brand-card/40 p-5">
+                    <h3 class="text-sm font-bold text-white mb-2">What it does not tell you</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        <code class="font-mono text-slate-300">/salud</code> is a liveness probe: a
+                        <span class="font-mono text-emerald-400">200</span> means the Worker is
+                        running and serving requests. It does not exercise the conversion path, the
+                        key store, or the rate limiter, so it is not a guarantee that every feature
+                        is healthy — only that the service is up and reachable. There is no
+                        historical uptime record behind this page; it reflects this moment only.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#050608] border-t border-brand-border/80 py-12 text-slate-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <a href="/" class="flex items-center space-x-3">
+                <img src="/icon-mark.svg" alt="" width="28" height="28">
+                <span class="font-bold text-white tracking-tight">Then Apply</span>
+                <span class="text-xs text-slate-500 font-mono">© 2026 Then Apply.</span>
+            </a>
+            <div class="flex flex-wrap items-center gap-6 text-xs text-slate-400 font-mono">
+                <a href="/web-to-markdown/" class="hover:text-white transition-colors">web-to-markdown</a>
+                <a href="/terms" class="hover:text-white transition-colors">Terms</a>
+                <a href="mailto:keys@thenapply.dev" class="hover:text-white transition-colors">Support: keys@thenapply.dev</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-brand-card border border-brand-500/50 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 font-mono text-xs pointer-events-none">
+        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        <span id="toast-message">Copied to clipboard!</span>
+    </div>
+
+    <script>
+        const HEALTH_URL = 'https://web-to-markdown.karlangas12.workers.dev/salud';
+
+        const dot = document.getElementById('status-dot');
+        const headline = document.getElementById('status-headline');
+        const detail = document.getElementById('status-detail');
+        const body = document.getElementById('status-body');
+        const time = document.getElementById('status-time');
+
+        // Estados posibles. Sólo se afirma "operational" cuando hay una respuesta
+        // 2xx leída de verdad; cualquier otra cosa se reporta como "no comprobable
+        // desde aquí", nunca como caída.
+        function render(state, opts) {
+            const options = opts || {};
+            dot.classList.remove('dot-checking', 'bg-slate-500', 'bg-emerald-400', 'bg-amber-400');
+            body.classList.add('hidden');
+            time.classList.add('hidden');
+
+            if (state === 'checking') {
+                dot.classList.add('bg-slate-500', 'dot-checking');
+                headline.textContent = 'Checking…';
+                headline.className = 'text-lg font-bold text-white';
+                detail.innerHTML = 'Requesting <code class="font-mono text-slate-300">GET /salud</code> from your browser.';
+                return;
+            }
+
+            if (state === 'up') {
+                dot.classList.add('bg-emerald-400');
+                headline.textContent = 'Operational';
+                headline.className = 'text-lg font-bold text-emerald-400';
+                detail.innerHTML = 'The API answered <span class="font-mono text-slate-300">' + options.status + '</span> to the public liveness probe.';
+                body.textContent = options.text || '';
+                body.classList.remove('hidden');
+                time.textContent = 'Checked ' + new Date().toISOString() + ' (your browser’s clock)';
+                time.classList.remove('hidden');
+                return;
+            }
+
+            // state === 'unknown'
+            dot.classList.add('bg-amber-400');
+            headline.textContent = 'Not verifiable from this page';
+            headline.className = 'text-lg font-bold text-amber-400';
+            detail.innerHTML =
+                'The browser could not complete the request, and it cannot tell us why: a ' +
+                'cross-origin restriction and a genuine outage look identical from here. ' +
+                '<strong class="text-white font-semibold">This is not a report that the service is down.</strong> ' +
+                'Use “Open /salud directly” above, or the cURL command below — neither goes through the browser’s cross-origin check.';
+            time.textContent = 'Attempted ' + new Date().toISOString();
+            time.classList.remove('hidden');
+        }
+
+        function checkHealth() {
+            render('checking');
+
+            const controller = new AbortController();
+            const timeout = setTimeout(function () { controller.abort(); }, 8000);
+
+            fetch(HEALTH_URL, { signal: controller.signal, cache: 'no-store' })
+                .then(function (response) {
+                    clearTimeout(timeout);
+                    return response.text().then(function (text) {
+                        if (!response.ok) {
+                            render('unknown');
+                            return;
+                        }
+                        let pretty = text;
+                        try { pretty = JSON.stringify(JSON.parse(text), null, 2); } catch (e) { /* se muestra crudo */ }
+                        render('up', { status: response.status, text: pretty });
+                    });
+                })
+                .catch(function () {
+                    clearTimeout(timeout);
+                    render('unknown');
+                });
+        }
+
+        function copyToClipboard(elementId) {
+            const el = document.getElementById(elementId);
+            const text = el.innerText || el.value;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast('Copied to clipboard!');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(function () {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        checkHealth();
+    </script>
+</body>
+</html>

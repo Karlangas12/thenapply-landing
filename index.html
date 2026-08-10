@@ -117,9 +117,27 @@
             <div class="absolute top-1/3 left-1/3 w-[400px] h-[200px] bg-cyanAccent/10 blur-[100px] rounded-full pointer-events-none"></div>
 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-card border border-brand-border text-xs font-mono text-slate-300 mb-8 hover:border-brand-500/50 transition-colors">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-card border border-brand-border text-xs font-mono text-slate-300 mb-4 hover:border-brand-500/50 transition-colors">
                     <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
                     <span class="text-brand-400 font-semibold">THEN APPLY</span> // developer tools
+                </div>
+
+                <!--
+                  Procedencia (provenance): cada enlace lleva a la página del paquete
+                  en npm, donde npm muestra el distintivo de provenance verificado y
+                  el commit y workflow exactos desde los que se publicó. No se pinta
+                  aquí un badge propio: uno dibujado a mano no prueba nada, y la
+                  prueba real vive en npm.
+                -->
+                <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 mb-8 text-xs font-mono">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        npm provenance · SLSA attestation
+                    </span>
+                    <span class="text-slate-500">verify:</span>
+                    <a href="https://www.npmjs.com/package/@karlangas12/web-to-markdown" target="_blank" rel="noopener" class="px-2 py-1 rounded-md bg-brand-card border border-brand-border text-slate-300 hover:text-white hover:border-brand-500/50 transition-colors">web-to-markdown</a>
+                    <a href="https://www.npmjs.com/package/@karlangas12/openapi-to-mcp" target="_blank" rel="noopener" class="px-2 py-1 rounded-md bg-brand-card border border-brand-border text-slate-300 hover:text-white hover:border-brand-500/50 transition-colors">openapi-to-mcp</a>
+                    <a href="https://www.npmjs.com/package/mcp-shield-proxy" target="_blank" rel="noopener" class="px-2 py-1 rounded-md bg-brand-card border border-brand-border text-slate-300 hover:text-white hover:border-brand-500/50 transition-colors">mcp-shield-proxy</a>
                 </div>
 
                 <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight">
@@ -151,9 +169,15 @@
                         <div class="text-lg font-bold font-mono text-cyanAccent">Cloudflare Workers</div>
                         <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">Edge-first, no servers</div>
                     </div>
+                    <!--
+                      219 = 38 (web-to-markdown) + 32 (openapi-to-mcp) + 149
+                      (mcp-shield-proxy), según el badge y la sección "Testing" del
+                      README de cada paquete. Si cambia el número en cualquiera de
+                      los tres, esta suma deja de ser cierta: actualízala aquí.
+                    -->
                     <div class="p-4 rounded-lg bg-brand-card/40 border border-brand-border/40">
-                        <div class="text-lg font-bold font-mono text-brand-400">3 packages</div>
-                        <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">Published on npm</div>
+                        <div class="text-lg font-bold font-mono text-brand-400">219 tests passing</div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">Across the 3 packages</div>
                     </div>
                     <div class="p-4 rounded-lg bg-brand-card/40 border border-brand-border/40">
                         <div class="text-lg font-bold font-mono text-emerald-400">TypeScript</div>
@@ -352,9 +376,13 @@ npx @karlangas12/web-to-markdown https://example.com
                             npx @karlangas12/web-to-markdown
                         </div>
                         <p class="text-xs font-mono text-slate-400 mb-3">From €5/mo · 500 free requests</p>
-                        <a href="/web-to-markdown/" class="inline-flex items-center text-sm font-semibold text-brand-400 hover:text-brand-300 gap-1">
-                            View details &rarr;
-                        </a>
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+                            <a href="/web-to-markdown/" class="inline-flex items-center text-sm font-semibold text-brand-400 hover:text-brand-300 gap-1">
+                                View details &rarr;
+                            </a>
+                            <a href="https://www.npmjs.com/package/@karlangas12/web-to-markdown" target="_blank" rel="noopener" class="text-sm font-mono text-slate-400 hover:text-white transition-colors">npm</a>
+                            <a href="https://github.com/Karlangas12/web-to-markdown" target="_blank" rel="noopener" class="text-sm font-mono text-slate-400 hover:text-white transition-colors">GitHub</a>
+                        </div>
                     </div>
                 </div>
 
@@ -374,9 +402,12 @@ npx @karlangas12/web-to-markdown https://example.com
                         <div class="bg-[#08090C] rounded-lg p-3 border border-brand-border font-mono text-xs text-slate-300 mb-6">
                             npx mcp-shield-proxy
                         </div>
-                        <a href="https://github.com/Karlangas12/mcp-shield-proxy" target="_blank" rel="noopener" class="inline-flex items-center text-sm font-semibold text-blueAccent hover:text-blue-300 gap-1">
-                            View on GitHub &rarr;
-                        </a>
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+                            <a href="https://github.com/Karlangas12/mcp-shield-proxy" target="_blank" rel="noopener" class="inline-flex items-center text-sm font-semibold text-blueAccent hover:text-blue-300 gap-1">
+                                View on GitHub &rarr;
+                            </a>
+                            <a href="https://www.npmjs.com/package/mcp-shield-proxy" target="_blank" rel="noopener" class="text-sm font-mono text-slate-400 hover:text-white transition-colors">npm</a>
+                        </div>
                     </div>
                 </div>
 
@@ -386,7 +417,7 @@ npx @karlangas12/web-to-markdown https://example.com
                         <div class="w-12 h-12 rounded-xl bg-cyanAccent/10 border border-cyanAccent/30 flex items-center justify-center text-cyanAccent mb-6">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                         </div>
-                        <span class="text-xs font-mono text-cyanAccent uppercase tracking-wider">CLI generator · Free</span>
+                        <span class="text-xs font-mono text-cyanAccent uppercase tracking-wider">CLI generator · Free · MIT</span>
                         <h3 class="text-xl font-bold text-white mt-1 mb-3">openapi-to-mcp</h3>
                         <p class="text-slate-400 text-sm leading-relaxed mb-6">
                             Turns an OpenAPI/Swagger 3.x spec into a working MCP server, with request schemas generated straight from the spec via Zod.
@@ -396,11 +427,64 @@ npx @karlangas12/web-to-markdown https://example.com
                         <div class="bg-[#08090C] rounded-lg p-3 border border-brand-border font-mono text-xs text-slate-300 mb-6">
                             npx @karlangas12/openapi-to-mcp
                         </div>
-                        <a href="https://github.com/Karlangas12/openapi-to-mcp" target="_blank" rel="noopener" class="inline-flex items-center text-sm font-semibold text-cyanAccent hover:text-cyan-300 gap-1">
-                            View on GitHub &rarr;
-                        </a>
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+                            <a href="https://github.com/Karlangas12/openapi-to-mcp" target="_blank" rel="noopener" class="inline-flex items-center text-sm font-semibold text-cyanAccent hover:text-cyan-300 gap-1">
+                                View on GitHub &rarr;
+                            </a>
+                            <a href="https://www.npmjs.com/package/@karlangas12/openapi-to-mcp" target="_blank" rel="noopener" class="text-sm font-mono text-slate-400 hover:text-white transition-colors">npm</a>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!--
+          Cómo auditamos el código: declaración de política a nivel de
+          organización, no de producto. A propósito sin badges por paquete —
+          esos ya están arriba, en la fila de provenance del hero, y repetirlos
+          aquí convertiría una política en decoración.
+        -->
+        <section class="py-20 bg-[#0B0D12] border-y border-brand-border/60">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-xs font-mono text-brand-400 mb-4">
+                        SUPPLY CHAIN
+                    </div>
+                    <h2 class="text-3xl font-bold text-white mb-3">How we audit the code</h2>
+                    <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
+                        The same policy applies to all three packages. None of it is opt-in
+                        per project, and none of it is a claim you have to take on trust —
+                        each item below is verifiable from outside this site.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-6">
+                        <h3 class="text-base font-bold text-white mb-2">Static analysis on every push</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Every package runs <strong class="text-white font-semibold">CodeQL</strong>
+                            alongside its test suite and a strict TypeScript typecheck. A failing
+                            run blocks the release — publishing is a separate workflow that only
+                            fires on a tagged version.
+                        </p>
+                    </div>
+
+                    <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-6">
+                        <h3 class="text-base font-bold text-white mb-2">Signed provenance, not a promise</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            All three packages publish with
+                            <strong class="text-white font-semibold">npm provenance</strong>
+                            (<span class="font-mono text-cyanAccent">--provenance</span>, SLSA
+                            attestation via GitHub OIDC). npm ties each published tarball to the
+                            exact commit and workflow run that produced it, so you can check what
+                            you installed was built from the source you're reading.
+                        </p>
+                    </div>
+                </div>
+
+                <p class="text-center text-xs text-slate-500 font-mono mt-8">
+                    Verify any of it on the package pages linked at the top of this page — the attestation lives on npm, not here.
+                </p>
             </div>
         </section>
 
