@@ -129,28 +129,22 @@
                   aquí un badge propio: uno dibujado a mano no prueba nada, y la
                   prueba real vive en npm.
 
-                  Son 3 chips, no 4, a propósito: mcp-auth-kit NO aparece aquí
-                  porque todavía no tiene provenance real (se publicó sin
-                  `--provenance` y su repo no tiene publish workflow — mismo
-                  motivo por el que queda fuera de "How we audit the code" y del
-                  recuento de tests). La etiqueta dice "(3 of 4)" en vez de un
-                  "verify:" a secas para que nadie, al ver un 3 junto a un botón
-                  que dice "4 tools", lo lea como un chip que falta por error.
-                  Condición para añadir el cuarto chip: cuando
-                  @karlangas12/mcp-auth-kit se publique con `--provenance` y su
-                  `dist` en npm traiga la clave `attestations` (igual que el
-                  comentario del recuento de tests fija su propia condición de
-                  verificación).
+                  Los 4 chips tienen provenance real verificada en npm (el `dist`
+                  de cada paquete trae la clave `attestations`). mcp-auth-kit se
+                  sumó al publicar la 1.1.0 por su workflow con `--provenance`
+                  (atestación SLSA en sigstore, logIndex 3106234297); antes estaba
+                  fuera y el contador decía "3 of 4".
                 -->
                 <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 mb-8 text-xs font-mono">
                     <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                         npm provenance · SLSA attestation
                     </span>
-                    <span class="text-slate-500">provenance verified (3 of 4):</span>
+                    <span class="text-slate-500">provenance verified (4 of 4):</span>
                     <a href="https://www.npmjs.com/package/@karlangas12/web-to-markdown" target="_blank" rel="noopener" class="px-2 py-1 rounded-md bg-brand-card border border-brand-border text-slate-300 hover:text-white hover:border-brand-500/50 transition-colors">web-to-markdown</a>
                     <a href="https://www.npmjs.com/package/@karlangas12/openapi-to-mcp" target="_blank" rel="noopener" class="px-2 py-1 rounded-md bg-brand-card border border-brand-border text-slate-300 hover:text-white hover:border-brand-500/50 transition-colors">openapi-to-mcp</a>
                     <a href="https://www.npmjs.com/package/mcp-shield-proxy" target="_blank" rel="noopener" class="px-2 py-1 rounded-md bg-brand-card border border-brand-border text-slate-300 hover:text-white hover:border-brand-500/50 transition-colors">mcp-shield-proxy</a>
+                    <a href="https://www.npmjs.com/package/@karlangas12/mcp-auth-kit" target="_blank" rel="noopener" class="px-2 py-1 rounded-md bg-brand-card border border-brand-border text-slate-300 hover:text-white hover:border-brand-500/50 transition-colors">mcp-auth-kit</a>
                 </div>
 
                 <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight">
@@ -589,13 +583,18 @@ await client.listTools();  // refreshes first, call succeeds</pre>
           esos ya están arriba, en la fila de provenance del hero, y repetirlos
           aquí convertiría una política en decoración.
 
-          Alcance: los tres paquetes NOMBRADOS, no "todos". mcp-auth-kit se
-          publicó sin `--provenance` (el `dist` de @karlangas12/mcp-auth-kit@1.0.1
-          en el registro de npm no trae clave `attestations`) y su repo no tiene
-          workflows en .github/workflows, así que ni CodeQL en cada push ni la
-          atestación SLSA son ciertas para él. Cuando lo sean, se añade aquí y a
-          la fila "verify:" del hero — hasta entonces, un "los cuatro paquetes"
-          sería una afirmación que el visitante puede refutar en un clic.
+          Alcance: los cuatro paquetes. mcp-auth-kit cumple desde la 1.1.0, y se
+          verificó antes de sumarlo aquí — su repo ya tiene `.github/workflows`
+          con `ci.yml` (typecheck + tests + build en cada push y PR a master),
+          `codeql.yml` (CodeQL en push, PR y semanal) y `publish.yml`
+          (`npm publish --provenance` disparado sólo por tag). Ambas afirmaciones
+          de abajo —CodeQL en cada push y atestación SLSA— son por tanto ciertas
+          para los cuatro, no sólo para tres.
+
+          OJO: esto NO autoriza a meter mcp-auth-kit en el recuento de tests del
+          hero. Ese contador (269) es otra cosa: números obtenidos ejecutando
+          cada suite, y la de mcp-auth-kit no se ha ejecutado aquí. Sin un número
+          verificado, sigue fuera de esa cifra aunque esté dentro de ésta.
         -->
         <section class="py-20 bg-[#0B0D12] border-y border-brand-border/60">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -605,10 +604,9 @@ await client.listTools();  // refreshes first, call succeeds</pre>
                     </div>
                     <h2 class="text-3xl font-bold text-white mb-3">How we audit the code</h2>
                     <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
-                        The same policy applies to web-to-markdown, openapi-to-mcp and
-                        mcp-shield-proxy. None of it is opt-in per project, and none of it
-                        is a claim you have to take on trust — each item below is verifiable
-                        from outside this site.
+                        The same policy applies to all four packages. None of it is opt-in
+                        per project, and none of it is a claim you have to take on trust —
+                        each item below is verifiable from outside this site.
                     </p>
                 </div>
 
@@ -616,7 +614,7 @@ await client.listTools();  // refreshes first, call succeeds</pre>
                     <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-6">
                         <h3 class="text-base font-bold text-white mb-2">Static analysis on every push</h3>
                         <p class="text-slate-400 text-sm leading-relaxed">
-                            Each of those three runs <strong class="text-white font-semibold">CodeQL</strong>
+                            Each of the four runs <strong class="text-white font-semibold">CodeQL</strong>
                             alongside its test suite and a strict TypeScript typecheck. A failing
                             run blocks the release — publishing is a separate workflow that only
                             fires on a tagged version.
@@ -626,7 +624,7 @@ await client.listTools();  // refreshes first, call succeeds</pre>
                     <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-6">
                         <h3 class="text-base font-bold text-white mb-2">Signed provenance, not a promise</h3>
                         <p class="text-slate-400 text-sm leading-relaxed">
-                            Those three packages publish with
+                            All four packages publish with
                             <strong class="text-white font-semibold">npm provenance</strong>
                             (<span class="font-mono text-cyanAccent">--provenance</span>, SLSA
                             attestation via GitHub OIDC). npm ties each published tarball to the
