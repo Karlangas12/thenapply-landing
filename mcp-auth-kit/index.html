@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mcp-auth-kit — Then Apply</title>
+    <meta name="description" content="mcp-auth-kit is a drop-in OAuthClientProvider wrapper for @modelcontextprotocol/sdk: proactive token refresh with TTL fallback, retried dynamic client registration, issuer-bound refresh and resource normalization. Free, MIT, ESM-only.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f3ff',
+                            100: '#ebe9fe',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            dark: '#08090C',
+                            card: '#12141A',
+                            border: '#1E222D'
+                        },
+                        cyanAccent: '#00f2fe',
+                        blueAccent: '#4F7DFC'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #08090C;
+            color: #E2E8F0;
+            font-family: 'Inter', sans-serif;
+        }
+        .glow-purple {
+            box-shadow: 0 0 50px -10px rgba(139, 92, 246, 0.25);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #A78BFA 0%, #4F7DFC 50%, #00F2FE 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-border {
+            position: relative;
+            background: #12141A;
+            border-radius: 0.75rem;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 0.8rem;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(139,92,246,0.4), rgba(79,125,252,0.1), rgba(0,242,254,0.3));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #08090C; }
+        ::-webkit-scrollbar-thumb { background: #1E222D; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-[#08090C]/80 border-b border-brand-border/60 transition-all duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-3 group">
+                <img src="/icon-mark.svg" alt="" width="36" height="36" class="group-hover:scale-105 transition-transform">
+                <span class="font-bold text-lg tracking-tight text-white">Then Apply</span>
+            </a>
+
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+                <a href="#fixes" class="hover:text-white transition-colors">What it fixes</a>
+                <a href="#evidence" class="hover:text-white transition-colors">Evidence</a>
+                <a href="#install" class="hover:text-white transition-colors">Install</a>
+                <a href="https://github.com/Karlangas12/mcp-auth-kit" target="_blank" rel="noopener" class="hover:text-white transition-colors flex items-center gap-1">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    GitHub
+                </a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <a href="#install" class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-brand-600 to-blue-600 hover:from-brand-500 hover:to-blue-500 transition-all shadow-md hover:shadow-brand-500/25">
+                    Install
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Hero -->
+        <section class="relative pt-16 pb-16 md:pt-20 md:pb-20 overflow-hidden">
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-600/15 blur-[120px] rounded-full pointer-events-none"></div>
+
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <a href="/" class="inline-flex items-center gap-1.5 text-xs font-mono text-slate-400 hover:text-white transition-colors mb-8">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                    Back to Then Apply
+                </a>
+
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-card border border-brand-border text-xs font-mono text-slate-300 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-brand-400 font-semibold">MCP OAUTH</span> // library · free · MIT
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white mb-4 leading-tight">
+                    mcp-auth-kit
+                </h1>
+                <p class="text-lg sm:text-xl gradient-text font-semibold mb-6">
+                    The MCP OAuth token lifecycle, fixed where it actually breaks.
+                </p>
+
+                <p class="max-w-2xl text-lg text-slate-400 leading-relaxed mb-8">
+                    mcp-auth-kit wraps the <code class="font-mono text-slate-300">OAuthClientProvider</code>
+                    you already have from <code class="font-mono text-slate-300">@modelcontextprotocol/sdk</code>
+                    and returns another one — same interface, same call sites — with auto-refresh
+                    and a TTL fallback, retried dynamic client registration, issuer-bound refresh,
+                    and a correctly normalized <code class="font-mono text-slate-300">resource</code>
+                    parameter. Where the unwrapped path fails silently, it raises an actionable
+                    error instead.
+                </p>
+
+                <!--
+                  Limitación declarada arriba, no enterrada en un pie de página.
+                  Verificada en el package.json del repo: "type": "module" y un
+                  mapa de `exports` con sólo la condición `import` — no hay
+                  `require`, así que un consumidor CJS no puede cargarlo.
+                -->
+                <p class="max-w-2xl text-slate-400 leading-relaxed mb-8 text-sm border-l-2 border-brand-border pl-4">
+                    <span class="font-semibold text-slate-300">ESM-only, for now.</span>
+                    The package ships as <code class="font-mono text-slate-300">"type": "module"</code>
+                    with only an <code class="font-mono text-slate-300">import</code> condition in its
+                    <code class="font-mono text-slate-300">exports</code> map. There is no CommonJS
+                    build yet, so <code class="font-mono text-slate-300">require()</code> from a CJS
+                    project will not resolve it.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#install" class="px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-brand-600 via-blue-600 to-cyanAccent/80 hover:opacity-95 transition-all shadow-lg glow-purple text-center font-mono text-sm">
+                        npm install @karlangas12/mcp-auth-kit
+                    </a>
+                    <a href="https://github.com/Karlangas12/mcp-auth-kit" target="_blank" rel="noopener" class="px-6 py-3 rounded-xl font-semibold text-slate-300 bg-brand-card hover:bg-brand-border border border-brand-border transition-all text-center inline-flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                        View on GitHub
+                    </a>
+                </div>
+
+                <div class="mt-8 flex flex-col sm:flex-row gap-4 max-w-2xl">
+                    <div class="flex-1 p-4 rounded-lg bg-brand-card/40 border border-brand-border/40">
+                        <div class="text-2xl font-bold font-mono text-cyanAccent">€0</div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">Free &amp; open in v1 · MIT</div>
+                    </div>
+                    <div class="flex-1 p-4 rounded-lg bg-brand-card/40 border border-brand-border/40">
+                        <div class="text-2xl font-bold font-mono text-emerald-400">0 deps</div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">Runtime · SDK is a peer dep</div>
+                    </div>
+                </div>
+                <p class="mt-3 max-w-2xl text-[11px] text-slate-500 font-mono leading-relaxed">
+                    v1.0.1 — no paid tier, no API key, no account. It is a library: it runs inside
+                    your own process, against your own authorization server.
+                </p>
+            </div>
+        </section>
+
+        <!-- What it fixes -->
+        <section id="fixes" class="py-16 bg-[#0B0D12] border-y border-brand-border/60">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-xs font-mono text-brand-400 mb-4">
+                        WHAT IT FIXES
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3">Four token-lifecycle failures</h2>
+                    <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
+                        Each one started as a real, open issue in somebody else's MCP client — not a
+                        hypothetical. Each one is pinned by a unit test that first reproduces the
+                        failure against an unwrapped provider, then proves the fix.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-[#0E1017] border border-brand-border rounded-xl p-6">
+                        <h3 class="text-sm font-mono text-rose-400 mb-2">Silent expiry</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed mb-3">
+                            The token response omits <code class="font-mono text-slate-300">expires_in</code>,
+                            so nothing tracks expiry and the client keeps using a dead token.
+                            mcp-auth-kit refreshes proactively using a configurable fallback TTL, and
+                            clamps a server-supplied <code class="font-mono text-slate-300">expires_in</code>
+                            to a sane range before trusting it.
+                        </p>
+                        <a href="https://github.com/anthropics/claude-code/issues/26281" target="_blank" rel="noopener" class="text-xs font-mono text-brand-400 hover:text-white transition-colors underline decoration-brand-700">anthropics/claude-code#26281</a>
+                    </div>
+
+                    <div class="bg-[#0E1017] border border-brand-border rounded-xl p-6">
+                        <h3 class="text-sm font-mono text-rose-400 mb-2">Registration fails without retry</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed mb-3">
+                            A transient failure during RFC&nbsp;7591 dynamic client registration surfaces
+                            as "dynamic client registration not supported" and stops there. mcp-auth-kit
+                            retries with exponential backoff — but only for failures that are actually
+                            transient (network errors, <code class="font-mono text-slate-300">server_error</code>,
+                            <code class="font-mono text-slate-300">429</code>).
+                        </p>
+                        <a href="https://github.com/openai/codex/issues/13200" target="_blank" rel="noopener" class="text-xs font-mono text-brand-400 hover:text-white transition-colors underline decoration-brand-700">openai/codex#13200</a>
+                    </div>
+
+                    <div class="bg-[#0E1017] border border-brand-border rounded-xl p-6">
+                        <h3 class="text-sm font-mono text-rose-400 mb-2">Malformed <code class="font-mono">resource</code></h3>
+                        <p class="text-sm text-slate-400 leading-relaxed mb-3">
+                            A trailing slash on the <code class="font-mono text-slate-300">resource</code>
+                            indicator breaks auth against Microsoft Entra ID. mcp-auth-kit normalizes it
+                            before the refresh call, so the same configuration works either way.
+                        </p>
+                        <a href="https://github.com/anthropics/claude-code/issues/52871" target="_blank" rel="noopener" class="text-xs font-mono text-brand-400 hover:text-white transition-colors underline decoration-brand-700">anthropics/claude-code#52871</a>
+                    </div>
+
+                    <div class="bg-[#0E1017] border border-brand-border rounded-xl p-6">
+                        <h3 class="text-sm font-mono text-rose-400 mb-2">A refresh token that is never used</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed mb-3">
+                            The client holds a valid <code class="font-mono text-slate-300">refresh_token</code>
+                            and never calls the refresh grant with it. mcp-auth-kit does — and binds it to
+                            the issuer, refusing to send a refresh token or client credentials to the wrong
+                            authorization server.
+                        </p>
+                        <a href="https://github.com/openai/codex/issues/17265" target="_blank" rel="noopener" class="text-xs font-mono text-brand-400 hover:text-white transition-colors underline decoration-brand-700">openai/codex#17265</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Evidence -->
+        <section id="evidence" class="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-xs font-mono text-brand-400 mb-4">
+                    EVIDENCE
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-white">Not one client's bug — a pattern</h2>
+                <p class="mt-4 text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
+                    The four issues above were open, unresolved and older than 30 days when the
+                    package was written (verified 2026-09-29). The same class of failure — MCP client
+                    OAuth token lifecycle — has also been reported against four more codebases, which
+                    is why the fix lives in a wrapper rather than in a patch to any one client.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-5">
+                    <h3 class="text-sm font-mono text-brand-400 mb-3">Cited issues</h3>
+                    <ul class="text-sm text-slate-400 space-y-2 font-mono">
+                        <li><a href="https://github.com/anthropics/claude-code/issues/26281" target="_blank" rel="noopener" class="hover:text-white transition-colors">anthropics/claude-code#26281</a></li>
+                        <li><a href="https://github.com/anthropics/claude-code/issues/52871" target="_blank" rel="noopener" class="hover:text-white transition-colors">anthropics/claude-code#52871</a></li>
+                        <li><a href="https://github.com/openai/codex/issues/13200" target="_blank" rel="noopener" class="hover:text-white transition-colors">openai/codex#13200</a></li>
+                        <li><a href="https://github.com/openai/codex/issues/17265" target="_blank" rel="noopener" class="hover:text-white transition-colors">openai/codex#17265</a></li>
+                    </ul>
+                </div>
+
+                <!--
+                  Estos cuatro repos se nombran sin enlace a propósito: el README
+                  de mcp-auth-kit los lista como "también reportado contra", sin
+                  número de issue concreto. Fabricar un enlace aquí presentaría
+                  como verificado algo que no lo está.
+                -->
+                <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-5">
+                    <h3 class="text-sm font-mono text-brand-400 mb-3">Same class, also reported against</h3>
+                    <ul class="text-sm text-slate-400 space-y-2 font-mono">
+                        <li>anthropics/claude-ai-mcp</li>
+                        <li>supabase/supabase</li>
+                        <li>lmstudio-ai/lmstudio-bug-tracker</li>
+                        <li>RooCodeInc/Roo-Code</li>
+                    </ul>
+                    <p class="text-[11px] text-slate-500 font-mono mt-3 leading-relaxed">
+                        Listed without links: the package's own README records these as reports of the
+                        same class of bug, without pinning a specific issue number.
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-[#0E1017] border border-brand-border rounded-xl p-6">
+                <h3 class="text-base font-bold text-white mb-2">Seven rounds of adversarial review</h3>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    Before publishing, the package went through seven rounds of adversarial review with
+                    Opus, each from a fresh session so no round inherited the previous one's assumptions.
+                    The commit history is deliberately unsquashed, so each round's findings and the fixes
+                    they produced are traceable in it. Three of the tests are drift guards rather than
+                    feature tests — they fail when
+                    <code class="font-mono text-slate-300">@modelcontextprotocol/sdk</code> changes
+                    behaviour the wrapper depends on.
+                </p>
+            </div>
+        </section>
+
+        <!-- Install -->
+        <section id="install" class="py-20 bg-[#0B0D12] border-t border-brand-border/60">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-xs font-mono text-brand-400 mb-4">
+                        INSTALL
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Free, MIT, no account</h2>
+                    <p class="mt-4 text-slate-400 max-w-xl mx-auto">
+                        Nothing to buy and no key to request. Install it, wrap the provider you already
+                        have, and pass the result anywhere the unwrapped one was accepted.
+                    </p>
+                </div>
+
+                <div class="bg-[#0E1017] border border-brand-border rounded-xl overflow-hidden shadow-2xl mb-8">
+                    <div class="flex items-center justify-between px-4 py-3 bg-[#08090C] border-b border-brand-border">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+                        </div>
+                        <span class="text-xs font-mono text-slate-400">npm install</span>
+                        <button onclick="copyToClipboard('install-block')" class="text-xs text-brand-400 hover:text-brand-300 font-mono flex items-center gap-1">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                            Copy Code
+                        </button>
+                    </div>
+                    <pre id="install-block" class="p-6 text-xs sm:text-sm font-mono text-slate-200 overflow-x-auto">npm install @karlangas12/mcp-auth-kit @modelcontextprotocol/sdk</pre>
+                </div>
+                <p class="-mt-4 mb-10 text-[11px] text-slate-500 font-mono leading-relaxed">
+                    <code>@modelcontextprotocol/sdk</code> is a peer dependency, so it is listed here
+                    explicitly — the package itself has no runtime dependencies of its own.
+                </p>
+
+                <div class="bg-[#0E1017] border border-brand-border rounded-xl overflow-hidden shadow-2xl mb-8">
+                    <div class="flex items-center justify-between px-4 py-3 bg-[#08090C] border-b border-brand-border">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+                        </div>
+                        <span class="text-xs font-mono text-slate-400">TypeScript / wrapOAuthClientProvider</span>
+                        <button onclick="copyToClipboard('usage-block')" class="text-xs text-brand-400 hover:text-brand-300 font-mono flex items-center gap-1">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                            Copy Code
+                        </button>
+                    </div>
+                    <pre id="usage-block" class="p-6 text-xs sm:text-sm font-mono text-slate-200 overflow-x-auto">
+<span class="text-brand-400">import</span> { wrapOAuthClientProvider } <span class="text-brand-400">from</span> <span class="text-emerald-400">'@karlangas12/mcp-auth-kit'</span>;
+<span class="text-brand-400">import</span> { StreamableHTTPClientTransport } <span class="text-brand-400">from</span> <span class="text-emerald-400">'@modelcontextprotocol/sdk/client/streamableHttp.js'</span>;
+
+<span class="text-slate-500">// `myProvider` is whatever OAuthClientProvider you already have —</span>
+<span class="text-slate-500">// in-memory, filesystem-backed, keychain-backed, etc.</span>
+<span class="text-brand-400">const</span> authProvider = wrapOAuthClientProvider(myProvider, {
+  authorizationServerUrl: <span class="text-emerald-400">'https://auth.example.com'</span>,
+  resource: <span class="text-emerald-400">'https://mcp.example.com/mcp'</span>, <span class="text-slate-500">// trailing slash normalized either way</span>
+  fallbackTokenTtlMs: <span class="text-cyanAccent">55 * 60 * 1000</span>, <span class="text-slate-500">// used only when the server omits expires_in</span>
+  registration: { maxAttempts: <span class="text-cyanAccent">5</span>, baseDelayMs: <span class="text-cyanAccent">250</span> }, <span class="text-slate-500">// opt in to retried DCR</span>
+});
+
+<span class="text-brand-400">const</span> transport = <span class="text-brand-400">new</span> StreamableHTTPClientTransport(
+  <span class="text-brand-400">new</span> URL(<span class="text-emerald-400">'https://mcp.example.com/mcp'</span>),
+  { authProvider },
+);
+</pre>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-5">
+                        <h3 class="text-sm font-mono text-brand-400 mb-3">Package</h3>
+                        <ul class="text-sm text-slate-400 space-y-2 font-mono">
+                            <li><span class="text-slate-300">Name:</span> @karlangas12/mcp-auth-kit</li>
+                            <li><span class="text-slate-300">Version:</span> 1.0.1 · MIT</li>
+                            <li><span class="text-slate-300">Peer:</span> @modelcontextprotocol/sdk ^1.31.0</li>
+                        </ul>
+                    </div>
+                    <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-5">
+                        <h3 class="text-sm font-mono text-brand-400 mb-3">Module format</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            ESM-only. <code class="font-mono text-slate-300">"type": "module"</code>, and
+                            the <code class="font-mono text-slate-300">exports</code> map declares only an
+                            <code class="font-mono text-slate-300">import</code> condition — there is no
+                            CommonJS build yet.
+                        </p>
+                    </div>
+                    <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-5">
+                        <h3 class="text-sm font-mono text-brand-400 mb-3">Links</h3>
+                        <ul class="text-sm text-slate-400 space-y-2 font-mono">
+                            <li><a href="https://www.npmjs.com/package/@karlangas12/mcp-auth-kit" target="_blank" rel="noopener" class="hover:text-white transition-colors">npm &rarr;</a></li>
+                            <li><a href="https://github.com/Karlangas12/mcp-auth-kit" target="_blank" rel="noopener" class="hover:text-white transition-colors">GitHub &rarr;</a></li>
+                            <li><a href="https://github.com/Karlangas12/mcp-auth-kit/issues" target="_blank" rel="noopener" class="hover:text-white transition-colors">Issues / support &rarr;</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#050608] border-t border-brand-border/80 py-12 text-slate-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <a href="/" class="flex items-center space-x-3">
+                <img src="/icon-mark.svg" alt="" width="28" height="28">
+                <span class="font-bold text-white tracking-tight">Then Apply</span>
+                <span class="text-xs text-slate-500 font-mono">© 2026 Then Apply.</span>
+            </a>
+
+            <div class="flex flex-wrap items-center gap-6 text-xs text-slate-400 font-mono">
+                <a href="https://www.npmjs.com/package/@karlangas12/mcp-auth-kit" target="_blank" rel="noopener" class="hover:text-white transition-colors">npm</a>
+                <a href="https://github.com/Karlangas12/mcp-auth-kit" target="_blank" rel="noopener" class="hover:text-white transition-colors">GitHub</a>
+                <a href="https://github.com/Karlangas12/mcp-auth-kit/issues" target="_blank" rel="noopener" class="hover:text-white transition-colors">Support: GitHub Issues</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-brand-card border border-brand-500/50 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 font-mono text-xs pointer-events-none">
+        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        <span id="toast-message">Copied to clipboard!</span>
+    </div>
+
+    <script>
+        // Copy Helper
+        function copyToClipboard(elementId) {
+            const el = document.getElementById(elementId);
+            const text = el.innerText || el.value;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast('Copied to clipboard!');
+        }
+
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

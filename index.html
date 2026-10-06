@@ -159,7 +159,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </a>
                     <a href="#products" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-slate-300 bg-brand-card hover:bg-brand-border border border-brand-border transition-all flex items-center justify-center gap-2">
-                        <span>Explore the 3 tools</span>
+                        <span>Explore the 4 tools</span>
                     </a>
                 </div>
 
@@ -181,10 +181,17 @@
                       la suite real corría 88, porque un commit de sincronización
                       añadió tests sin tocar el README. El badge va por detrás del
                       código; la ejecución, no.
+
+                      mcp-auth-kit queda deliberadamente FUERA de esta cifra: su
+                      suite no se ha ejecutado aquí, y sumarle un número tomado de
+                      su README repetiría exactamente el error que este comentario
+                      documenta. El subtítulo nombra los tres paquetes medidos en
+                      vez de decir "todos", para que al añadir un cuarto producto
+                      la cifra no empiece a mentir por omisión.
                     -->
                     <div class="p-4 rounded-lg bg-brand-card/40 border border-brand-border/40">
                         <div class="text-lg font-bold font-mono text-brand-400">269 tests passing</div>
-                        <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">Across the 3 packages</div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">web-to-markdown · openapi-to-mcp · mcp-shield-proxy</div>
                     </div>
                     <div class="p-4 rounded-lg bg-brand-card/40 border border-brand-border/40">
                         <div class="text-lg font-bold font-mono text-emerald-400">TypeScript</div>
@@ -359,13 +366,13 @@ npx @karlangas12/web-to-markdown https://example.com
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-xs font-mono text-brand-400 mb-4">
                     SUITE OVERVIEW
                 </div>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Three Micro-Tools</h2>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Four Micro-Tools</h2>
                 <p class="mt-4 text-slate-400 max-w-2xl mx-auto">
                     Built for modularity — deploy each one standalone, or combine them into your AI toolchain.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
                 <!-- web-to-markdown -->
                 <div class="gradient-border p-8 flex flex-col justify-between hover:scale-[1.02] transition-transform duration-200">
                     <div>
@@ -442,6 +449,39 @@ npx @karlangas12/web-to-markdown https://example.com
                         </div>
                     </div>
                 </div>
+
+                <!--
+                  mcp-auth-kit. No lleva línea de precio porque en v1 no hay capa
+                  de pago, y tampoco enlace a /terms/: es una librería que corre
+                  en la infraestructura del propio desarrollador, no un Service
+                  que procese Content de un Customer, así que no entra en el
+                  sistema de ToS.
+                -->
+                <div class="gradient-border p-8 flex flex-col justify-between hover:scale-[1.02] transition-transform duration-200">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        </div>
+                        <span class="text-xs font-mono text-brand-400 uppercase tracking-wider">OAuth wrapper · Free · MIT</span>
+                        <h3 class="text-xl font-bold text-white mt-1 mb-3">mcp-auth-kit</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                            Wraps an MCP client's OAuth provider and fixes four token-lifecycle bugs still open in real clients: silent expiry with no refresh, registration that fails without retry, and a malformed <code class="font-mono text-slate-300">resource</code> param that breaks Entra ID.
+                        </p>
+                    </div>
+                    <div>
+                        <div class="bg-[#08090C] rounded-lg p-3 border border-brand-border font-mono text-xs text-slate-300 mb-4">
+                            npm install @karlangas12/mcp-auth-kit
+                        </div>
+                        <p class="text-xs font-mono text-slate-400 mb-3">Free in v1 · ESM-only</p>
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+                            <a href="/mcp-auth-kit/" class="inline-flex items-center text-sm font-semibold text-brand-400 hover:text-brand-300 gap-1">
+                                View details &rarr;
+                            </a>
+                            <a href="https://www.npmjs.com/package/@karlangas12/mcp-auth-kit" target="_blank" rel="noopener" class="text-sm font-mono text-slate-400 hover:text-white transition-colors">npm</a>
+                            <a href="https://github.com/Karlangas12/mcp-auth-kit" target="_blank" rel="noopener" class="text-sm font-mono text-slate-400 hover:text-white transition-colors">GitHub</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -450,6 +490,14 @@ npx @karlangas12/web-to-markdown https://example.com
           organización, no de producto. A propósito sin badges por paquete —
           esos ya están arriba, en la fila de provenance del hero, y repetirlos
           aquí convertiría una política en decoración.
+
+          Alcance: los tres paquetes NOMBRADOS, no "todos". mcp-auth-kit se
+          publicó sin `--provenance` (el `dist` de @karlangas12/mcp-auth-kit@1.0.1
+          en el registro de npm no trae clave `attestations`) y su repo no tiene
+          workflows en .github/workflows, así que ni CodeQL en cada push ni la
+          atestación SLSA son ciertas para él. Cuando lo sean, se añade aquí y a
+          la fila "verify:" del hero — hasta entonces, un "los cuatro paquetes"
+          sería una afirmación que el visitante puede refutar en un clic.
         -->
         <section class="py-20 bg-[#0B0D12] border-y border-brand-border/60">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -459,9 +507,10 @@ npx @karlangas12/web-to-markdown https://example.com
                     </div>
                     <h2 class="text-3xl font-bold text-white mb-3">How we audit the code</h2>
                     <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
-                        The same policy applies to all three packages. None of it is opt-in
-                        per project, and none of it is a claim you have to take on trust —
-                        each item below is verifiable from outside this site.
+                        The same policy applies to web-to-markdown, openapi-to-mcp and
+                        mcp-shield-proxy. None of it is opt-in per project, and none of it
+                        is a claim you have to take on trust — each item below is verifiable
+                        from outside this site.
                     </p>
                 </div>
 
@@ -469,7 +518,7 @@ npx @karlangas12/web-to-markdown https://example.com
                     <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-6">
                         <h3 class="text-base font-bold text-white mb-2">Static analysis on every push</h3>
                         <p class="text-slate-400 text-sm leading-relaxed">
-                            Every package runs <strong class="text-white font-semibold">CodeQL</strong>
+                            Each of those three runs <strong class="text-white font-semibold">CodeQL</strong>
                             alongside its test suite and a strict TypeScript typecheck. A failing
                             run blocks the release — publishing is a separate workflow that only
                             fires on a tagged version.
@@ -479,7 +528,7 @@ npx @karlangas12/web-to-markdown https://example.com
                     <div class="bg-brand-card/40 border border-brand-border/40 rounded-lg p-6">
                         <h3 class="text-base font-bold text-white mb-2">Signed provenance, not a promise</h3>
                         <p class="text-slate-400 text-sm leading-relaxed">
-                            All three packages publish with
+                            Those three packages publish with
                             <strong class="text-white font-semibold">npm provenance</strong>
                             (<span class="font-mono text-cyanAccent">--provenance</span>, SLSA
                             attestation via GitHub OIDC). npm ties each published tarball to the
