@@ -72,11 +72,27 @@
 
     <header class="sticky top-0 z-50 backdrop-blur-md bg-[#08090C]/80 border-b border-brand-border/60 transition-all duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="/" class="flex items-center space-x-3 group">
-                <img src="/icon-mark.svg" alt="" width="36" height="36" class="group-hover:scale-105 transition-transform">
-                <span class="font-bold text-lg tracking-tight text-white">Then Apply</span>
+            <a href="/" class="flex items-center space-x-3 group min-w-0">
+                <img src="/icon-mark.svg" alt="" width="36" height="36" class="group-hover:scale-105 transition-transform flex-shrink-0">
+                <span class="font-bold text-lg tracking-tight text-white truncate">Then Apply</span>
             </a>
-            <a href="/" class="text-sm text-slate-400 hover:text-white transition-colors">&larr; Volver al inicio</a>
+            <!--
+              Botón real, no texto con flecha: mismos tokens que el CTA
+              secundario del resto del sitio (bg-brand-card + border-brand-border
+              + hover:bg-brand-border), a la escala de los botones de cabecera
+              (px-4 py-2.5 rounded-lg text-sm font-semibold). El área de click es
+              todo el bloque, no sólo el texto, y con py-2.5 el alto del objetivo
+              queda en ~40px, suficiente para dedo en móvil. En pantallas muy
+              estrechas baja a px-3. Y para que el resultado en movil no dependa
+              de que el texto "quepa por los pelos": el boton lleva flex-shrink-0
+              y el bloque del logo min-w-0 + truncate, asi que si el ancho no
+              alcanza es el wordmark el que se recorta y el boton se ve y se
+              puede pulsar entero. Sin eso, a ~320px la cabecera desbordaba.
+            -->
+            <a href="/" class="inline-flex flex-shrink-0 items-center gap-2 px-3 sm:px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap text-slate-300 bg-brand-card hover:bg-brand-border hover:text-white border border-brand-border hover:border-brand-500/50 transition-all">
+                <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                Volver al inicio
+            </a>
         </div>
     </header>
 
@@ -188,7 +204,6 @@
                         <p class="text-slate-400 text-sm mt-1">Envuelve el proveedor OAuth de un cliente MCP y corrige cuatro fallos de ciclo de vida de token que siguen abiertos en clientes reales.</p>
                     </div>
                     <div class="flex items-center gap-4 text-sm font-mono flex-shrink-0">
-                        <a href="/mcp-auth-kit/" class="text-brand-400 hover:text-white transition-colors">Detalles</a>
                         <a href="https://www.npmjs.com/package/@karlangas12/mcp-auth-kit" target="_blank" rel="noopener" class="text-brand-400 hover:text-white transition-colors">npm</a>
                         <a href="https://github.com/Karlangas12/mcp-auth-kit" target="_blank" rel="noopener" class="text-brand-400 hover:text-white transition-colors">GitHub</a>
                     </div>

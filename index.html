@@ -226,6 +226,10 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                             openapi-to-mcp
                         </button>
+                        <button id="tab-btn-authkit" onclick="switchTab('authkit')" class="tab-btn px-4 py-2.5 rounded-t-lg font-mono text-xs font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            mcp-auth-kit
+                        </button>
                     </div>
 
                     <!-- Tab Contents -->
@@ -355,6 +359,67 @@ npx @karlangas12/web-to-markdown https://example.com
                             </div>
                             <p class="text-[11px] text-slate-500 font-mono">Static example — not a live API call.</p>
                         </div>
+
+                        <!--
+                          Tab 4: mcp-auth-kit. No es una API con request/response,
+                          así que el par no es dato de entrada / dato de salida
+                          sino código antes / después de envolver el provider.
+                          Los snippets son la API real tomada del README del
+                          paquete (`wrapOAuthClientProvider` y sus opciones
+                          `authorizationServerUrl` / `resource` /
+                          `fallbackTokenTtlMs`), no pseudo-código: si la firma
+                          cambia en el paquete, esto hay que actualizarlo.
+                        -->
+                        <div id="tab-content-authkit" class="tab-content hidden space-y-3">
+                            <div class="flex flex-col md:flex-row gap-4">
+                                <div class="w-full md:w-1/2 space-y-2">
+                                    <label class="block text-xs font-mono text-slate-400">BEFORE: UNWRAPPED SDK PROVIDER</label>
+                                    <textarea id="authkit-input" class="w-full h-48 bg-[#08090C] border border-brand-border rounded-lg p-3 text-xs font-mono text-slate-300 focus:outline-none focus:border-brand-500 resize-none">import { StreamableHTTPClientTransport }
+  from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+
+// `myProvider` is your own OAuthClientProvider, passed to the
+// SDK as-is. The token response came back with no `expires_in`,
+// so nothing tracks expiry — and the stored `refresh_token`
+// is never used.
+const transport = new StreamableHTTPClientTransport(
+  new URL('https://mcp.example.com/mcp'),
+  { authProvider: myProvider },
+);
+
+await client.connect(transport);  // fine, token still valid
+// ...55 minutes later the access token is dead:
+await client.listTools();         // 401 — no refresh attempted</textarea>
+                                    <div class="flex justify-between items-center pt-1">
+                                        <span class="text-[11px] text-slate-500 font-mono">Bug: silent expiry, unused refresh_token</span>
+                                        <button onclick="runAuthKitTransform()" class="px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-md">
+                                            <span>Show Example Output</span>
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="w-full md:w-1/2 space-y-2">
+                                    <label class="block text-xs font-mono text-emerald-400">AFTER: WRAPPED WITH MCP-AUTH-KIT</label>
+                                    <pre id="authkit-output" class="w-full h-48 bg-[#08090C] border border-brand-border rounded-lg p-3 text-xs font-mono text-slate-300 overflow-y-auto whitespace-pre-wrap">import { wrapOAuthClientProvider }
+  from '@karlangas12/mcp-auth-kit';
+
+// Same provider, wrapped. Same interface, same call sites.
+const authProvider = wrapOAuthClientProvider(myProvider, {
+  authorizationServerUrl: 'https://auth.example.com',
+  resource: 'https://mcp.example.com/mcp',
+  fallbackTokenTtlMs: 55 * 60 * 1000, // when expires_in is absent
+});
+
+const transport = new StreamableHTTPClientTransport(
+  new URL('https://mcp.example.com/mcp'),
+  { authProvider },
+);
+
+await client.listTools();  // refreshes first, call succeeds</pre>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-slate-500 font-mono">Static example — not a live API call.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -456,6 +521,14 @@ npx @karlangas12/web-to-markdown https://example.com
                   en la infraestructura del propio desarrollador, no un Service
                   que procese Content de un Customer, así que no entra en el
                   sistema de ToS.
+
+                  Tampoco lleva "View details": por ADR-011 las páginas de
+                  producto son sólo para activos monetizados, así que
+                  /mcp-auth-kit/ se decomisionó. Por eso esta card absorbe lo que
+                  sólo vivía allí y que sí era verificable: los cuatro issues
+                  abiertos que justifican el paquete (enlazados abajo), la
+                  limitación solo-ESM y el "gratis, MIT, sin cuenta". El detalle
+                  largo vive en el README del repo, que es su sitio.
                 -->
                 <div class="gradient-border p-8 flex flex-col justify-between hover:scale-[1.02] transition-transform duration-200">
                     <div>
@@ -464,21 +537,33 @@ npx @karlangas12/web-to-markdown https://example.com
                         </div>
                         <span class="text-xs font-mono text-brand-400 uppercase tracking-wider">OAuth wrapper · Free · MIT</span>
                         <h3 class="text-xl font-bold text-white mt-1 mb-3">mcp-auth-kit</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                            Wraps an MCP client's OAuth provider and fixes four token-lifecycle bugs still open in real clients: silent expiry with no refresh, registration that fails without retry, and a malformed <code class="font-mono text-slate-300">resource</code> param that breaks Entra ID.
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            Wraps an MCP client's OAuth provider and fixes four token-lifecycle
+                            bugs still open in real clients: silent expiry with no refresh, a
+                            valid <code class="font-mono text-slate-300">refresh_token</code> that
+                            never gets used, registration that fails without retry, and a
+                            malformed <code class="font-mono text-slate-300">resource</code> param
+                            that breaks Entra ID. Auto-refresh with a TTL fallback, retried
+                            registration, and actionable errors instead of silent failure.
+                        </p>
+                        <p class="text-xs font-mono text-slate-500 leading-relaxed mb-6">
+                            Open issues behind it:
+                            <a href="https://github.com/anthropics/claude-code/issues/26281" target="_blank" rel="noopener" class="text-slate-400 hover:text-white transition-colors">claude-code#26281</a>,
+                            <a href="https://github.com/anthropics/claude-code/issues/52871" target="_blank" rel="noopener" class="text-slate-400 hover:text-white transition-colors">#52871</a>,
+                            <a href="https://github.com/openai/codex/issues/13200" target="_blank" rel="noopener" class="text-slate-400 hover:text-white transition-colors">codex#13200</a>,
+                            <a href="https://github.com/openai/codex/issues/17265" target="_blank" rel="noopener" class="text-slate-400 hover:text-white transition-colors">#17265</a>
                         </p>
                     </div>
                     <div>
                         <div class="bg-[#08090C] rounded-lg p-3 border border-brand-border font-mono text-xs text-slate-300 mb-4">
                             npm install @karlangas12/mcp-auth-kit
                         </div>
-                        <p class="text-xs font-mono text-slate-400 mb-3">Free in v1 · ESM-only</p>
+                        <p class="text-xs font-mono text-slate-400 mb-3">Free in v1 · MIT · no account · ESM-only</p>
                         <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
-                            <a href="/mcp-auth-kit/" class="inline-flex items-center text-sm font-semibold text-brand-400 hover:text-brand-300 gap-1">
-                                View details &rarr;
+                            <a href="https://github.com/Karlangas12/mcp-auth-kit" target="_blank" rel="noopener" class="inline-flex items-center text-sm font-semibold text-brand-400 hover:text-brand-300 gap-1">
+                                View on GitHub &rarr;
                             </a>
                             <a href="https://www.npmjs.com/package/@karlangas12/mcp-auth-kit" target="_blank" rel="noopener" class="text-sm font-mono text-slate-400 hover:text-white transition-colors">npm</a>
-                            <a href="https://github.com/Karlangas12/mcp-auth-kit" target="_blank" rel="noopener" class="text-sm font-mono text-slate-400 hover:text-white transition-colors">GitHub</a>
                         </div>
                     </div>
                 </div>
@@ -637,6 +722,12 @@ curl -X POST https://web-to-markdown.karlangas12.workers.dev/v1/convert \
         function runOpenAPITransform() {
             const output = document.getElementById('openapi-output');
             output.textContent = '{\n  "name": "get_user_by_id",\n  "description": "Fetch user profile by unique ID",\n  "inputSchema": {\n    "type": "object",\n    "properties": {\n      "userId": { "type": "string" }\n    },\n    "required": ["userId"]\n  }\n}';
+            showToast("Example output updated");
+        }
+
+        function runAuthKitTransform() {
+            const output = document.getElementById('authkit-output');
+            output.textContent = "import { wrapOAuthClientProvider }\n  from '@karlangas12/mcp-auth-kit';\n\n// Same provider, wrapped. Same interface, same call sites.\nconst authProvider = wrapOAuthClientProvider(myProvider, {\n  authorizationServerUrl: 'https://auth.example.com',\n  resource: 'https://mcp.example.com/mcp',\n  fallbackTokenTtlMs: 55 * 60 * 1000, // when expires_in is absent\n});\n\nconst transport = new StreamableHTTPClientTransport(\n  new URL('https://mcp.example.com/mcp'),\n  { authProvider },\n);\n\nawait client.listTools();  // refreshes first, call succeeds";
             showToast("Example output updated");
         }
 
