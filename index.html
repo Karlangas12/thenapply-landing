@@ -128,13 +128,26 @@
                   el commit y workflow exactos desde los que se publicó. No se pinta
                   aquí un badge propio: uno dibujado a mano no prueba nada, y la
                   prueba real vive en npm.
+
+                  Son 3 chips, no 4, a propósito: mcp-auth-kit NO aparece aquí
+                  porque todavía no tiene provenance real (se publicó sin
+                  `--provenance` y su repo no tiene publish workflow — mismo
+                  motivo por el que queda fuera de "How we audit the code" y del
+                  recuento de tests). La etiqueta dice "(3 of 4)" en vez de un
+                  "verify:" a secas para que nadie, al ver un 3 junto a un botón
+                  que dice "4 tools", lo lea como un chip que falta por error.
+                  Condición para añadir el cuarto chip: cuando
+                  @karlangas12/mcp-auth-kit se publique con `--provenance` y su
+                  `dist` en npm traiga la clave `attestations` (igual que el
+                  comentario del recuento de tests fija su propia condición de
+                  verificación).
                 -->
                 <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 mb-8 text-xs font-mono">
                     <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                         npm provenance · SLSA attestation
                     </span>
-                    <span class="text-slate-500">verify:</span>
+                    <span class="text-slate-500">provenance verified (3 of 4):</span>
                     <a href="https://www.npmjs.com/package/@karlangas12/web-to-markdown" target="_blank" rel="noopener" class="px-2 py-1 rounded-md bg-brand-card border border-brand-border text-slate-300 hover:text-white hover:border-brand-500/50 transition-colors">web-to-markdown</a>
                     <a href="https://www.npmjs.com/package/@karlangas12/openapi-to-mcp" target="_blank" rel="noopener" class="px-2 py-1 rounded-md bg-brand-card border border-brand-border text-slate-300 hover:text-white hover:border-brand-500/50 transition-colors">openapi-to-mcp</a>
                     <a href="https://www.npmjs.com/package/mcp-shield-proxy" target="_blank" rel="noopener" class="px-2 py-1 rounded-md bg-brand-card border border-brand-border text-slate-300 hover:text-white hover:border-brand-500/50 transition-colors">mcp-shield-proxy</a>

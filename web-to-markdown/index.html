@@ -116,8 +116,17 @@
             <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-600/15 blur-[120px] rounded-full pointer-events-none"></div>
 
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <a href="/" class="inline-flex items-center gap-1.5 text-xs font-mono text-slate-400 hover:text-white transition-colors mb-8">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                <!--
+                  Mismo tratamiento que "Back to home" en about/index.html:
+                  botón real (bg-brand-card + border-brand-border +
+                  hover:bg-brand-border, escala de botón de cabecera px-4 py-2.5
+                  rounded-lg text-sm font-semibold, flecha SVG), área de click de
+                  todo el bloque. Clases literales reutilizadas; sólo se conserva
+                  mb-8 porque aquí el botón vive en el cuerpo del hero, no en una
+                  cabecera, y necesita ese margen inferior.
+                -->
+                <a href="/" class="inline-flex flex-shrink-0 items-center gap-2 px-3 sm:px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap text-slate-300 bg-brand-card hover:bg-brand-border hover:text-white border border-brand-border hover:border-brand-500/50 transition-all mb-8">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
                     Back to Then Apply
                 </a>
 
