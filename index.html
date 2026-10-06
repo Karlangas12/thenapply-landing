@@ -177,28 +177,27 @@
                         <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">Edge-first, no servers</div>
                     </div>
                     <!--
-                      269 = 88 (web-to-markdown) + 32 (openapi-to-mcp) + 149
-                      (mcp-shield-proxy).
+                      478 = 88 (web-to-markdown) + 32 (openapi-to-mcp) + 149
+                      (mcp-shield-proxy) + 209 (mcp-auth-kit).
 
-                      Cifras obtenidas **ejecutando `npm test`** en cada repositorio
-                      sobre su `origin/main`, el 10 de agosto de 2026. No las tomes
-                      del badge ni de la sección "Testing" del README: esta cifra ya
+                      Cifras obtenidas **ejecutando `npm test`** en cada repositorio,
+                      no del badge ni de la sección "Testing" del README: esta cifra ya
                       estuvo mal dos veces por hacer justo eso. El badge de
                       web-to-markdown anunció "43 passing" durante dos días mientras
                       la suite real corría 88, porque un commit de sincronización
                       añadió tests sin tocar el README. El badge va por detrás del
                       código; la ejecución, no.
 
-                      mcp-auth-kit queda deliberadamente FUERA de esta cifra: su
-                      suite no se ha ejecutado aquí, y sumarle un número tomado de
-                      su README repetiría exactamente el error que este comentario
-                      documenta. El subtítulo nombra los tres paquetes medidos en
-                      vez de decir "todos", para que al añadir un cuarto producto
-                      la cifra no empiece a mentir por omisión.
+                      mcp-auth-kit (209 tests, 29 files) entró sólo tras confirmarse
+                      en varias corridas reales de su `npm test`, no tomando un número
+                      del README — la misma regla que mantuvo al paquete fuera de esta
+                      cifra mientras no estaba ejecutado. El subtítulo nombra los
+                      cuatro paquetes medidos, uno a uno, para que la cifra no pueda
+                      mentir por omisión si mañana se añade un quinto.
                     -->
                     <div class="p-4 rounded-lg bg-brand-card/40 border border-brand-border/40">
-                        <div class="text-lg font-bold font-mono text-brand-400">269 tests passing</div>
-                        <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">web-to-markdown · openapi-to-mcp · mcp-shield-proxy</div>
+                        <div class="text-lg font-bold font-mono text-brand-400">478 tests passing</div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-medium">web-to-markdown · openapi-to-mcp · mcp-shield-proxy · mcp-auth-kit</div>
                     </div>
                     <div class="p-4 rounded-lg bg-brand-card/40 border border-brand-border/40">
                         <div class="text-lg font-bold font-mono text-emerald-400">TypeScript</div>
@@ -590,11 +589,6 @@ await client.listTools();  // refreshes first, call succeeds</pre>
           (`npm publish --provenance` disparado sólo por tag). Ambas afirmaciones
           de abajo —CodeQL en cada push y atestación SLSA— son por tanto ciertas
           para los cuatro, no sólo para tres.
-
-          OJO: esto NO autoriza a meter mcp-auth-kit en el recuento de tests del
-          hero. Ese contador (269) es otra cosa: números obtenidos ejecutando
-          cada suite, y la de mcp-auth-kit no se ha ejecutado aquí. Sin un número
-          verificado, sigue fuera de esa cifra aunque esté dentro de ésta.
         -->
         <section class="py-20 bg-[#0B0D12] border-y border-brand-border/60">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
